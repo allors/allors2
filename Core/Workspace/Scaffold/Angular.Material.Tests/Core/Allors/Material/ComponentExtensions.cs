@@ -30,6 +30,10 @@ namespace Components
 
         public static MatLocalised<T> MatLocalised<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatLocalised<T>(@this, roleType, scopes);
 
+        public static MatLocalisedMarkdown<T> MatLocalisedMarkdown<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatLocalisedMarkdown<T>(@this, roleType, scopes);
+
+        public static MatLocalisedText<T> MatLocalisedText<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatLocalisedText<T>(@this, roleType, scopes);
+
         public static MatMonthpicker<T> MatMonthpicker<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatMonthpicker<T>(@this, roleType, scopes);
 
         public static MatSelect<T> MatSelect<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatSelect<T>(@this, roleType, scopes);

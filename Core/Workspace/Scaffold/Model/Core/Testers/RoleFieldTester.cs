@@ -25,8 +25,10 @@ namespace Autotest.Testers
         {
             get
             {
-                var parts = this.Element.Name.Split('-');
-                return parts[1].Dehumanize() + parts[2].Dehumanize();
+                var parts = this.Element.Name.Split('-')
+                    .Skip(1)
+                    .Select(v => v.Dehumanize());
+                return string.Concat(parts);
             }
         }
 

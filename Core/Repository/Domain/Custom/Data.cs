@@ -39,6 +39,46 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public Person AutocompleteOptions { get; set; }
+        
+        #region Allors
+        [Id("7C2CC44F-1BE9-4C1C-9A99-8BC742DA7DEC")]
+        [AssociationId("72423A78-957F-48B9-9EAF-4A42084B1009")]
+        [RoleId("F40A4D44-C632-43B3-941E-9EF99F5DEAC0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person AutocompleteAssignedFilter { get; set; }
+
+        #region Allors
+        [Id("7624D2D5-E2C7-40E9-A805-AC89A02EAC63")]
+        [AssociationId("5720023D-0D38-46E3-8A9A-8F3875C77D42")]
+        [RoleId("74AF9DA6-2D62-4C4D-99E8-A88C378E4B0E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person AutocompleteDerivedFilter { get; set; }
+
+        #region Allors
+        [Id("EB3F28B4-471E-45C2-B6EF-5F2C3612638A")]
+        [AssociationId("2624A60C-040F-40C5-A575-0121DB10F5A0")]
+        [RoleId("D253990B-BA5D-43D6-BD72-47C89F6B11B0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person AutocompleteAssignedOptions { get; set; }
+
+        #region Allors
+        [Id("7E1531B0-9328-49CA-96CC-763E4F9877AE")]
+        [AssociationId("DE785F45-C818-467D-8090-FDCA1E8524D8")]
+        [RoleId("72C2FD16-6D59-4C20-A9AC-161CE31A1E67")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person AutocompleteDerivedOptions { get; set; }
 
         #region Allors
         [Id("46964F62-AF12-4450-83DA-C695C4A0ECE8")]
@@ -74,7 +114,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public Decimal Decimal { get; set; }
-
 
         #region Allors
         [Id("31D0A290-2637-452D-8462-4BBB744E3065")]
@@ -173,6 +212,26 @@ namespace Allors.Repository
         [Size(-1)]
         [MediaType("text/html")]
         public string Html { get; set; }
+
+        #region Allors
+        [Id("90BA01A8-5831-484A-818E-2B660F7C3A9A")]
+        [AssociationId("73DC8BF5-19AF-454E-A18F-82AA5E7291DC")]
+        [RoleId("21D07F3E-C42E-4C22-AB13-099C0DB16A05")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public LocalisedText[] LocalisedTexts { get; set; }
+        
+        #region Allors
+        [Id("7AB21625-164A-4686-A59E-5D64013EE9CC")]
+        [AssociationId("80BE5856-1C83-44DC-9C0A-83F89003937A")]
+        [RoleId("2C9A347F-F822-4005-8962-A0DAD2F2FEF2")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public LocalisedText[] LocalisedMarkdowns { get; set; }
 
         #region inherited methods
 

@@ -1,5 +1,5 @@
 import { ObjectType, AssociationType, RoleType, MethodType, OperandType, unitIds } from '@allors/meta/system';
-import { Operations,PushRequestObject, PushRequestNewObject, PushRequestRole } from '@allors/protocol/system';
+import { Operations, PushRequestObject, PushRequestNewObject, PushRequestRole } from '@allors/protocol/system';
 
 import { Method } from './Method';
 import { Session } from './Session';
@@ -7,7 +7,6 @@ import { IWorkspaceObject } from './WorkspaceObject';
 
 import { ISessionObject } from './ISessionObject';
 import { ParameterTypes, UnitTypes, CompositeTypes } from './Types';
-
 
 export abstract class SessionObject implements ISessionObject {
   public objectType!: ObjectType;
@@ -106,9 +105,7 @@ export abstract class SessionObject implements ISessionObject {
               throw new Error(`Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}]`);
             }
 
-            throw new Error(
-              `Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`,
-            );
+            throw new Error(`Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`);
           }
         }
       } else {
@@ -292,6 +289,14 @@ export abstract class SessionObject implements ISessionObject {
     delete this.changedRoleByRoleType;
   }
 
+  hasChangedRole(roleType: RoleType) {
+    return this.changedRoleByRoleType?.has(roleType);
+  }
+
+  restoreRole(roleType: RoleType) {
+    this.changedRoleByRoleType?.delete(roleType);
+  }
+
   public onDelete(deleted: SessionObject) {
     if (this.changedRoleByRoleType !== undefined) {
       for (const [roleType, value] of this.changedRoleByRoleType) {
@@ -318,7 +323,7 @@ export abstract class SessionObject implements ISessionObject {
 
   private assertExists() {
     if (this.roleByRoleType === undefined) {
-      throw new Error('Object doesn\'t exist anymore.');
+      throw new Error("Object doesn't exist anymore.");
     }
   }
 

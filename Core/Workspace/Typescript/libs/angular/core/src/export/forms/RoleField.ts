@@ -9,14 +9,15 @@ import { ISessionObject } from '@allors/domain/system';
 import { Field } from './Field';
 
 @Directive()
-
 export abstract class RoleField extends Field implements AfterViewInit, OnDestroy {
-
   @Input()
   public object: ISessionObject;
 
   @Input()
   public roleType: RoleType;
+
+  @Input()
+  assignedRoleType: RoleType;
 
   // tslint:disable-next-line:no-input-rename
   @Input('name')
@@ -61,12 +62,19 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get model(): any {
-    return this.ExistObject ? this.object.get(this.roleType) : undefined;
+    if (this.ExistObject) {
+      if (this.assignedRoleType && this.object.hasChangedRole(this.assignedRoleType)) {
+        return this.object.get(this.assignedRoleType);
+      }
+
+      return this.object.get(this.roleType);
+    }
+
+    return undefined;
   }
 
   set model(value: any) {
     if (this.ExistObject) {
-
       if (this.emptyStringIsNull && value === '') {
         value = null;
       }
@@ -77,11 +85,11 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
         }
       }
 
-      if (this.roleType.objectType.isDecimal){
+      if (this.roleType.objectType.isDecimal) {
         value = (value as string)?.replace(',', '.');
       }
 
-      this.object.set(this.roleType, value);
+      this.object.set(this.assignedRoleType ?? this.roleType, value);
     }
   }
 
@@ -90,12 +98,11 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get canWrite(): boolean | undefined {
-    return this.object?.canWrite(this.roleType);
+    return this.object?.canWrite(this.assignedRoleType ?? this.roleType);
   }
 
   get textType(): string {
-    if (this.roleType.objectType.name === 'Integer' ||
-      this.roleType.objectType.name === 'Float') {
+    if (this.roleType.objectType.name === 'Integer' || this.roleType.objectType.name === 'Float') {
       return 'number';
     }
 
@@ -124,6 +131,14 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
 
   get disabled(): boolean {
     return !this.canWrite || !!this.assignedDisabled;
+  }
+
+  get canRestore(): boolean {
+    return this.ExistObject && this.assignedRoleType && this.object.hasChangedRole(this.assignedRoleType);
+  }
+
+  restore(): void {
+    this.ExistObject && this.object?.restoreRole(this.assignedRoleType);
   }
 
   public add(value: ISessionObject) {
