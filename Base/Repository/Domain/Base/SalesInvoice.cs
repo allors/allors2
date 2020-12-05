@@ -231,7 +231,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         public ContactMechanism AssignedBillToContactMechanism { get; set; }
 
