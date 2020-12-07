@@ -481,8 +481,10 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            this.order.AssignedShipToAddress = this.shipToContactMechanismMechelen;
+            this.order.Revise();
+            this.Session.Derive();
 
+            this.order.AssignedShipToAddress = this.shipToContactMechanismMechelen;
             this.Session.Derive();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).Build();
@@ -496,6 +498,8 @@ namespace Allors.Domain
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
+
+            this.Session.Derive();
 
             item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).Build();
             order2.AddSalesOrderItem(item1);

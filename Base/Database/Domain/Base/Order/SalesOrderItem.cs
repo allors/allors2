@@ -296,13 +296,13 @@ namespace Allors.Domain
                     {
                         this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.Paid;
                     }
-                    else if (orderBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPaid))
+                    else if (orderBilling.Any(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPartiallyPaid))
                     {
-                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
+                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.PartiallyPaid;
                     }
                     else
                     {
-                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.PartiallyPaid;
+                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
                     }
                 }
                 else
@@ -314,13 +314,13 @@ namespace Allors.Domain
                         {
                             this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.Paid;
                         }
-                        else if (shipmentBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPaid))
+                        else if (shipmentBilling.Any(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPartiallyPaid))
                         {
-                            this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
+                            this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.PartiallyPaid;
                         }
                         else
                         {
-                            this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.PartiallyPaid;
+                            this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
                         }
                     }
                     else

@@ -86,7 +86,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrder_WhenDeriving_ThenLocaleMustExist()
+        public void GivenOrder_WhenDeriving_ThenDerivedLocaleMustExist()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
@@ -106,7 +106,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(this.Session.GetSingleton().DefaultLocale, order.Locale);
+            Assert.Equal(this.Session.GetSingleton().DefaultLocale, order.DerivedLocale);
         }
 
         [Fact]
@@ -173,6 +173,7 @@ namespace Allors.Domain
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
+            this.Session.Derive();
 
             order.SetReadyForProcessing();
             this.Session.Derive();
@@ -192,6 +193,7 @@ namespace Allors.Domain
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
+            this.Session.Derive();
 
             order.SetReadyForProcessing();
             this.Session.Derive();
@@ -211,6 +213,7 @@ namespace Allors.Domain
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
+            this.Session.Derive();
 
             order.SetReadyForProcessing();
             this.Session.Derive();

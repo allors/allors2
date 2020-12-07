@@ -62,6 +62,7 @@ namespace Allors
                     .WithPurchaseOrderNumberPrefix("purchase orderno: ")
                     .WithDefaultCollectionMethod(ownBankAccount)
                     .WithSubAccountCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                    .WithLocale(new Locales(session).EnglishGreatBritain)
                     .Build();
 
                 internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)

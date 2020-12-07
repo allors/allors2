@@ -292,13 +292,13 @@ namespace Allors.Domain
                     {
                         this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.Paid;
                     }
-                    else if (orderBilling.All(v => !v.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsPaid))
+                    else if (orderBilling.Any(v => v.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsPartiallyPaid))
                     {
-                        this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.NotPaid;
+                        this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.PartiallyPaid;
                     }
                     else
                     {
-                        this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.PartiallyPaid;
+                        this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.NotPaid;
                     }
                 }
 

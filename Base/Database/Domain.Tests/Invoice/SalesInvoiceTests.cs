@@ -612,6 +612,7 @@ namespace Allors.Domain
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
                 .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
+            this.Session.Derive();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session)
                 .WithProduct(good)
@@ -621,7 +622,6 @@ namespace Allors.Domain
                 .Build();
 
             invoice.AddSalesInvoiceItem(item1);
-
             this.Session.Derive();
 
             Assert.Equal(8, invoice.TotalExVat);
@@ -658,6 +658,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithShippingAndHandlingAmount_WhenDeriving_ThenInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -669,18 +672,16 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
+                .WithBillToCustomer(customer)
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
+            this.Session.Derive();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
-
             this.Session.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
@@ -696,6 +697,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithShippingAndHandlingPercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -707,18 +711,16 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
+                .WithBillToCustomer(customer)
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
+            this.Session.Derive();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
-
             this.Session.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
@@ -734,6 +736,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithFeeAmount_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
             var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -745,18 +750,16 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
+                .WithBillToCustomer(customer)
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
+            this.Session.Derive();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
-
             this.Session.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
@@ -772,6 +775,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithFeePercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
             var adjustment = new FeeBuilder(this.Session).WithPercentage(5).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -783,18 +789,16 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
+                .WithBillToCustomer(customer)
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
+            this.Session.Derive();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
-
             this.Session.Derive();
 
             Assert.Equal(45, invoice.TotalBasePrice);
@@ -970,6 +974,8 @@ namespace Allors.Domain
         public void GiveninvoiceItem_WhenWrittenOff_ThenInvoiceItemsAreWrittenOff()
         {
             var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).Build();
+
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithLocality("Mechelen")
@@ -987,11 +993,9 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
+            this.Session.Derive();
 
             invoice.WriteOff();
-
             this.Session.Derive();
 
             Assert.Equal(new SalesInvoiceStates(this.Session).WrittenOff, invoice.SalesInvoiceState);
@@ -1326,6 +1330,8 @@ namespace Allors.Domain
         public void GivenSalesInvoice_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithLocality("Mechelen")
@@ -1345,7 +1351,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+            this.Session.Derive();
 
             invoice.CancelInvoice();
 
