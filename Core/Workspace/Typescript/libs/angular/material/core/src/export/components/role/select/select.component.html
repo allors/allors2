@@ -5,4 +5,9 @@
       {{option[display]}}
     </mat-option>
   </mat-select>
+
+  <button type="button" mat-button *ngIf="canRestore" matSuffix mat-icon-button aria-label="Reset" (click)="onRestore($event)">
+    <mat-icon>undo</mat-icon>
+  </button>
+
 </mat-form-field>

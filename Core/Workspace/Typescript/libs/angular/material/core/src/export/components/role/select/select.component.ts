@@ -26,4 +26,10 @@ export class AllorsMaterialSelectComponent extends RoleField {
   public onModelChange(option: ISessionObject): void {
     this.selected.emit(option);
   }
+
+  onRestore(event: Event) {
+    event.stopPropagation();
+    this.restore()
+    this.selected.emit(this.model);
+  }
 }

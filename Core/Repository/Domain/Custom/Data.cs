@@ -167,7 +167,37 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string RadioGroup { get; set; }
+        
+        #region Allors
+        [Id("5FA4E339-5955-42E7-ABF2-0C3C17F38351")]
+        [AssociationId("677BD891-49C1-4667-B658-CEB4BAF8A69E")]
+        [RoleId("D8720349-D499-4911-BCB0-6B80103AB44E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person Select { get; set; }
 
+        #region Allors
+        [Id("62E43E2D-892B-4A1E-A326-AE508DD10A79")]
+        [AssociationId("57C03C0E-557F-40F5-A4CA-87DC02ACC55B")]
+        [RoleId("007A1684-B523-4A13-AE7C-D85041C0D55C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person SelectAssigned { get; set; }
+
+        #region Allors
+        [Id("D0976E4A-B93F-426C-94B3-BB175900523A")]
+        [AssociationId("377BF37C-D4A0-4823-84FF-4E5022548B18")]
+        [RoleId("6C969C25-B418-4F6F-AD49-144D66FE6BFA")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person SelectDerived { get; set; }
+        
         #region Allors
         [Id("C5061BAE-0B3B-474D-ABAA-DDAD638B8DA1")]
         [AssociationId("D4B26BEE-AF21-4DA4-8C18-4A0E835C2FBD")]

@@ -30,7 +30,7 @@ namespace Tests
             var jane = new Users(this.Session).GetUser("jane@example.com");
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.AutocompleteFilter.Select("jane", "jane@example.com");
+            this.page.Select.Select(jane);
 
             this.page.SAVE.Click();
 
@@ -43,7 +43,7 @@ namespace Tests
 
             var data = after.Except(before).First();
 
-            Assert.Equal(jane, data.AutocompleteFilter);
+            Assert.Equal(jane, data.Select);
         }
     }
 }

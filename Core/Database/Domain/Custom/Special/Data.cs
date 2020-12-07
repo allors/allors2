@@ -13,6 +13,8 @@ namespace Allors.Domain
 
             this.AutocompleteDerivedFilter = this.AutocompleteAssignedFilter ?? singleton.AutocompleteDefault;
             this.AutocompleteDerivedOptions = this.AutocompleteAssignedOptions ?? singleton.AutocompleteDefault;
+
+            this.SelectDerived = this.SelectAssigned ?? singleton.SelectDefault;
         }
     }
 }

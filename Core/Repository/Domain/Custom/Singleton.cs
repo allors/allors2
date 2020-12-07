@@ -18,5 +18,15 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public Person AutocompleteDefault { get; set; }
+
+        #region Allors
+        [Id("7BA0F99D-4E79-4D55-89BE-F94B3B14E98F")]
+        [AssociationId("2445B582-84E2-4CBB-A436-7155F98D48C7")]
+        [RoleId("8AA95920-FE7C-458E-8131-7433F1422BA5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person SelectDefault { get; set; }
     }
 }
