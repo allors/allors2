@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, PanelService, ContextService } from '@allors/angular/services/core';
-import { Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, OrganisationContactRelationship, ContactMechanism, VatRegime, VatRate, SupplierRelationship, PurchaseOrder } from '@allors/domain/generated';
+import { Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, OrganisationContactRelationship, ContactMechanism, VatRegime, VatRate, SupplierRelationship, PurchaseOrder, IrpfRegime } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
@@ -53,6 +53,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
   private subscription: Subscription;
 
   suppliersFilter: SearchFactory;
+  irpfRegimes: IrpfRegime[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -140,10 +141,17 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
                 DerivedBillToContactMechanism: {
                   PostalAddress_Country: x
                 },
+                AssignedVatRegime: {
+                  VatRate: x,
+                },
+                DerivedVatRegime: {
+                  VatRate: x,
+                }
               }
             }),
             pull.VatRate(),
             pull.VatRegime(),
+            pull.IrpfRegime(),
             pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
@@ -164,6 +172,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.facilities  = loaded.collections.Facilities as Facility[];
         this.currencies = loaded.collections.Currencies as Currency[];
 

@@ -46,20 +46,13 @@
           <a-mat-static class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.TotalIncVat"></a-mat-static>
         </div>
       </div>
-<!-- 
+      
       <div class="row">
-        <a-mat-static class="col-md" [object]="quote.VatRegime?.VatRate" [roleType]="m.VatRate.Rate"
-                      display="Rate" label="VAT % from quote"></a-mat-static>
-        <a-mat-select class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.AssignedVatRegime" [options]="vatRegimes"
-                      display="Name" label="Item VAT regime"></a-mat-select>
+        <a-mat-select class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.DerivedVatRegime" [assignedRoleType]="m.QuoteItem.AssignedVatRegime"
+          [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.DerivedIrpfRegime" [assignedRoleType]="m.QuoteItem.AssignedIrpfRegime"
+          [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
       </div>
-
-      <div class="row">
-        <a-mat-static class="col-md" [object]="quote.IrpfRegime?.IrpfRate" [roleType]="m.IrpfRate.Rate"
-                      display="Rate" label="IRPF % from quote"></a-mat-static>
-        <a-mat-select class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.AssignedIrpfRegime" [options]="irpfRegimes"
-                      display="Name" label="Item IRPF regime"></a-mat-select>
-      </div> -->
 
       <div class="row">
         <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" [disabled]="true" class="col-md"></a-mat-datepicker>

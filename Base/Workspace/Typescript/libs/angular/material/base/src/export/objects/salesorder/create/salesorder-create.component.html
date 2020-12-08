@@ -6,11 +6,12 @@
     <div class="container-fluid">
 
       <div class="row">
-        <!-- <div class="col-md">
+        <div class="col-md">
           <div class="row">
-            <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipFromAddress" [options]="shipFromAddresses" display="displayName"
-              class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!order.CanWriteShipFromAddress"
+            <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedShipFromAddress" 
+              [assignedRoleType]="m.SalesOrder.AssignedShipFromAddress" [derivedInitialRole]="shipFromAddressInitialRole"
+              [options]="shipFromAddresses" label="Ship from Address" display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!order.CanWriteAssignedShipFromAddress"
               type="button" (click)="addShipFromAddress = !addShipFromAddress">
               <mat-icon *ngIf="!addShipFromAddress">add</mat-icon>
               <mat-icon *ngIf="addShipFromAddress">close</mat-icon>
@@ -25,7 +26,7 @@
               </party-contactmechanism-postaladdress>
             </mat-card-content>
           </mat-card>
-        </div> -->
+        </div>
       </div>
 
       <div class="row">
@@ -51,11 +52,12 @@
       </div>
 
       <div class="row">
-        <!-- <div class="col-md">
+        <div class="col-md">
           <div class="row">
-            <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="shipToAddresses" display="displayName"
-              class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.CanWriteShipToCustomer"
+            <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedShipToAddress"
+              [assignedRoleType]="m.SalesOrder.AssignedShipToAddress" [derivedInitialRole]="shipToAddressInitialRole"
+              [options]="shipToAddresses" label="Ship to Address" display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.AssignedShipToAddress"
               type="button" (click)="addShipToAddress = !addShipToAddress">
               <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
               <mat-icon *ngIf="addShipToAddress">close</mat-icon>
@@ -70,7 +72,7 @@
               </party-contactmechanism-postaladdress>
             </mat-card-content>
           </mat-card>
-        </div> -->
+        </div>
 
         <div class="col-md">
           <div class="row">
@@ -117,11 +119,12 @@
       </div>
 
       <div class="row">
-        <!-- <div class="col-md">
+        <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms"
-              display="displayName" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!order.BillToCustomer || !order.CanWriteBillToContactMechanism"
+            <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedBillToContactMechanism"
+              [assignedRoleType]="m.SalesOrder.AssignedBillToContactMechanism" [derivedInitialRole]="billToContactMechanismInitialRole"
+              [options]="billToContactMechanisms" label="Bill to ContactMechanism" display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!order.BillToCustomer || !order.CanWriteAssignedBillToContactMechanism"
               type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
               <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addBillToContactMechanism">close</mat-icon>
@@ -136,7 +139,7 @@
               </party-contactmechanism>
             </mat-card-content>
           </mat-card>
-        </div> -->
+        </div>
 
         <div class="col-md">
           <div class="row">
@@ -183,11 +186,12 @@
       </div>
 
       <div class="row">
-        <!-- <div class="col-md">
+        <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
-              display="displayName" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteShipToEndCustomerAddress"
+            <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedShipToEndCustomerAddress"
+              [assignedRoleType]="m.SalesOrder.AssignedShipToEndCustomerAddress" [derivedInitialRole]="shipToEndCustomerAddressInitialRole"
+              [options]="shipToEndCustomerAddresses" label="Ship to EndCustomer Address" display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteAssignedShipToEndCustomerAddress"
               type="button" (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
               <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
               <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
@@ -202,7 +206,7 @@
               </party-contactmechanism-postaladdress>
             </mat-card-content>
           </mat-card>
-        </div> -->
+        </div>
 
         <div class="col-md">
           <div class="row">
@@ -249,11 +253,12 @@
       </div>
 
       <div class="row">
-        <!-- <div class="col-md">
+        <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism"
-              [options]="billToEndCustomerContactMechanisms" display="displayName" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!order.BillToEndCustomer || !order.CanWriteBillToEndCustomerContactMechanism"
+            <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedBillToEndCustomerContactMechanism"
+              [assignedRoleType]="m.SalesOrder.AssignedBillToEndCustomerContactMechanism" [derivedInitialRole]="billToEndCustomerContactMechanismInitialRole"
+              [options]="billToEndCustomerContactMechanisms" label="Bill to EndCustomer ContactMechanism" display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!order.BillToEndCustomer || !order.CanWriteAssignedBillToEndCustomerContactMechanism"
               type="button" (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
               <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addBillToEndCustomerContactMechanism">close</mat-icon>
@@ -268,7 +273,7 @@
               </party-contactmechanism>
             </mat-card-content>
           </mat-card>
-        </div> -->
+        </div>
 
         <div class="col-md">
           <div class="row">
@@ -291,18 +296,22 @@
           </mat-card>
         </div>
       </div>
-<!-- 
-      <div class="row">
-        <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.VatRegime"
-          [options]="vatRegimes" display="Name"></a-mat-select>
-        <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.IrpfRegime"
-          [options]="irpfRegimes" display="Name"></a-mat-select>
-      </div> -->
 
-      <!-- <div class="row">
+      <div class="row">
+        <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedVatRegime"
+          [assignedRoleType]="m.SalesOrder.AssignedVatRegime" [derivedInitialRole]="vatRegimeInitialRole"
+          [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedIrpfRegime"
+          [assignedRoleType]="m.SalesOrder.AssignedIrpfRegime" [derivedInitialRole]="irpfRegimeInitialRole"
+          [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
         <a-mat-input class="col-md" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-input>
-        <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.Currency" [options]="currencies" display="IsoCode"  class="col-md"></a-mat-select>
-      </div> -->
+        <a-mat-select class="col-md-6" [object]="order" [roleType]="m.SalesOrder.DerivedCurrency" 
+          [assignedRoleType]="m.SalesOrder.AssignedCurrency" [derivedInitialRole]="currencyInitialRole"
+          [options]="currencies" label="Currency" display="Name"></a-mat-select>
+      </div>
 
     </div>
   </mat-dialog-content>

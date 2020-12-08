@@ -11,7 +11,7 @@ namespace Allors.Repository
     #region Allors
     [Id("066bf242-2710-4a68-8ff6-ce4d7d88a04a")]
     #endregion
-    public partial interface Quote : Transitional, WorkItem, Printable, Auditable, Commentable, Deletable
+    public partial interface Quote : Transitional, WorkItem, Printable, Auditable, Commentable, Deletable, Localised
     {
         #region ObjectStates
         #region QuoteState
@@ -75,6 +75,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
         [Workspace]
         Currency DerivedCurrency { get; set; }
 
@@ -170,9 +171,9 @@ namespace Allors.Repository
         [AssociationId("0608C530-D264-46A8-B298-367CCC0FEF76")]
         [RoleId("F7A1DEFC-271D-43BD-B05F-2D9441C7EE3A")]
         #endregion
-        [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         VatRegime AssignedVatRegime { get; set; }
 
         #region Allors
@@ -180,9 +181,10 @@ namespace Allors.Repository
         [AssociationId("8a26230c-dae9-4260-9bc8-74ba902f32bf")]
         [RoleId("1217c356-d75f-4881-9598-59f295be0733")]
         #endregion
-        [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Derived]
+        [Workspace]
         VatRegime DerivedVatRegime { get; set; }
 
         #region Allors

@@ -20,6 +20,7 @@ import {
   ContactMechanism,
   PurchaseOrder,
   VatRate,
+  IrpfRegime,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
 import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
@@ -69,6 +70,13 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   private subscription: Subscription;
 
   suppliersFilter: SearchFactory;
+  irpfRegimes: IrpfRegime[];
+  currencyInitialRole: Currency;
+  shipToAddressInitialRole: PostalAddress;
+  billToContactMechanismInitialRole: ContactMechanism;
+  vatRegimeInitialRole: VatRegime;
+  takenViaContactMechanismInitialRole: ContactMechanism;
+  irpfRegimeInitialRole: IrpfRegime;
 
   constructor(
     @Self() public allors: ContextService,
@@ -96,6 +104,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
             this.fetcher.internalOrganisation,
             pull.VatRate(),
             pull.VatRegime(),
+            pull.IrpfRegime(),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.IsoCode)
@@ -118,6 +127,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.facilities  = loaded.collections.Facilities as Facility[];
 
@@ -158,14 +168,15 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
       );
   }
 
-  public supplierAdded(organisation: Organisation): void {
+  public supplierAdded(supplier: Organisation): void {
 
     const supplierRelationship = this.allors.context.create('SupplierRelationship') as SupplierRelationship;
-    supplierRelationship.Supplier = organisation;
+    supplierRelationship.Supplier = supplier;
     supplierRelationship.InternalOrganisation = this.internalOrganisation;
 
-    this.order.TakenViaSupplier = organisation;
-    this.takenVia = organisation;
+    this.order.TakenViaSupplier = supplier;
+    this.takenVia = supplier;
+    this.supplierSelected(supplier);
   }
 
   public takenViaContactPersonAdded(person: Person): void {
@@ -235,7 +246,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Party(
+      pull.Organisation(
         {
           object: supplier,
           fetch: {
@@ -249,10 +260,19 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
           }
         }
       ),
-      pull.Party({
+      pull.Organisation({
         object: supplier,
         fetch: {
           CurrentContacts: x,
+        }
+      }),
+      pull.Organisation({
+        object: supplier,
+        name: 'selectedSupplier',
+        include: {
+          VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
         }
       }),
     ];
@@ -264,6 +284,11 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.takenViaContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.takenViaContacts = loaded.collections.CurrentContacts as Person[];
+
+        const selectedSupplier = loaded.objects.selectedSupplier as Organisation;
+        this.vatRegimeInitialRole = selectedSupplier.VatRegime;
+        this.irpfRegimeInitialRole = selectedSupplier.IrpfRegime;
+        this.takenViaContactMechanismInitialRole = selectedSupplier.OrderAddress;
       });
   }
 
@@ -272,7 +297,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Party(
+      pull.Organisation(
         {
           object: organisation,
           fetch: {
@@ -286,10 +311,20 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
           }
         }
       ),
-      pull.Party({
+      pull.Organisation({
         object: organisation,
         fetch: {
           CurrentContacts: x,
+        }
+      }),
+      pull.Organisation({
+        object: organisation,
+        name: 'selectedOrganisation',
+        include: {
+          PreferredCurrency: x,
+          ShippingAddress: x,
+          BillingAddress: x,
+          GeneralCorrespondence: x,
         }
       }),
     ];
@@ -303,6 +338,11 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.CurrentContacts as Person[];
         this.shipToContacts = this.billToContacts;
+
+        const selectedOrganisation = loaded.objects.selectedOrganisation as Organisation;
+        this.currencyInitialRole = selectedOrganisation.PreferredCurrency;
+        this.shipToAddressInitialRole = selectedOrganisation.ShippingAddress;
+        this.billToContactMechanismInitialRole = selectedOrganisation.BillingAddress ?? selectedOrganisation.GeneralCorrespondence;
       });
   }
 }

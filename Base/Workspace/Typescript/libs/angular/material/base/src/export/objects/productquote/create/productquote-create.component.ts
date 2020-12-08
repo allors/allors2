@@ -53,6 +53,10 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
   private previousReceiver: Party;
 
   customersFilter: SearchFactory;
+  localeInitialRole: import("c:/allors2/Base/Workspace/Typescript/libs/domain/generated/src/Locale.g").Locale;
+  currencyInitialRole: Currency;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
 
   constructor(
     @Self() public allors: ContextService,
@@ -190,7 +194,17 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         fetch: {
           CurrentContacts: x,
         }
-      })
+      }),
+      pull.Party({
+        object: party,
+        name: 'selectedParty',
+        include: {
+          PreferredCurrency: x,
+          Locale: x,
+          VatRegime: x,
+          IrpfRegime: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -206,6 +220,11 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
-      });
+        
+        const selectedParty = loaded.objects.selectedParty as Person;
+        this.currencyInitialRole = selectedParty.PreferredCurrency ?? this.quote.Issuer.PreferredCurrency;
+        this.vatRegimeInitialRole = selectedParty.VatRegime;
+        this.irpfRegimeInitialRole = selectedParty.IrpfRegime;
+    });
   }
 }

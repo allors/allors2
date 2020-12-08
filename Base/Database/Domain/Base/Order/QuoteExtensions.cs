@@ -39,7 +39,15 @@ namespace Allors.Domain
                 ((QuoteDerivedRoles)@this).SortableQuoteNumber = @this.Session().GetSingleton().SortableNumber(@this.Issuer.QuoteNumberPrefix, @this.QuoteNumber, @this.IssueDate.Year.ToString());
             }
 
-            @this.DerivedCurrency ??= @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
+            if (@this.QuoteState.IsCreated)
+            {
+                var quoteDerivedRoles = (QuoteDerivedRoles)@this;
+
+                quoteDerivedRoles.DerivedLocale = @this.Locale ?? @this.Receiver?.Locale ?? @this.Issuer?.Locale;
+                quoteDerivedRoles.DerivedCurrency = @this.AssignedCurrency ?? @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
+                quoteDerivedRoles.DerivedVatRegime = @this.AssignedVatRegime ?? @this.Receiver?.VatRegime;
+                quoteDerivedRoles.DerivedIrpfRegime = @this.AssignedIrpfRegime ?? @this.Receiver?.IrpfRegime;
+            }
 
             foreach (QuoteItem quoteItem in @this.QuoteItems)
             {

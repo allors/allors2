@@ -182,15 +182,6 @@ namespace Allors.Domain
 
             if (this.IsValid)
             {
-                if (this.AssignedDeliveryDate.HasValue)
-                {
-                    this.DerivedDeliveryDate = this.AssignedDeliveryDate.Value;
-                }
-                else if (this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.HasValue)
-                {
-                    this.DerivedDeliveryDate = this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.Value;
-                }
-
                 this.UnitBasePrice = 0;
                 this.UnitDiscount = 0;
                 this.UnitSurcharge = 0;
@@ -205,12 +196,6 @@ namespace Allors.Domain
                     var order = this.PurchaseOrderWherePurchaseOrderItem;
                     this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
                 }
-
-                this.DerivedVatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedVatRegime;
-                this.VatRate = this.DerivedVatRegime?.VatRate;
-
-                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedIrpfRegime;
-                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
 
                 this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
                 this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;

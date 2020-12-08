@@ -37,6 +37,11 @@ export class FetcherService {
         ActiveSuppliers: x,
         FacilitiesWhereOwner: x,
         PreferredCurrency: x,
+        Locale: x,
+        OrderAddress: x,
+        BillingAddress: x,
+        ShippingAddress: x,
+        GeneralCorrespondence: x,
       }
     });
   }

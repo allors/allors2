@@ -15,6 +15,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public Locale Locale { get; set; }
+
         public Media[] ElectronicDocuments { get; set; }
 
         public string WorkItemDescription { get; set; }

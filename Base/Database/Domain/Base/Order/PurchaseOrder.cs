@@ -220,6 +220,16 @@ namespace Allors.Domain
                 this.DerivedTakenViaContactMechanism = this.AssignedTakenViaContactMechanism ?? this.TakenViaSupplier?.OrderAddress;
             }
 
+            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems.Where(v => v.PurchaseOrderItemState.IsCreated))
+            {
+                var purchaseOrderItemDerivedRoles = (PurchaseOrderItemDerivedRoles)orderItem;
+                purchaseOrderItemDerivedRoles.DerivedDeliveryDate = orderItem.AssignedDeliveryDate ?? this.DeliveryDate;
+                purchaseOrderItemDerivedRoles.DerivedVatRegime = orderItem.AssignedVatRegime ?? this.DerivedVatRegime;
+                purchaseOrderItemDerivedRoles.VatRate = orderItem.DerivedVatRegime?.VatRate;
+                purchaseOrderItemDerivedRoles.DerivedIrpfRegime = orderItem.AssignedIrpfRegime ?? this.DerivedIrpfRegime;
+                purchaseOrderItemDerivedRoles.IrpfRate = orderItem.DerivedIrpfRegime?.IrpfRate;
+            }
+    
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
 

@@ -78,6 +78,15 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
   private subscription: Subscription;
 
   customersFilter: SearchFactory;
+  currencyInitialRole: Currency;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
+  takenByContactMechanismInitialRole: ContactMechanism;
+  billToContactMechanismInitialRole: ContactMechanism;
+  billToEndCustomerContactMechanismInitialRole: ContactMechanism;
+  shipToEndCustomerAddressInitialRole: ContactMechanism;
+  shipFromAddressInitialRole: PostalAddress;
+  shipToAddressInitialRole: PostalAddress;
 
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
@@ -114,7 +123,7 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(([, internalOrganisationId]) => {
 
@@ -375,7 +384,17 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         object: party,
         include: {
           PreferredCurrency: x,
+          Locale: {
+            Country: {
+              Currency: x,
+            }
+          },
           VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
         }
       }),
     ];
@@ -398,6 +417,8 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.CurrentContacts as Person[];
+
+        this.setDerivedInitialRoles();
       });
   }
 
@@ -432,7 +453,17 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         object: party,
         include: {
           PreferredCurrency: x,
+          Locale: {
+            Country: {
+              Currency: x,
+            }
+          },
           VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
         }
       }),
     ];
@@ -455,6 +486,8 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.CurrentContacts as Person[];
+
+        this.setDerivedInitialRoles();
       });
   }
 
@@ -484,7 +517,24 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
             CurrentContacts: x
           }
         }
-      )
+      ),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          Locale: {
+            Country: {
+              Currency: x,
+            }
+          },
+          VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -505,6 +555,8 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+
+        this.setDerivedInitialRoles();
       });
   }
 
@@ -532,7 +584,24 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         fetch: {
           CurrentContacts: x,
         }
-      })
+      }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          Locale: {
+            Country: {
+              Currency: x,
+            }
+          },
+          VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -553,6 +622,21 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+
+        this.setDerivedInitialRoles();
       });
+  }
+
+  private setDerivedInitialRoles() {
+    this.currencyInitialRole = this.order.BillToCustomer?.PreferredCurrency ?? this.order.BillToCustomer?.Locale?.Country?.Currency ?? this.order.TakenBy?.PreferredCurrency;
+    this.vatRegimeInitialRole = this.order.BillToCustomer?.VatRegime;
+    this.irpfRegimeInitialRole = this.order.BillToCustomer?.IrpfRegime;
+    this.takenByContactMechanismInitialRole = this.order.TakenBy?.OrderAddress ?? this.order.TakenBy?.BillingAddress ?? this.order.TakenBy?.GeneralCorrespondence;
+    this.billToContactMechanismInitialRole = this.order.BillToCustomer?.BillingAddress ?? this.order.BillToCustomer?.ShippingAddress ?? this.order.BillToCustomer?.GeneralCorrespondence;
+    this.billToEndCustomerContactMechanismInitialRole = this.order.BillToEndCustomer?.BillingAddress ?? this.order.BillToEndCustomer?.ShippingAddress ?? this.order.BillToEndCustomer?.GeneralCorrespondence;
+    this.shipToEndCustomerAddressInitialRole = this.order.ShipToEndCustomer?.ShippingAddress ?? this.order.ShipToEndCustomer?.GeneralCorrespondence;
+    this.shipFromAddressInitialRole = this.order.TakenBy?.ShippingAddress;
+    this.shipToAddressInitialRole = this.order.ShipToCustomer?.ShippingAddress;
+
   }
 }
