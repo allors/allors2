@@ -43,17 +43,17 @@
 
         <div class="row">
           <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteFilter" [filter]="peopleFilter.create(allors)" display="UserName" hint="With filter"></a-mat-autocomplete>
-          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteOptions" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteDerivedFilter" [assignedRoleType]="m.Data.AutocompleteAssignedFilter" [derivedInitialRole]="jane" [filter]="peopleFilter.create(allors)" display="UserName" hint="With filter"></a-mat-autocomplete>
         </div>
 
         <div class="row">
-          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteDerivedFilter" [assignedRoleType]="m.Data.AutocompleteAssignedFilter" [filter]="peopleFilter.create(allors)" display="UserName" hint="With filter"></a-mat-autocomplete>
-          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteDerivedOptions" [assignedRoleType]="m.Data.AutocompleteAssignedOptions" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteOptions" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteDerivedOptions" [assignedRoleType]="m.Data.AutocompleteAssignedOptions" [derivedInitialRole]="jane" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
         </div>
 
         <div class="row">
           <a-mat-select class="col-md" [object]="data" [roleType]="m.Data.Select" [options]="people" display="UserName" hint="With options"></a-mat-select>
-          <a-mat-select class="col-md" [object]="data" [roleType]="m.Data.SelectDerived" [assignedRoleType]="m.Data.SelectAssigned" [options]="people" display="UserName" hint="With options"></a-mat-select>
+          <a-mat-select class="col-md" [object]="data" [roleType]="m.Data.SelectDerived" [assignedRoleType]="m.Data.SelectAssigned" [derivedInitialRole]="jane" [options]="people" display="UserName" hint="With options"></a-mat-select>
         </div>
 
         <div class="row">

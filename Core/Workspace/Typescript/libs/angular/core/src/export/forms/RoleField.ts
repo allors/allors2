@@ -19,6 +19,9 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   @Input()
   assignedRoleType: RoleType;
 
+  @Input()
+  derivedInitialRole: ISessionObject;
+
   // tslint:disable-next-line:no-input-rename
   @Input('name')
   public assignedName: string;
@@ -63,8 +66,14 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
 
   get model(): any {
     if (this.ExistObject) {
-      if (this.assignedRoleType && this.object.hasChangedRole(this.assignedRoleType)) {
-        return this.object.get(this.assignedRoleType);
+      if (this.assignedRoleType) {
+        if (this.object.hasChangedRole(this.assignedRoleType)) {
+          return this.object.get(this.assignedRoleType);
+        }
+
+        if (this.object.isNew && this.derivedInitialRole) {
+          return this.derivedInitialRole;
+        }
       }
 
       return this.object.get(this.roleType);
@@ -89,7 +98,15 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
         value = (value as string)?.replace(',', '.');
       }
 
-      this.object.set(this.assignedRoleType ?? this.roleType, value);
+      if (this.assignedRoleType) {
+        if (this.object.isNew && this.derivedInitialRole && this.derivedInitialRole === value) {
+          this.object.set(this.assignedRoleType, null);
+        } else {
+          this.object.set(this.assignedRoleType, value);
+        }
+      } else {
+        this.object.set(this.roleType, value);
+      }
     }
   }
 

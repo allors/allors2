@@ -124,7 +124,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
         this.people = loaded.collections.People as Person[];
         const datas = loaded.collections.Datas as Data[];
 
-        this.locale = (loaded.collections.Locales as Locale[]).find(v=>v.Name === 'nl-BE');
+        this.locale = (loaded.collections.Locales as Locale[]).find((v) => v.Name === 'nl-BE');
         this.jane = this.people.find((v) => v.FirstName === 'Jane');
 
         if (datas && datas.length > 0) {
