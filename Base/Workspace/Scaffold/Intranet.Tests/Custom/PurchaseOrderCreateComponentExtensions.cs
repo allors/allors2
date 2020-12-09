@@ -9,14 +9,14 @@ namespace libs.angular.material.@base.src.export.objects.purchaseorder.create
         public static PurchaseOrderCreateComponent BuildForDefaults(this PurchaseOrderCreateComponent @this, PurchaseOrder purchaseOrder)
         {
             @this.TakenViaSupplier.Select(purchaseOrder.TakenViaSupplier.DisplayName());
-            @this.TakenViaContactMechanism.Select(purchaseOrder.TakenViaContactMechanism);
+            @this.DerivedTakenViaContactMechanism.Select(purchaseOrder.DerivedTakenViaContactMechanism);
             @this.TakenViaContactPerson.Select(purchaseOrder.TakenViaContactPerson);
             @this.BillToContactPerson.Select(purchaseOrder.BillToContactPerson);
-            @this.BillToContactMechanism.Select(purchaseOrder.BillToContactMechanism);
+            @this.DerivedBillToContactMechanism.Select(purchaseOrder.DerivedBillToContactMechanism);
 
             @this.Driver.WaitForAngular();
 
-            @this.ShipToAddress.Select(purchaseOrder.ShipToAddress);
+            @this.DerivedShipToAddress.Select(purchaseOrder.DerivedShipToAddress);
             @this.ShipToContactPerson.Select(purchaseOrder.ShipToContactPerson);
             @this.CustomerReference.Set(purchaseOrder.CustomerReference);
             @this.StoredInFacility.Select(purchaseOrder.StoredInFacility);

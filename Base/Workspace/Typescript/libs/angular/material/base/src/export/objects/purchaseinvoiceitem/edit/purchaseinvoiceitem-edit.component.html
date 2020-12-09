@@ -51,20 +51,15 @@
         <a-mat-textarea class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Description"
           class="col-md-12"></a-mat-textarea>
       </div>
-<!-- 
+        
       <div class="row">
-        <a-mat-static class="col-md" [object]="invoice.VatRegime?.VatRate" [roleType]="m.VatRate.Rate" display="Rate"
-          label="VAT % from invoice"></a-mat-static>
-        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.AssignedVatRegime"
-          [options]="vatRegimes" display="Name" label="Item VAT regime"></a-mat-select>
+        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.DerivedVatRegime"
+          [assignedRoleType]="m.PurchaseInvoiceItem.AssignedVatRegime"
+          [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.DerivedIrpfRegime"
+          [assignedRoleType]="m.PurchaseInvoiceItem.AssignedIrpfRegime"
+          [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
       </div>
-
-      <div class="row">
-        <a-mat-static class="col-md" [object]="invoice.IrpfRegime?.IrpfRate" [roleType]="m.IrpfRate.Rate" display="Rate"
-          label="IRPF % from invoice"></a-mat-static>
-        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.AssignedIrpfRegime"
-          [options]="irpfRegimes" display="Name" label="Item IRPF regime"></a-mat-select>
-      </div> -->
 
       <div class="row">
         <a-mat-input class="col-md" *ngIf="invoiceItem.InvoiceItemType === partItemType" [object]="invoiceItem"

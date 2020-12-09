@@ -44,12 +44,12 @@ namespace Tests.SalesOrderTests
             this.Session.Derive();
 
             var expectedBillToCustomer = expected.BillToCustomer?.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer?.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress;
+            var expectedShipToAddressDisplayName = expected.DerivedShipToAddress;
             var expectedShipToContactPerson = expected.ShipToContactPerson;
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.DerivedShipFromAddress?.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
             var expectedDescription = expected.Description;
             var expectedInternalComment = expected.InternalComment;
@@ -65,14 +65,14 @@ namespace Tests.SalesOrderTests
 
             this.Driver.WaitForAngular();
 
-            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
+            salesOrderOverviewDetail.DerivedBillToContactMechanism.Select(expected.DerivedBillToContactMechanism);
             salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
-            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
+            salesOrderOverviewDetail.DerivedShipFromAddress.Select(expected.DerivedShipFromAddress);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
 
             this.Driver.WaitForAngular();
 
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
+            salesOrderOverviewDetail.DerivedShipToAddress.Select(expected.DerivedShipToAddress);
             salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
@@ -90,10 +90,10 @@ namespace Tests.SalesOrderTests
             Assert.Equal(after.Length, before.Length);
 
             Assert.Equal(expectedBillToCustomer, salesOrder.BillToCustomer?.DisplayName());
-            Assert.Equal(expectedBillToContactMechanism, salesOrder.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, salesOrder.DerivedBillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, salesOrder.BillToContactPerson);
-            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress);
-            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.DerivedShipToAddress);
+            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.DerivedShipFromAddress?.DisplayName());
             Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
             Assert.Equal(expectedCustomerReference, salesOrder.CustomerReference);
@@ -114,12 +114,12 @@ namespace Tests.SalesOrderTests
             this.Session.Derive();
 
             var expectedBillToCustomer = expected.BillToCustomer?.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer?.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
+            var expectedShipToAddressDisplayName = expected.DerivedShipToAddress.DisplayName();
             var expectedShipToContactPerson = expected.ShipToContactPerson;
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.DerivedShipFromAddress?.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
             var expectedDescription = expected.Description;
             var expectedInternalComment = expected.InternalComment;
@@ -135,14 +135,14 @@ namespace Tests.SalesOrderTests
 
             this.Driver.WaitForAngular();
 
-            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
+            salesOrderOverviewDetail.DerivedBillToContactMechanism.Select(expected.DerivedBillToContactMechanism);
             salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
-            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
+            salesOrderOverviewDetail.DerivedShipFromAddress.Select(expected.DerivedShipFromAddress);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
 
             this.Driver.WaitForAngular();
 
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
+            salesOrderOverviewDetail.DerivedShipToAddress.Select(expected.DerivedShipToAddress);
             salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
@@ -160,10 +160,10 @@ namespace Tests.SalesOrderTests
             Assert.Equal(after.Length, before.Length);
 
             Assert.Equal(expectedBillToCustomer, salesOrder.BillToCustomer?.DisplayName());
-            Assert.Equal(expectedBillToContactMechanism, salesOrder.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, salesOrder.DerivedBillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, salesOrder.BillToContactPerson);
-            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress.DisplayName());
-            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.DerivedShipToAddress.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.DerivedShipFromAddress?.DisplayName());
             Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
             Assert.Equal(expectedCustomerReference, salesOrder.CustomerReference);
@@ -184,10 +184,10 @@ namespace Tests.SalesOrderTests
             this.Session.Derive();
 
             var expectedBillToCustomer = expected.BillToCustomer?.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedShipToCustomer = expected.ShipToCustomer?.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
+            var expectedShipToAddressDisplayName = expected.DerivedShipToAddress.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.DerivedShipFromAddress?.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
             var expectedDescription = expected.Description;
             var expectedInternalComment = expected.InternalComment;
@@ -203,13 +203,13 @@ namespace Tests.SalesOrderTests
 
             this.Driver.WaitForAngular();
 
-            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
+            salesOrderOverviewDetail.DerivedBillToContactMechanism.Select(expected.DerivedBillToContactMechanism);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
 
             this.Driver.WaitForAngular();
 
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
-            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
+            salesOrderOverviewDetail.DerivedShipToAddress.Select(expected.DerivedShipToAddress);
+            salesOrderOverviewDetail.DerivedShipFromAddress.Select(expected.DerivedShipFromAddress);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
             salesOrderOverviewDetail.InternalComment.Set(expected.InternalComment);
@@ -226,10 +226,10 @@ namespace Tests.SalesOrderTests
             Assert.Equal(after.Length, before.Length);
 
             Assert.Equal(expectedBillToCustomer, salesOrder.BillToCustomer?.DisplayName());
-            Assert.Equal(expectedBillToContactMechanism, salesOrder.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, salesOrder.DerivedBillToContactMechanism);
             Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress.DisplayName());
-            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.DerivedShipToAddress.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.DerivedShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, salesOrder.CustomerReference);
             Assert.Equal(expectedDescription, salesOrder.Description);
             Assert.Equal(expectedInternalComment, salesOrder.InternalComment);

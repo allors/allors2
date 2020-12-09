@@ -51,20 +51,15 @@
           <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
         </div>
       </div>
-<!-- 
-      <div class="row">
-        <a-mat-static class="col-md" [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate"
-                      display="Rate" label="VAT % from order"></a-mat-static>
-        <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes"
-                      display="Name" label="Item VAT regime"></a-mat-select>
-      </div>
 
       <div class="row">
-        <a-mat-static class="col-md" [object]="order.IrpfRegime?.IrpfRate" [roleType]="m.IrpfRate.Rate"
-                      display="Rate" label="IRPF % from order"></a-mat-static>
-        <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedIrpfRegime" [options]="irpfRegimes"
-                      display="Name" label="Item IRPF regime"></a-mat-select>
-      </div> -->
+        <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.DerivedVatRegime"
+          [assignedRoleType]="m.SalesOrderItem.AssignedVatRegime"
+          [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.DerivedIrpfRegime"
+          [assignedRoleType]="m.SalesOrderItem.AssignedIrpfRegime"
+          [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
+      </div>
 
       <div class="row">
         <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.NextSerialisedItemAvailability" [options]="serialisedItemAvailabilities" display="Name" label="Next Item State"></a-mat-select>

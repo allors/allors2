@@ -41,26 +41,26 @@ namespace Tests.SalesOrderTests
 
             var expected = this.internalOrganisation.CreateInternalSalesOrder(this.Session.Faker());
 
-            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistDerivedShipToAddress);
             Assert.True(expected.ExistComment);
             Assert.True(expected.ExistBillToCustomer);
-            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistDerivedBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
             Assert.True(expected.ExistShipToCustomer);
-            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistDerivedShipToAddress);
             Assert.True(expected.ExistShipToContactPerson);
-            Assert.True(expected.ExistShipFromAddress);
+            Assert.True(expected.ExistDerivedShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
 
             this.Session.Derive();
 
             var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
+            var expectedShipToAddressDisplayName = expected.DerivedShipToAddress.DisplayName();
             var expectedShipToContactPerson = expected.ShipToContactPerson;
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.DerivedShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
 
             var salesOrderCreate = this.salesOrderListPage
@@ -84,12 +84,12 @@ namespace Tests.SalesOrderTests
 
             this.Driver.WaitForAngular();
 
-            Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, actual.DerivedBillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, actual.DerivedShipToAddress?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
-            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, actual.DerivedShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
         }
 
@@ -104,23 +104,23 @@ namespace Tests.SalesOrderTests
             var expected = this.internalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
 
             Assert.True(expected.ExistBillToCustomer);
-            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistDerivedBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
             Assert.True(expected.ExistShipToCustomer);
-            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistDerivedShipToAddress);
             Assert.True(expected.ExistShipToContactPerson);
-            Assert.True(expected.ExistShipFromAddress);
+            Assert.True(expected.ExistDerivedShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
 
             this.Session.Derive();
 
             var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
+            var expectedShipToAddressDisplayName = expected.DerivedShipToAddress.DisplayName();
             var expectedShipToContactPerson = expected.ShipToContactPerson;
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.DerivedShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
 
             var salesOrderCreate = this.salesOrderListPage
@@ -143,12 +143,12 @@ namespace Tests.SalesOrderTests
 
             this.Driver.WaitForAngular();
 
-            Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, actual.DerivedBillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, actual.DerivedShipToAddress?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
-            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, actual.DerivedShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
         }
 
@@ -163,19 +163,19 @@ namespace Tests.SalesOrderTests
             var expected = this.internalOrganisation.CreateB2CSalesOrder(this.Session.Faker());
 
             Assert.True(expected.ExistBillToCustomer);
-            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistDerivedBillToContactMechanism);
             Assert.True(expected.ExistShipToCustomer);
-            Assert.True(expected.ExistShipToAddress);
-            Assert.True(expected.ExistShipFromAddress);
+            Assert.True(expected.ExistDerivedShipToAddress);
+            Assert.True(expected.ExistDerivedShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
 
             this.Session.Derive();
 
             var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
+            var expectedShipToAddressDisplayName = expected.DerivedShipToAddress.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.DerivedShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
 
             var salesOrderCreate = this.salesOrderListPage
@@ -198,10 +198,10 @@ namespace Tests.SalesOrderTests
 
             this.Driver.WaitForAngular();
 
-            Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, actual.DerivedBillToContactMechanism);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
-            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, actual.DerivedShipToAddress?.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, actual.DerivedShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
         }
     }

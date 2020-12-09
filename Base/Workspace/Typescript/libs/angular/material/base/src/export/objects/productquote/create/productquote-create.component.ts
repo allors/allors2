@@ -211,11 +211,12 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.quote.Receiver !== this.previousReceiver) {
+        if (this.previousReceiver && this.quote.Receiver !== this.previousReceiver) {
           this.quote.ContactPerson = null;
           this.quote.FullfillContactMechanism = null;
-          this.previousReceiver = this.quote.Receiver;
         }
+
+        this.previousReceiver = this.quote.Receiver;
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);

@@ -52,12 +52,11 @@
             </div>
 
             <div class="row">
-<!--     
               <div class="col-md">
                 <div class="row">
-                  <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFromContactMechanism"
-                    [options]="billedFromContactMechanisms" display="displayName" class="col-md"></a-mat-select>
-                  <button mat-mini-fab color="accent" [disabled]="!invoice.BilledFrom || !invoice.CanWriteBilledFromContactMechanism"
+                  <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedBilledFromContactMechanism" [assignedRoleType]="m.PurchaseInvoice.AssignedBilledFromContactMechanism"
+                    [options]="billedFromContactMechanisms" label="Billed from ContactMechanism" display="displayName"></a-mat-select>
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.BilledFrom || !invoice.CanWriteAssignedBilledFromContactMechanism"
                     type="button" (click)="addBilledFromContactMechanism = !addBilledFromContactMechanism">
                     <mat-icon *ngIf="!addBilledFromContactMechanism">add</mat-icon>
                     <mat-icon *ngIf="addBilledFromContactMechanism">close</mat-icon>
@@ -72,7 +71,7 @@
                     </party-contactmechanism>
                   </mat-card-content>
                 </mat-card>
-              </div> -->
+              </div>
     
               <div class="col-md">
                 <div class="row">
@@ -124,12 +123,11 @@
             </div>
 
             <div class="row">
-<!--     
               <div class="col-md">
                 <div class="row">
-                  <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToCustomerAddress" [options]="shipToCustomerAddresses"
-                    display="displayName" class="col-md"></a-mat-select>
-                  <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer || !invoice.CanWriteShipToCustomerAddress"
+                  <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedShipToCustomerAddress" [options]="shipToCustomerAddresses" [assignedRoleType]="m.PurchaseInvoice.AssignedShipToCustomerAddress"
+                    label="Ship to Customer Address" display="displayName"></a-mat-select>
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer || !invoice.CanWriteAssignedShipToCustomerAddress"
                     type="button" (click)="addShipToCustomerAddress = !addShipToCustomerAddress">
                     <mat-icon *ngIf="!addShipToCustomerAddress">add</mat-icon>
                     <mat-icon *ngIf="addShipToCustomerAddress">close</mat-icon>
@@ -145,7 +143,7 @@
                     </party-contactmechanism-postaladdress>
                   </mat-card-content>
                 </mat-card>
-              </div> -->
+              </div>
     
               <div class="col-md">
                 <div class="row">
@@ -192,12 +190,11 @@
             </div>
 
             <div class="row">
-<!--     
               <div class="col-md">
                 <div class="row">
-                  <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToEndCustomerContactMechanism"
+                  <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedBillToEndCustomerContactMechanism" [assignedRoleType]="m.PurchaseInvoice.AssignedBillToEndCustomerContactMechanism"
                     [options]="billToEndCustomerContactMechanisms" display="displayName" label="Billed to Contact Mechanism"></a-mat-select>
-                  <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteBillToEndCustomerContactMechanism"
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteAssignedBillToEndCustomerContactMechanism"
                     type="button" (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
                     <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
                     <mat-icon *ngIf="addBillToEndCustomerContactMechanism">close</mat-icon>
@@ -213,7 +210,7 @@
                     </party-contactmechanism>
                   </mat-card-content>
                 </mat-card>
-              </div> -->
+              </div>
     
               <div class="col-md">
                 <div class="row">
@@ -260,12 +257,12 @@
             </div>
 
             <div class="row">
-<!--     
+   
               <div class="col-md">
                 <div class="row">
-                  <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress"
-                    [options]="shipToEndCustomerAddresses" display="displayName" class="col-md"></a-mat-select>
-                  <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteShipToEndCustomerAddress"
+                  <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedShipToEndCustomerAddress" [assignedRoleType]="m.PurchaseInvoice.AssignedShipToEndCustomerAddress"
+                    [options]="shipToEndCustomerAddresses" label="Ship to EndCustomer Address" display="displayName"></a-mat-select>
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteAssignedShipToEndCustomerAddress"
                     type="button" (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
                     <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
                     <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
@@ -280,7 +277,7 @@
                     </party-contactmechanism-postaladdress>
                   </mat-card-content>
                 </mat-card>
-              </div> -->
+              </div>
     
               <div class="col-md">
                 <div class="row">
@@ -303,14 +300,16 @@
                 </mat-card>
               </div>
             </div>
-<!--     
+        
             <div class="row">
-              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.VatRegime"
-                [options]="vatRegimes" display="Name"></a-mat-select>
-              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.IrpfRegime"
-                [options]="irpfRegimes" display="Name"></a-mat-select>
-            </div> -->
-    
+              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedVatRegime"
+                [assignedRoleType]="m.PurchaseInvoice.AssignedVatRegime"
+                [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedIrpfRegime"
+                [assignedRoleType]="m.PurchaseInvoice.AssignedIrpfRegime"
+                [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
+            </div>
+            
             <div class="row">
               <a-mat-datepicker class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceDate"></a-mat-datepicker>
               <a-mat-datepicker class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DueDate"></a-mat-datepicker>
@@ -320,10 +319,12 @@
               <a-mat-input class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-input>
               <a-mat-input class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.ActualInvoiceAmount"></a-mat-input>
             </div>
-<!--     
+    
             <div class="row">
-              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.PurchaseInvoice.Currency" [options]="currencies" display="IsoCode"  class="col-md"></a-mat-select>
-            </div> -->
+              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedCurrency"
+              [assignedRoleType]="m.PurchaseInvoice.AssignedCurrency"
+              [options]="currencies" label="Currency" display="IsoCode"></a-mat-select>
+            </div>
         
             <div class="row">
               <a-mat-textarea class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-textarea>

@@ -36,20 +36,15 @@
           </a-mat-static>
         </div>
       </div>
-<!-- 
+      
       <div class="row">
-        <a-mat-static class="col-md" [object]="invoice.VatRegime?.VatRate" [roleType]="m.VatRate.Rate" display="Rate"
-          label="VAT % from invoice"></a-mat-static>
-        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedVatRegime"
-          [options]="vatRegimes" display="Name" label="Item VAT regime"></a-mat-select>
+        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.DerivedVatRegime"
+          [assignedRoleType]="m.SalesInvoiceItem.AssignedVatRegime"
+          [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+          <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.DerivedIrpfRegime"
+          [assignedRoleType]="m.SalesInvoiceItem.AssignedIrpfRegime"
+          [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
       </div>
-
-      <div class="row">
-        <a-mat-static class="col-md" [object]="invoice.IrpfRegime?.IrpfRate" [roleType]="m.IrpfRate.Rate" display="Rate"
-          label="IRPF % from invoice"></a-mat-static>
-        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedIrpfRegime"
-          [options]="irpfRegimes" display="Name" label="Item IRPF regime"></a-mat-select>
-      </div> -->
 
       <div class="row">
         <a-mat-select class="col-md" [object]="invoiceItem"

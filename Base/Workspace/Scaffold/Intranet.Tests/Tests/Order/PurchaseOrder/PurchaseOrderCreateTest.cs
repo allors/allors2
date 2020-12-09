@@ -42,11 +42,11 @@ namespace Tests.PurchaseOrderTests
             var expected = new PurchaseOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             Assert.True(expected.ExistTakenViaSupplier);
-            Assert.True(expected.ExistTakenViaContactMechanism);
+            Assert.True(expected.ExistDerivedTakenViaContactMechanism);
             Assert.True(expected.ExistTakenViaContactPerson);
-            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistDerivedBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
-            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistDerivedShipToAddress);
             Assert.True(expected.ExistShipToContactPerson);
             Assert.True(expected.ExistStoredInFacility);
             Assert.True(expected.ExistCustomerReference);
@@ -56,11 +56,11 @@ namespace Tests.PurchaseOrderTests
             this.Session.Derive();
 
             var expectedTakenViaSupplier = expected.TakenViaSupplier;
-            var expectedTakenViaContactMechanism = expected.TakenViaContactMechanism;
+            var expectedTakenViaContactMechanism = expected.DerivedTakenViaContactMechanism;
             var expectedTakenViaContactPerson = expected.TakenViaContactPerson;
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
-            var expectedShipToAddress = expected.ShipToAddress;
+            var expectedShipToAddress = expected.DerivedShipToAddress;
             var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedStoredInFacility = expected.StoredInFacility;
             var expectedCustomerReference = expected.CustomerReference;
@@ -70,7 +70,6 @@ namespace Tests.PurchaseOrderTests
             var purchaseOrderCreate = this.purchaseOrderListPage
                 .CreatePurchaseOrder()
                 .BuildForDefaults(expected);
-
 
             this.Session.Rollback();
             purchaseOrderCreate.SAVE.Click();
@@ -87,11 +86,11 @@ namespace Tests.PurchaseOrderTests
             this.Driver.WaitForAngular();
 
             Assert.Equal(expectedTakenViaSupplier, actual.TakenViaSupplier);
-            Assert.Equal(expectedTakenViaContactMechanism, actual.TakenViaContactMechanism);
+            Assert.Equal(expectedTakenViaContactMechanism, actual.DerivedTakenViaContactMechanism);
             Assert.Equal(expectedTakenViaContactPerson, actual.TakenViaContactPerson);
-            Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, actual.DerivedBillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
-            Assert.Equal(expectedShipToAddress, actual.ShipToAddress);
+            Assert.Equal(expectedShipToAddress, actual.DerivedShipToAddress);
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
             Assert.Equal(expectedStoredInFacility, actual.StoredInFacility);
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);

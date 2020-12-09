@@ -80,6 +80,13 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
   customersFilter: SearchFactory;
   employeeFilter: SearchFactory;
   suppliersFilter: SearchFactory;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
+  billedFromContactMechanismInitialRole: ContactMechanism;
+  shipToCustomerAddressInitialRole: ContactMechanism;
+  billToEndCustomerContactMechanismInitialRole: ContactMechanism;
+  shipToEndCustomerAddressInitialRole: ContactMechanism;
+  currencyInitialRole: Currency;
 
   get shipToCustomerIsPerson(): boolean {
     return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;
@@ -112,7 +119,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(() => {
 
@@ -171,6 +178,8 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         this.previousShipToCustomer = this.invoice.ShipToCustomer;
         this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
+
+        this.currencyInitialRole = this.internalOrganisation.PreferredCurrency;
       });
   }
 
@@ -204,6 +213,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
     supplierRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.invoice.BilledFrom = organisation;
+    this.billedFromSelected(organisation);
   }
 
   public shipToCustomerAdded(party: Party): void {
@@ -350,6 +360,15 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           CurrentContacts: x,
         }
       }),
+      pull.Organisation({
+        object: party,
+        name: 'selectedSupplier',
+        include: {
+          VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -365,6 +384,11 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billedFromContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billedFromContacts = loaded.collections.CurrentContacts as Person[];
+
+        const selectedSupplier = loaded.objects.selectedSupplier as Organisation;
+        this.vatRegimeInitialRole = selectedSupplier.VatRegime;
+        this.irpfRegimeInitialRole = selectedSupplier.IrpfRegime;
+        this.billedFromContactMechanismInitialRole = selectedSupplier.OrderAddress;
       });
   }
 
@@ -395,9 +419,12 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
       }),
       pull.Party({
         object: party,
+        name: 'selectedParty',
         include: {
           PreferredCurrency: x,
           VatRegime: x,
+          BillingAddress: x,
+          GeneralCorrespondence: x,
         }
       }),
     ];
@@ -415,6 +442,9 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToCustomerAddresses = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToCustomerContacts = loaded.collections.CurrentContacts as Person[];
+
+        const selectedparty = loaded.objects.selectedParty as Party;
+        this.shipToCustomerAddressInitialRole = selectedparty.BillingAddress ?? selectedparty.GeneralCorrespondence;
       });
   }
 
@@ -429,8 +459,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                                  PostalAddress_Country: x
-
+                  PostalAddress_Country: x
               }
             }
           }
@@ -441,7 +470,17 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         fetch: {
           CurrentContacts: x,
         }
-      })
+      }),
+      pull.Party({
+        object: party,
+        name: 'selectedParty',
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+          BillingAddress: x,
+          GeneralCorrespondence: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -462,6 +501,9 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+        
+        const selectedparty = loaded.objects.selectedParty as Party;
+        this.billToEndCustomerContactMechanismInitialRole = selectedparty.BillingAddress ?? selectedparty.GeneralCorrespondence;
       });
   }
 
@@ -476,8 +518,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                                  PostalAddress_Country: x
-
+                PostalAddress_Country: x
               }
             }
           }
@@ -488,7 +529,17 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         fetch: {
           CurrentContacts: x,
         }
-      })
+      }),
+      pull.Party({
+        object: party,
+        name: 'selectedParty',
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+          BillingAddress: x,
+          GeneralCorrespondence: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -509,6 +560,9 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+        
+        const selectedparty = loaded.objects.selectedParty as Party;
+        this.shipToEndCustomerAddressInitialRole = selectedparty.BillingAddress ?? selectedparty.GeneralCorrespondence;
       });
   }
 }

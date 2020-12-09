@@ -73,6 +73,13 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   salesInvoiceTypes: SalesInvoiceType[];
 
   customersFilter: SearchFactory;
+  currencyInitialRole: Currency;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
+  billToContactMechanismInitialRole: ContactMechanism;
+  billToEndCustomerContactMechanismInitialRole: ContactMechanism;
+  shipToEndCustomerAddressInitialRole: ContactMechanism;
+  shipToAddressInitialRole: PostalAddress;
 
   get billToCustomerIsPerson(): boolean {
     return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === this.m.Person.name;
@@ -333,16 +340,21 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         include: {
           PreferredCurrency: x,
           VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
         },
       }),
     ];
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
-      if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
-        this.invoice.AssignedShipToAddress = null;
+      if (this.previousShipToCustomer && this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
         this.invoice.ShipToContactPerson = null;
-        this.previousShipToCustomer = this.invoice.ShipToCustomer;
       }
+
+      this.previousShipToCustomer = this.invoice.ShipToCustomer;
 
       if (this.invoice.ShipToCustomer !== null && this.invoice.BillToCustomer === null) {
         this.invoice.BillToCustomer = this.invoice.ShipToCustomer;
@@ -354,6 +366,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         .filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress')
         .map((v: PartyContactMechanism) => v.ContactMechanism);
       this.shipToContacts = loaded.collections.CurrentContacts as Person[];
+      
+      this.setDerivedInitialRoles();
     });
   }
 
@@ -384,16 +398,21 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         include: {
           PreferredCurrency: x,
           VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
         },
       }),
     ];
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
-      if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
-        this.invoice.AssignedBillToContactMechanism = null;
+      if (this.previousBillToCustomer && this.invoice.BillToCustomer !== this.previousBillToCustomer) {
         this.invoice.BillToContactPerson = null;
-        this.previousBillToCustomer = this.invoice.BillToCustomer;
       }
+
+      this.previousBillToCustomer = this.invoice.BillToCustomer;
 
       if (this.invoice.BillToCustomer !== null && this.invoice.ShipToCustomer === null) {
         this.invoice.ShipToCustomer = this.invoice.BillToCustomer;
@@ -403,6 +422,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
       const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
       this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
       this.billToContacts = loaded.collections.CurrentContacts as Person[];
+      
+      this.setDerivedInitialRoles();
     });
   }
 
@@ -428,14 +449,25 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
           CurrentContacts: x,
         },
       }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
+        },
+      }),
     ];
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
-      if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
-        this.invoice.AssignedBillToEndCustomerContactMechanism = null;
+      if (this.previousBillToEndCustomer && this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
         this.invoice.BillToEndCustomerContactPerson = null;
-        this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
       }
+      this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
 
       if (this.invoice.BillToEndCustomer !== null && this.invoice.ShipToEndCustomer === null) {
         this.invoice.ShipToEndCustomer = this.invoice.BillToEndCustomer;
@@ -445,6 +477,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
       const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
       this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
       this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+      
+      this.setDerivedInitialRoles();
     });
   }
 
@@ -470,14 +504,26 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
           CurrentContacts: x,
         },
       }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+          IrpfRegime: x,
+          OrderAddress: x,
+          BillingAddress: x,
+          ShippingAddress: x,
+          GeneralCorrespondence: x,
+        },
+      }),
     ];
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
-      if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-        this.invoice.AssignedShipToEndCustomerAddress = null;
+      if (this.previousShipToEndCustomer && this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
         this.invoice.ShipToEndCustomerContactPerson = null;
-        this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
       }
+
+      this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
 
       if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToEndCustomer === null) {
         this.invoice.BillToEndCustomer = this.invoice.ShipToEndCustomer;
@@ -489,6 +535,18 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         .filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress')
         .map((v: PartyContactMechanism) => v.ContactMechanism);
       this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+      
+      this.setDerivedInitialRoles();
     });
+  }
+
+  private setDerivedInitialRoles() {
+    this.currencyInitialRole = this.invoice.BillToCustomer?.PreferredCurrency ?? this.invoice.BillToCustomer?.Locale?.Country?.Currency ?? this.invoice.BilledFrom?.PreferredCurrency;
+    this.vatRegimeInitialRole = this.invoice.BillToCustomer?.VatRegime;
+    this.irpfRegimeInitialRole = this.invoice.BillToCustomer?.IrpfRegime;
+    this.billToContactMechanismInitialRole = this.invoice.BillToCustomer?.BillingAddress ?? this.invoice.BillToCustomer?.ShippingAddress ?? this.invoice.BillToCustomer?.GeneralCorrespondence;
+    this.billToEndCustomerContactMechanismInitialRole = this.invoice.BillToEndCustomer?.BillingAddress ?? this.invoice.BillToEndCustomer?.ShippingAddress ?? this.invoice.BillToEndCustomer?.GeneralCorrespondence;
+    this.shipToEndCustomerAddressInitialRole = this.invoice.ShipToEndCustomer?.ShippingAddress ?? this.invoice.ShipToEndCustomer?.GeneralCorrespondence;
+    this.shipToAddressInitialRole = this.invoice.ShipToCustomer?.ShippingAddress;
   }
 }

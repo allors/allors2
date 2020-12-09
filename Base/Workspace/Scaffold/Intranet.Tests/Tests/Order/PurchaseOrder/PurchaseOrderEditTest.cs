@@ -42,11 +42,11 @@ namespace Tests.PurchaseOrderTests
             var expected = new PurchaseOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             Assert.True(expected.ExistTakenViaSupplier);
-            Assert.True(expected.ExistTakenViaContactMechanism);
+            Assert.True(expected.ExistDerivedTakenViaContactMechanism);
             Assert.True(expected.ExistTakenViaContactPerson);
-            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistDerivedBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
-            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistDerivedShipToAddress);
             Assert.True(expected.ExistShipToContactPerson);
             Assert.True(expected.ExistStoredInFacility);
             Assert.True(expected.ExistCustomerReference);
@@ -57,11 +57,11 @@ namespace Tests.PurchaseOrderTests
             this.Session.Derive();
 
             var expectedTakenViaSupplier = expected.TakenViaSupplier;
-            var expectedTakenViaContactMechanism = expected.TakenViaContactMechanism;
+            var expectedTakenViaContactMechanism = expected.DerivedTakenViaContactMechanism;
             var expectedTakenViaContactPerson = expected.TakenViaContactPerson;
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactMechanism = expected.DerivedBillToContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
-            var expectedShipToAddress = expected.ShipToAddress;
+            var expectedShipToAddress = expected.DerivedShipToAddress;
             var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedStoredInFacility = expected.StoredInFacility;
             var expectedCustomerReference = expected.CustomerReference;
@@ -77,11 +77,11 @@ namespace Tests.PurchaseOrderTests
             var purchaseOrderOverviewDetail = purchaseOrderOverview.PurchaseorderOverviewDetail.Click();
 
             purchaseOrderOverviewDetail.TakenViaSupplier.Select(expected.TakenViaSupplier.DisplayName());
-            purchaseOrderOverviewDetail.TakenViaContactMechanism.Select(expected.TakenViaContactMechanism);
+            purchaseOrderOverviewDetail.DerivedTakenViaContactMechanism.Select(expected.DerivedTakenViaContactMechanism);
             purchaseOrderOverviewDetail.TakenViaContactPerson.Select(expected.TakenViaContactPerson);
-            purchaseOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
+            purchaseOrderOverviewDetail.DerivedBillToContactMechanism.Select(expected.DerivedBillToContactMechanism);
             purchaseOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
-            purchaseOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
+            purchaseOrderOverviewDetail.DerivedShipToAddress.Select(expected.DerivedShipToAddress);
             purchaseOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             purchaseOrderOverviewDetail.StoredInFacility.Select(expected.StoredInFacility);
             purchaseOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
@@ -101,11 +101,11 @@ namespace Tests.PurchaseOrderTests
             Assert.Equal(after.Length, before.Length);
 
             Assert.Equal(expectedTakenViaSupplier, purchaseOrder.TakenViaSupplier);
-            Assert.Equal(expectedTakenViaContactMechanism, purchaseOrder.TakenViaContactMechanism);
+            Assert.Equal(expectedTakenViaContactMechanism, purchaseOrder.DerivedTakenViaContactMechanism);
             Assert.Equal(expectedTakenViaContactPerson, purchaseOrder.TakenViaContactPerson);
-            Assert.Equal(expectedBillToContactMechanism, purchaseOrder.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, purchaseOrder.DerivedBillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, purchaseOrder.BillToContactPerson);
-            Assert.Equal(expectedShipToAddress, purchaseOrder.ShipToAddress);
+            Assert.Equal(expectedShipToAddress, purchaseOrder.DerivedShipToAddress);
             Assert.Equal(expectedShipToContactPerson, purchaseOrder.ShipToContactPerson);
             Assert.Equal(expectedStoredInFacility.Name, purchaseOrder.StoredInFacility.Name);
             Assert.Equal(expectedCustomerReference, purchaseOrder.CustomerReference);

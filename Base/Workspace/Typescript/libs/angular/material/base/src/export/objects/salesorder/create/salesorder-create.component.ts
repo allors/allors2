@@ -403,11 +403,10 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
-          this.order.AssignedShipToAddress = null;
+        if (this.previousShipToCustomer && this.order.ShipToCustomer !== this.previousShipToCustomer) {
           this.order.ShipToContactPerson = null;
-          this.previousShipToCustomer = this.order.ShipToCustomer;
         }
+        this.previousShipToCustomer = this.order.ShipToCustomer;
 
         if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
           this.order.BillToCustomer = this.order.ShipToCustomer;
@@ -472,11 +471,10 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.order.BillToCustomer !== this.previousBillToCustomer) {
-          this.order.AssignedBillToContactMechanism = null;
+        if (this.previousBillToCustomer && this.order.BillToCustomer !== this.previousBillToCustomer) {
           this.order.BillToContactPerson = null;
-          this.previousBillToCustomer = this.order.BillToCustomer;
         }
+        this.previousBillToCustomer = this.order.BillToCustomer;
 
         if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
           this.order.ShipToCustomer = this.order.BillToCustomer;
@@ -541,11 +539,10 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
-          this.order.AssignedBillToEndCustomerContactMechanism = null;
+        if (this.previousBillToEndCustomer && this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
           this.order.BillToEndCustomerContactPerson = null;
-          this.previousBillToEndCustomer = this.order.BillToEndCustomer;
         }
+        this.previousBillToEndCustomer = this.order.BillToEndCustomer;
 
         if (this.order.BillToEndCustomer !== null && this.order.ShipToEndCustomer === null) {
           this.order.ShipToEndCustomer = this.order.BillToEndCustomer;
@@ -608,11 +605,11 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-          this.order.AssignedShipToEndCustomerAddress = null;
+        if (this.previousShipToEndCustomer && this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {
           this.order.ShipToEndCustomerContactPerson = null;
-          this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
         }
+
+        this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
 
         if (this.order.ShipToEndCustomer !== null && this.order.BillToEndCustomer === null) {
           this.order.BillToEndCustomer = this.order.ShipToEndCustomer;

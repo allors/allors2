@@ -13,13 +13,13 @@ namespace libs.angular.material.@base.src.export.objects.salesorder.create
             @this.Driver.WaitForAngular();
 
             @this.BillToContactPerson.Select(salesOrder.BillToContactPerson);
-            @this.BillToContactMechanism.Select(salesOrder.BillToContactMechanism);
-            @this.ShipFromAddress.Select(salesOrder.ShipFromAddress);
+            @this.DerivedBillToContactMechanism.Select(salesOrder.DerivedBillToContactMechanism);
+            @this.DerivedShipFromAddress.Select(salesOrder.DerivedShipFromAddress);
             @this.ShipToCustomer.Select(salesOrder.ShipToCustomer.DisplayName());
 
             @this.Driver.WaitForAngular();
 
-            @this.ShipToAddress.Select(salesOrder.ShipToAddress);
+            @this.DerivedShipToAddress.Select(salesOrder.DerivedShipToAddress);
             @this.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
             @this.CustomerReference.Set(salesOrder.CustomerReference);
 
@@ -34,13 +34,13 @@ namespace libs.angular.material.@base.src.export.objects.salesorder.create
             @this.Driver.WaitForAngular();
 
             @this.BillToContactPerson.Select(salesOrder.BillToContactPerson);
-            @this.BillToContactMechanism.Select(salesOrder.BillToContactMechanism);
+            @this.DerivedBillToContactMechanism.Select(salesOrder.DerivedBillToContactMechanism);
             @this.ShipToCustomer.Select(salesOrder.ShipToCustomer.DisplayName());
 
             @this.Driver.WaitForAngular();
 
-            @this.ShipToAddress.Select(salesOrder.ShipToAddress);
-            @this.ShipFromAddress.Select(salesOrder.ShipFromAddress);
+            @this.DerivedShipToAddress.Select(salesOrder.DerivedShipToAddress);
+            @this.DerivedShipFromAddress.Select(salesOrder.DerivedShipFromAddress);
             @this.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
 
             return @this;
@@ -53,13 +53,13 @@ namespace libs.angular.material.@base.src.export.objects.salesorder.create
             @this.Driver.WaitForAngular();
 
             @this.BillToContactPerson.Select(salesOrder.BillToContactPerson);
-            @this.BillToContactMechanism.Select(salesOrder.BillToContactMechanism);
-            @this.ShipFromAddress.Select(salesOrder.ShipFromAddress);
+            @this.DerivedBillToContactMechanism.Select(salesOrder.DerivedBillToContactMechanism);
+            @this.DerivedShipFromAddress.Select(salesOrder.DerivedShipFromAddress);
             @this.ShipToCustomer.Select(salesOrder.ShipToCustomer.DisplayName());
 
             @this.Driver.WaitForAngular();
 
-            @this.ShipToAddress.Select(salesOrder.ShipToAddress);
+            @this.DerivedShipToAddress.Select(salesOrder.DerivedShipToAddress);
             @this.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
             @this.CustomerReference.Set(salesOrder.CustomerReference);
 
@@ -72,13 +72,13 @@ namespace libs.angular.material.@base.src.export.objects.salesorder.create
 
             @this.Driver.WaitForAngular();
 
-            @this.BillToContactMechanism.Select(salesOrder.BillToContactMechanism);
-            @this.ShipFromAddress.Select(salesOrder.ShipFromAddress);
+            @this.DerivedBillToContactMechanism.Select(salesOrder.DerivedBillToContactMechanism);
+            @this.DerivedShipFromAddress.Select(salesOrder.DerivedShipFromAddress);
             @this.ShipToCustomer.Select(salesOrder.ShipToCustomer.DisplayName());
 
             @this.Driver.WaitForAngular();
 
-            @this.ShipToAddress.Select(salesOrder.ShipToAddress);
+            @this.DerivedShipToAddress.Select(salesOrder.DerivedShipToAddress);
             @this.CustomerReference.Set(salesOrder.CustomerReference);
 
             return @this;
