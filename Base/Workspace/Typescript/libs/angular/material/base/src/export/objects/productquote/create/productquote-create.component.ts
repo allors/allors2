@@ -53,7 +53,6 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
   private previousReceiver: Party;
 
   customersFilter: SearchFactory;
-  localeInitialRole: import("c:/allors2/Base/Workspace/Typescript/libs/domain/generated/src/Locale.g").Locale;
   currencyInitialRole: Currency;
   vatRegimeInitialRole: VatRegime;
   irpfRegimeInitialRole: IrpfRegime;
