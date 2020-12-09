@@ -182,6 +182,12 @@ namespace Allors.Domain
 
             if (this.IsValid)
             {
+                this.DerivedDeliveryDate = this.AssignedDeliveryDate ?? this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate;
+                this.DerivedVatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedVatRegime;
+                this.VatRate = this.DerivedVatRegime?.VatRate;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedIrpfRegime;
+                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
+
                 this.UnitBasePrice = 0;
                 this.UnitDiscount = 0;
                 this.UnitSurcharge = 0;
