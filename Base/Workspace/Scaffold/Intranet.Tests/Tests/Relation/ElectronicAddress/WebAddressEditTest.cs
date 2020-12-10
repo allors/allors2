@@ -21,19 +21,14 @@ namespace Tests.ElectronicAddressTests
     {
         private readonly PersonListComponent personListPage;
 
+        private readonly WebAddress editContactMechanism;
+
         public WebAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
-            this.Login();
-            this.personListPage = this.Sidenav.NavigateToPeople();
-        }
-
-        [Fact]
-        public void Edit()
-        {
             var person = new People(this.Session).Extent().First;
 
-            var editContactMechanism = new WebAddressBuilder(this.Session)
+            this.editContactMechanism = new WebAddressBuilder(this.Session)
                 .WithElectronicAddressString("www.acme.com")
                 .Build();
 
@@ -42,6 +37,15 @@ namespace Tests.ElectronicAddressTests
 
             this.Session.Derive();
             this.Session.Commit();
+
+            this.Login();
+            this.personListPage = this.Sidenav.NavigateToPeople();
+        }
+
+        [Fact]
+        public void Edit()
+        {
+            var person = new People(this.Session).Extent().First;
 
             var before = new WebAddresses(this.Session).Extent().ToArray();
 

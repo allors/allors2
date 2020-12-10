@@ -42,11 +42,8 @@ namespace Tests.PurchaseOrderTests
             var expected = new PurchaseOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             Assert.True(expected.ExistTakenViaSupplier);
-            Assert.True(expected.ExistDerivedTakenViaContactMechanism);
             Assert.True(expected.ExistTakenViaContactPerson);
-            Assert.True(expected.ExistDerivedBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
-            Assert.True(expected.ExistDerivedShipToAddress);
             Assert.True(expected.ExistShipToContactPerson);
             Assert.True(expected.ExistStoredInFacility);
             Assert.True(expected.ExistCustomerReference);

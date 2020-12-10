@@ -30,6 +30,7 @@ namespace Allors.Domain.TestPopulation
                 .WithContactPurpose(new ContactMechanismPurposes(@this.Session).GeneralCorrespondence)
                 .WithContactPurpose(new ContactMechanismPurposes(@this.Session).ShippingAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(@this.Session).HeadQuarters)
+                .WithContactPurpose(new ContactMechanismPurposes(@this.Session).OrderAddress)
                 .Build());
 
             @this.WithPartyContactMechanism(new PartyContactMechanismBuilder(@this.Session)

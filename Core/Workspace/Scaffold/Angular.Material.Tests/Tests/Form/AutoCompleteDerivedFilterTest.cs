@@ -20,6 +20,7 @@ namespace Tests
 
         private readonly Person john;
         private readonly Person jane;
+        private readonly Person jenny;
 
         public AutoCompleteDerivedFilterTest(TestFixture fixture)
             : base(fixture)
@@ -29,6 +30,7 @@ namespace Tests
 
             this.john = (Person)new Users(this.Session).GetUser("john@example.com");
             this.jane = (Person)new Users(this.Session).GetUser("jane@example.com");
+            this.jenny = (Person)new Users(this.Session).GetUser("jenny@example.com");
 
             var singleton = this.Session.GetSingleton();
             singleton.AutocompleteDefault = john;
@@ -58,7 +60,7 @@ namespace Tests
         }
 
         [Fact]
-        public void Full()
+        public void UseInitialForAssigned()
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
@@ -75,17 +77,16 @@ namespace Tests
 
             var data = after.Except(before).First();
 
-            Assert.Equal(this.jane, data.AutocompleteAssignedFilter);
-            Assert.Equal(this.jane, data.AutocompleteDerivedFilter);
+            Assert.Null(data.AutocompleteAssignedFilter);
+            Assert.Equal(this.john, data.AutocompleteDerivedFilter);
         }
-        
+
         [Fact]
-        public void PartialWithSelection()
+        public void UseOtherForAssigned()
         {
-            var jane = new Users(this.Session).GetUser("jane@example.com");
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.AutocompleteDerivedFilter.Select("jane", "jane@example.com");
+            this.page.AutocompleteDerivedFilter.Select("jenny@example.com");
 
             this.page.SAVE.Click();
 
@@ -98,8 +99,8 @@ namespace Tests
 
             var data = after.Except(before).First();
 
-            Assert.Equal(this.jane, data.AutocompleteAssignedFilter);
-            Assert.Equal(this.jane, data.AutocompleteDerivedFilter);
+            Assert.Equal(this.jenny, data.AutocompleteAssignedFilter);
+            Assert.Equal(this.jenny, data.AutocompleteDerivedFilter);
         }
     }
 }
