@@ -26,17 +26,18 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
 
                 if (orderedBy.GeneralCorrespondence is PostalAddress generalAddress)
                 {
-                    this.Address = generalAddress.Address1;
+                    var address = generalAddress.Address1;
                     if (!string.IsNullOrWhiteSpace(generalAddress.Address2))
                     {
-                        this.Address = $"\n{generalAddress.Address2}";
+                        address += $"\n{generalAddress.Address2}";
                     }
 
                     if (!string.IsNullOrWhiteSpace(generalAddress.Address3))
                     {
-                        this.Address = $"\n{generalAddress.Address3}";
+                        address += $"\n{generalAddress.Address3}";
                     }
 
+                    this.Address = address.Split('\n');
                     this.City = generalAddress.Locality;
                     this.State = generalAddress.Region;
                     this.PostalCode = generalAddress.PostalCode;
@@ -57,7 +58,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
 
         public string Name { get; }
 
-        public string Address { get; }
+        public string[] Address { get; }
 
         public string City { get; }
 

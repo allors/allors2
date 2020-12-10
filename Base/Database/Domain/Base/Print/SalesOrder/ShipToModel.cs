@@ -29,17 +29,18 @@ namespace Allors.Domain.Print.SalesOrderModel
 
             if (shipToAddress is PostalAddress postalAddress)
             {
-                this.Address = postalAddress.Address1;
+                var address = postalAddress.Address1;
                 if (!string.IsNullOrWhiteSpace(postalAddress.Address2))
                 {
-                    this.Address = $"\n{postalAddress.Address2}";
+                    address += $"\n{postalAddress.Address2}";
                 }
 
                 if (!string.IsNullOrWhiteSpace(postalAddress.Address3))
                 {
-                    this.Address = $"\n{postalAddress.Address3}";
+                    address += $"\n{postalAddress.Address3}";
                 }
 
+                this.Address = address.Split('\n');
                 this.City = postalAddress.Locality;
                 this.State = postalAddress.Region;
                 this.PostalCode = postalAddress.PostalCode;
@@ -49,7 +50,7 @@ namespace Allors.Domain.Print.SalesOrderModel
 
         public string Name { get; }
 
-        public string Address { get; }
+        public string[] Address { get; }
 
         public string City { get; }
 
