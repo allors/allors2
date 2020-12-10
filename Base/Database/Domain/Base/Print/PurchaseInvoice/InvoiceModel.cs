@@ -11,6 +11,9 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
     {
         public InvoiceModel(PurchaseInvoice invoice)
         {
+            var session = invoice.Strategy.Session;
+
+            this.Title = invoice.PurchaseInvoiceType.Equals(new PurchaseInvoiceTypes(session).PurchaseReturn) ? "PURCHASE RETURN" : "PURCHASE INVOICE";
             this.Description = invoice.Description?.Split('\n');
             this.Number = invoice.InvoiceNumber;
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
@@ -32,6 +35,8 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
             var currencyIsoCode = invoice.DerivedCurrency.IsoCode;
             this.GrandTotal = currencyIsoCode + " " + invoice.GrandTotal.ToString("N2", new CultureInfo("nl-BE"));
         }
+
+        public string Title { get; }
 
         public string[] Description { get; }
 

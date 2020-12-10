@@ -25,6 +25,8 @@
         <mat-tab label="General">
           <div class="container-fluid">
             <div class="row pt-3">
+              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceType" [options]="purchaseInvoiceTypes"
+              display="Name"></a-mat-select>
               <a-mat-static class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name"
                 label="Status"></a-mat-static>
             </div>
