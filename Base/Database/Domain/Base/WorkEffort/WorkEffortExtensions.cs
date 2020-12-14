@@ -114,6 +114,14 @@ namespace Allors.Domain
                     @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute));
                 }
             }
+
+            if (@this.WorkEffortState.IsFinished)
+            {
+                if (@this.ExecutedBy.Equals(@this.Customer))
+                {
+                    @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Revise, Operations.Execute));
+                }
+            }
         }
 
         public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method)
@@ -318,6 +326,11 @@ namespace Allors.Domain
                 || @this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Finished))
             {
                 @this.DerivedRoles.CanInvoice = true;
+
+                if (@this.ExecutedBy.Equals(@this.Customer))
+                {
+                    @this.DerivedRoles.CanInvoice = false;
+                }
 
                 if (@this.ExistWorkEffortBillingsWhereWorkEffort)
                 {
