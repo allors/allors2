@@ -47,17 +47,22 @@ export class OrderAdjustmentEditComponent extends TestScope implements OnInit, O
       .pipe(
         switchMap(() => {
 
-          const create = (this.data as IObject).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
           const { objectType, associationRoleType } = this.data;
 
           const pulls = [
-            pull.OrderAdjustment(
-              {
-                object: this.data.id,
-              }),
           ];
 
-          if (create && this.data.associationId) {
+          if (!isCreate) {
+            pulls.push(
+              pull.OrderAdjustment(
+                {
+                  object: this.data.id,
+                }),
+              );
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls.push(
               pull.Quote({ object: this.data.associationId }),
               pull.Order({ object: this.data.associationId }),
@@ -67,7 +72,7 @@ export class OrderAdjustmentEditComponent extends TestScope implements OnInit, O
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, create, objectType, associationRoleType }))
+              map((loaded) => ({ loaded, create: isCreate, objectType, associationRoleType }))
             );
         })
       )

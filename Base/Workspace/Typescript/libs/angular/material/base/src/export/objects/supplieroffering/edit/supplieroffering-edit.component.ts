@@ -39,7 +39,6 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
   unitsOfMeasure: UnitOfMeasure[];
   currencies: Currency[];
   settings: Settings;
-  currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
   title: string;
@@ -75,11 +74,6 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
             pull.Ordinal({ sort: new Sort(m.Ordinal.Name) }),
             pull.UnitOfMeasure({ sort: new Sort(m.UnitOfMeasure.Name) }),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
-            pull.SupplierRelationship({
-              include: {
-                Supplier: x,
-              },
-            }),
           ];
 
           if (isCreate) {
@@ -124,14 +118,6 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.settings = loaded.objects.Settings as Settings;
-
-        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(
-          (v) => isBefore(new Date(v.FromDate), new Date()) && (v.ThroughDate === null || isAfter(new Date(v.ThroughDate), new Date()))
-        );
-        this.currentSuppliers = new Set(
-          currentsupplierRelationships.map((v) => v.Supplier).sort((a, b) => (a.Name > b.Name ? 1 : b.Name > a.Name ? -1 : 0))
-        );
 
         if (isCreate) {
           this.title = 'Add supplier offering';

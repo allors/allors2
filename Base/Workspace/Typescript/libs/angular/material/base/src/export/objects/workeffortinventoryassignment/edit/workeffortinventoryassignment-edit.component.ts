@@ -95,7 +95,7 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
             );
           }
 
-          if (isCreate) {
+          if (isCreate && this.data.associationId) {
             pulls = [
               ...pulls,
               pull.WorkEffort({

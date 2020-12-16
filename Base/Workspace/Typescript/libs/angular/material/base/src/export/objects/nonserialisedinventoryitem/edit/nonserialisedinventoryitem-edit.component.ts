@@ -76,10 +76,15 @@ export class NonSerialisedInventoryItemEditComponent extends TestScope implement
 
           const pulls = [
             this.fetcher.locales,
-            pull.NonSerialisedInventoryItem({
-              object: this.data.id,
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.NonSerialisedInventoryItem({
+                object: this.data.id,
+              }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

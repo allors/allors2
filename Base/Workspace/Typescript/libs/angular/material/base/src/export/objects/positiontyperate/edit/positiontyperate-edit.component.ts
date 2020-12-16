@@ -57,13 +57,6 @@ export class PositionTypeRateEditComponent extends TestScope implements OnInit, 
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.PositionTypeRate({
-              object: this.data.id,
-              include: {
-                RateType: x,
-                Frequency: x
-              }
-            }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
             pull.PositionType({
@@ -73,6 +66,18 @@ export class PositionTypeRateEditComponent extends TestScope implements OnInit, 
               }
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.PositionTypeRate({
+                object: this.data.id,
+                include: {
+                  RateType: x,
+                  Frequency: x
+                }
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

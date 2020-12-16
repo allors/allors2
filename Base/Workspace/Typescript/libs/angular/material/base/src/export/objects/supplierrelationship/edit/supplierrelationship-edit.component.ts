@@ -60,17 +60,27 @@ export class SupplierRelationshipEditComponent extends TestScope implements OnIn
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.SupplierRelationship({
-              object: this.data.id,
-              include: {
-                InternalOrganisation: x,
-                Parties: x,
-              },
-            }),
-            pull.Organisation({
-              object: this.data.associationId,
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.SupplierRelationship({
+                object: this.data.id,
+                include: {
+                  InternalOrganisation: x,
+                  Parties: x,
+                },
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Organisation({
+                object: this.data.associationId,
+              }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

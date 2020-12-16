@@ -53,18 +53,6 @@ export class BasepriceEditComponent extends TestScope implements OnInit, OnDestr
 
           let pulls = [this.fetcher.internalOrganisation];
 
-          if (isCreate) {
-            pulls = [
-              ...pulls,
-              pull.NonUnifiedGood({
-                object: this.data.associationId,
-              }),
-              pull.Part({
-                object: this.data.associationId,
-              }),
-            ];
-          }
-
           if (!isCreate) {
             pulls = [
               ...pulls,
@@ -73,6 +61,18 @@ export class BasepriceEditComponent extends TestScope implements OnInit, OnDestr
                 include: {
                   Currency: x,
                 },
+              }),
+            ];
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls = [
+              ...pulls,
+              pull.NonUnifiedGood({
+                object: this.data.associationId,
+              }),
+              pull.Part({
+                object: this.data.associationId,
               }),
             ];
           }

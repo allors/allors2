@@ -55,24 +55,29 @@ export class PartCategoryEditComponent extends TestScope implements OnInit, OnDe
 
           const pulls = [
             this.fetcher.locales,
-            pull.PartCategory(
-              {
-                object: this.data.id,
-                include: {
-                  Children: x,
-                  LocalisedNames: {
-                    Locale: x,
-                  },
-                  LocalisedDescriptions: {
-                    Locale: x,
-                  }
-                }
-              }
-            ),
             pull.PartCategory({
               sort: new Sort(m.PartCategory.Name),
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.PartCategory(
+                {
+                  object: this.data.id,
+                  include: {
+                    Children: x,
+                    LocalisedNames: {
+                      Locale: x,
+                    },
+                    LocalisedDescriptions: {
+                      Locale: x,
+                    }
+                  }
+                }
+              ),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(

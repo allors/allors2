@@ -137,72 +137,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.ShipmentItem({
-              object: this.data.id,
-              include: {
-                SyncedShipment: x,
-                Good: {
-                  UnifiedGood_InventoryItemKind: x,
-                },
-                Part: {
-                  InventoryItemKind: x,
-                },
-                SerialisedItem: x,
-                ShipmentItemState: x,
-                StoredInFacility: x,
-              },
-            }),
-            pull.ShipmentItem({
-              object: this.data.id,
-              fetch: {
-                OrderShipmentsWhereShipmentItem: {
-                  include: {
-                    OrderItem: x,
-                  },
-                },
-              },
-            }),
-            pull.Shipment({
-              object: this.data.associationId,
-              include: {
-                ShipToAddress: x,
-              },
-            }),
-            pull.Shipment({
-              object: this.data.associationId,
-              fetch: {
-                ShipToAddress: {
-                  SalesOrderItemsWhereDerivedShipToAddress: {
-                    include: {
-                      Product: x,
-                      SerialisedItem: x,
-                      SalesOrderWhereSalesOrderItem: {
-                        SalesOrderState: x,
-                      },
-                    },
-                  },
-                },
-              },
-            }),
-            pull.Shipment({
-              object: this.data.associationId,
-              fetch: {
-                ShipFromParty: {
-                  PurchaseOrdersWhereTakenViaSupplier: {
-                    include: {
-                      PurchaseOrderItems: {
-                        Part: x,
-                        SerialisedItem: x,
-                        PurchaseOrderItemState: x,
-                        PurchaseOrderWherePurchaseOrderItem: {
-                          PurchaseOrderState: x,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            }),
             pull.SerialisedItemAvailability(),
             pull.SerialisedInventoryItemState({
               predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
@@ -220,6 +154,82 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             pull.ShipmentState(),
             pull.Facility(),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.ShipmentItem({
+                object: this.data.id,
+                include: {
+                  SyncedShipment: x,
+                  Good: {
+                    UnifiedGood_InventoryItemKind: x,
+                  },
+                  Part: {
+                    InventoryItemKind: x,
+                  },
+                  SerialisedItem: x,
+                  ShipmentItemState: x,
+                  StoredInFacility: x,
+                },
+              }),
+              pull.ShipmentItem({
+                object: this.data.id,
+                fetch: {
+                  OrderShipmentsWhereShipmentItem: {
+                    include: {
+                      OrderItem: x,
+                    },
+                  },
+                },
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Shipment({
+                object: this.data.associationId,
+                include: {
+                  ShipToAddress: x,
+                },
+              }),
+              pull.Shipment({
+                object: this.data.associationId,
+                fetch: {
+                  ShipToAddress: {
+                    SalesOrderItemsWhereDerivedShipToAddress: {
+                      include: {
+                        Product: x,
+                        SerialisedItem: x,
+                        SalesOrderWhereSalesOrderItem: {
+                          SalesOrderState: x,
+                        },
+                      },
+                    },
+                  },
+                },
+              }),
+              pull.Shipment({
+                object: this.data.associationId,
+                fetch: {
+                  ShipFromParty: {
+                    PurchaseOrdersWhereTakenViaSupplier: {
+                      include: {
+                        PurchaseOrderItems: {
+                          Part: x,
+                          SerialisedItem: x,
+                          PurchaseOrderItemState: x,
+                          PurchaseOrderWherePurchaseOrderItem: {
+                            PurchaseOrderState: x,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              }),
+            );
+          }
 
           this.goodsFilter = Filters.goodsFilter(m);
 

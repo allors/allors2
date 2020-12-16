@@ -58,14 +58,6 @@ export class SerialisedItemCharacteristicEditComponent extends TestScope impleme
 
           const pulls = [
             this.fetcher.locales,
-            pull.SerialisedItemCharacteristicType({
-              object: this.data.id,
-              include: {
-                LocalisedNames: {
-                  Locale: x,
-                },
-              },
-            }),
             pull.Singleton({
               include: {
                 AdditionalLocales: {
@@ -82,6 +74,19 @@ export class SerialisedItemCharacteristicEditComponent extends TestScope impleme
               sort: new Sort(m.TimeFrequency.Name),
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.SerialisedItemCharacteristicType({
+                object: this.data.id,
+                include: {
+                  LocalisedNames: {
+                    Locale: x,
+                  },
+                },
+              }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

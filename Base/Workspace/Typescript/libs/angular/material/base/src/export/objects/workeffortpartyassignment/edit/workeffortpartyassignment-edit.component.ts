@@ -55,13 +55,6 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
           const isCreate = this.data.id === undefined;
 
           let pulls = [
-            pull.WorkEffortPartyAssignment({
-              object: this.data.id,
-              include: {
-                Assignment: x,
-                Party: x,
-              },
-            }),
             pull.Organisation({
               object: internalOrganisationId,
               fetch: {
@@ -74,6 +67,18 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
               sort: new Sort(m.Person.PartyName),
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.WorkEffortPartyAssignment({
+                object: this.data.id,
+                include: {
+                  Assignment: x,
+                  Party: x,
+                },
+              }),
+            );
+          }
 
           if (isCreate) {
             pulls = [

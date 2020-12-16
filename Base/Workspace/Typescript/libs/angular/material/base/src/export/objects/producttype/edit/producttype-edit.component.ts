@@ -54,16 +54,21 @@ export class ProductTypeEditComponent extends TestScope implements OnInit, OnDes
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.ProductType({
-              object: this.data.id,
-              include: {
-                SerialisedItemCharacteristicTypes: x,
-              }
-            }),
             pull.SerialisedItemCharacteristicType({
               sort: new Sort(m.SerialisedItemCharacteristicType.Name),
             })
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.ProductType({
+                object: this.data.id,
+                include: {
+                  SerialisedItemCharacteristicTypes: x,
+                }
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

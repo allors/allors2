@@ -64,18 +64,28 @@ export class SubContractorRelationshipEditComponent extends TestScope implements
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.SubContractorRelationship({
-              object: this.data.id,
-              include: {
-                Contractor: x,
-                SubContractor: x,
-                Parties: x
-              }
-            }),
-            pull.Organisation({
-              object: this.data.associationId,
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.SubContractorRelationship({
+                object: this.data.id,
+                include: {
+                  Contractor: x,
+                  SubContractor: x,
+                  Parties: x
+                }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Organisation({
+                object: this.data.associationId,
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

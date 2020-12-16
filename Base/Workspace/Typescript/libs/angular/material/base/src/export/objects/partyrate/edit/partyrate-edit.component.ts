@@ -54,22 +54,33 @@ export class PartyRateEditComponent extends TestScope implements OnInit, OnDestr
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.PartyRate({
-              object: this.data.id,
-              include: {
-                RateType: x,
-                Frequency: x
-              }
-            }),
-            pull.Party({
-              object: this.data.associationId,
-              include: {
-                PartyRates: x,
-              }
-            }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.PartyRate({
+                object: this.data.id,
+                include: {
+                  RateType: x,
+                  Frequency: x
+                }
+              }),
+            );
+          }
+
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Party({
+                object: this.data.associationId,
+                include: {
+                  PartyRates: x,
+                }
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

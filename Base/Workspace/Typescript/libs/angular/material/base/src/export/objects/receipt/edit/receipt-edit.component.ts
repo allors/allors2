@@ -48,13 +48,18 @@ export class ReceiptEditComponent extends TestScope implements OnInit, OnDestroy
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.Receipt({
-              object: this.data.id,
-              include: {
-                PaymentApplications: x,
-              },
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.Receipt({
+                object: this.data.id,
+                include: {
+                  PaymentApplications: x,
+                },
+              }),
+            );
+          }
 
           if (isCreate && this.data.associationId) {
             pulls.push(

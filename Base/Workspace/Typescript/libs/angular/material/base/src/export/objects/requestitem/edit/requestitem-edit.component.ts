@@ -112,14 +112,6 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.RequestItem({
-              object: this.data.id,
-              include: {
-                RequestItemState: x,
-                Product: x,
-                SerialisedItem: x,
-              },
-            }),
             pull.UnitOfMeasure({
               predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
               sort: new Sort(m.UnitOfMeasure.Name),
@@ -133,6 +125,19 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
             pull.ShipmentItemState(),
             pull.ShipmentState(),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.RequestItem({
+                object: this.data.id,
+                include: {
+                  RequestItemState: x,
+                  Product: x,
+                  SerialisedItem: x,
+                },
+              }),
+            );
+          }
 
           if (isCreate && this.data.associationId) {
             pulls.push(

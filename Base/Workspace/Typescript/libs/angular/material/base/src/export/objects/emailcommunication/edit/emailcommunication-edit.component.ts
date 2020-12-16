@@ -69,26 +69,6 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
           const isCreate = this.data.id === undefined;
 
           let pulls = [
-            pull.EmailCommunication({
-              object: this.data.id,
-              include: {
-                FromParty: {
-                  CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                },
-                ToParty: {
-                  CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                },
-                FromEmail: x,
-                ToEmail: x,
-                EmailTemplate: x,
-                EventPurposes: x,
-                CommunicationEventState: x
-              }
-            }),
             pull.Organisation({
               object: this.internalOrganisationId.value,
               name: 'InternalOrganisation',
@@ -109,7 +89,38 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
             }),
           ];
 
-          if (isCreate) {
+          if (!isCreate) {
+            pulls.push(
+              pull.EmailCommunication({
+                object: this.data.id,
+                include: {
+                  FromParty: {
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x
+                    }
+                  },
+                  ToParty: {
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x
+                    }
+                  },
+                  FromEmail: x,
+                  ToEmail: x,
+                  EmailTemplate: x,
+                  EventPurposes: x,
+                  CommunicationEventState: x
+                }
+              }),
+              pull.CommunicationEvent({
+                object: this.data.id,
+                fetch: {
+                  InvolvedParties: x
+                }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls = [
               ...pulls,
               pull.Organisation({
@@ -139,18 +150,6 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
                   }
                 }
               })
-            ];
-          }
-
-          if (!isCreate) {
-            pulls = [
-              ...pulls,
-              pull.CommunicationEvent({
-                object: this.data.id,
-                fetch: {
-                  InvolvedParties: x
-                }
-              }),
             ];
           }
 

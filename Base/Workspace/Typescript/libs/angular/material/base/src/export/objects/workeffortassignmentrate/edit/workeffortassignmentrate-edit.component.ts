@@ -56,32 +56,42 @@ export class WorkEffortAssignmentRateEditComponent extends TestScope implements 
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.WorkEffortAssignmentRate({
-              object: this.data.id,
-              include: {
-                RateType: x,
-                Frequency: x,
-                WorkEffortPartyAssignment: x,
-                WorkEffort: x
-              }
-            }),
-            pull.WorkEffort({
-              object: this.data.associationId,
-              fetch: {
-                WorkEffortPartyAssignmentsWhereAssignment:
-                {
-                  include: {
-                    Party: x
-                  }
-                }
-              }
-            }),
-            pull.WorkEffort({
-              object: this.data.associationId,
-            }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.WorkEffortAssignmentRate({
+                object: this.data.id,
+                include: {
+                  RateType: x,
+                  Frequency: x,
+                  WorkEffortPartyAssignment: x,
+                  WorkEffort: x
+                }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.WorkEffort({
+                object: this.data.associationId,
+                fetch: {
+                  WorkEffortPartyAssignmentsWhereAssignment:
+                  {
+                    include: {
+                      Party: x
+                    }
+                  }
+                }
+              }),
+              pull.WorkEffort({
+                object: this.data.associationId,
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

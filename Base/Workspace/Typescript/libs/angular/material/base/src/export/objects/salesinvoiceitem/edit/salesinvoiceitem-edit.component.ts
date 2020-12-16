@@ -81,51 +81,6 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
 
           const pulls = [
             this.fetcher.warehouses,
-            pull.SalesInvoiceItem({
-              object: id,
-              include:
-              {
-                SalesInvoiceItemState: x,
-                SerialisedItem: x,
-                NextSerialisedItemAvailability: x,
-                Facility: {
-                  Owner: x,
-                },
-                AssignedVatRegime: {
-                  VatRate: x,
-                },
-                DerivedVatRegime: {
-                  VatRate: x,
-                },
-                AssignedIrpfRegime: {
-                  IrpfRate: x,
-                },
-                DerivedIrpfRegime: {
-                  IrpfRate: x,
-                }
-              }
-            }),
-            pull.SalesInvoiceItem({
-              object: id,
-              fetch: {
-                SalesInvoiceWhereSalesInvoiceItem: {
-                  include: {
-                    AssignedVatRegime: {
-                      VatRate: x,
-                    },
-                    DerivedVatRegime: {
-                      VatRate: x,
-                    },
-                    AssignedIrpfRegime: {
-                      IrpfRate: x,
-                    },
-                    DerivedIrpfRegime: {
-                      IrpfRate: x,
-                    }
-                  }
-                }
-              }
-            }),
             pull.SerialisedItemAvailability(),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
@@ -138,7 +93,57 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
             pull.SerialisedItemAvailability(),
           ];
 
-          if (this.data.associationId) {
+          if (!isCreate) {
+            pulls.push(
+              pull.SalesInvoiceItem({
+                object: id,
+                include:
+                {
+                  SalesInvoiceItemState: x,
+                  SerialisedItem: x,
+                  NextSerialisedItemAvailability: x,
+                  Facility: {
+                    Owner: x,
+                  },
+                  AssignedVatRegime: {
+                    VatRate: x,
+                  },
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedIrpfRegime: {
+                    IrpfRate: x,
+                  }
+                }
+              }),
+              pull.SalesInvoiceItem({
+                object: id,
+                fetch: {
+                  SalesInvoiceWhereSalesInvoiceItem: {
+                    include: {
+                      AssignedVatRegime: {
+                        VatRate: x,
+                      },
+                      DerivedVatRegime: {
+                        VatRate: x,
+                      },
+                      AssignedIrpfRegime: {
+                        IrpfRate: x,
+                      },
+                      DerivedIrpfRegime: {
+                        IrpfRate: x,
+                      }
+                    }
+                  }
+                }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls.push(
               pull.SalesInvoice({
                 object: this.data.associationId,

@@ -50,20 +50,30 @@ export class RepeatingSalesInvoiceEditComponent extends TestScope implements OnI
           const id = this.data.id;
 
           const pulls = [
-            pull.SalesInvoice({ object: this.data.associationId }),
-            pull.RepeatingSalesInvoice({
-              object: id,
-              include: {
-                Frequency: x,
-                DayOfWeek: x,
-              },
-            }),
             pull.TimeFrequency({
               predicate: new Equals({ propertyType: m.TimeFrequency.IsActive, value: true }),
               sort: new Sort(m.TimeFrequency.Name),
             }),
             pull.DayOfWeek(),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.RepeatingSalesInvoice({
+                object: id,
+                include: {
+                  Frequency: x,
+                  DayOfWeek: x,
+                },
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.SalesInvoice({ object: this.data.associationId }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

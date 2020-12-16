@@ -55,16 +55,26 @@ export class CustomerRelationshipEditComponent extends TestScope implements OnIn
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.CustomerRelationship({
-              object: this.data.id,
-              include: {
-                InternalOrganisation: x
-              }
-            }),
-            pull.Party({
-              object: this.data.associationId,
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.CustomerRelationship({
+                object: this.data.id,
+                include: {
+                  InternalOrganisation: x
+                }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Party({
+                object: this.data.associationId,
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

@@ -46,29 +46,34 @@ export class SalesTermEditComponent extends TestScope implements OnInit, OnDestr
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(() => {
-          const create = (this.data as IObject).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
           const { objectType, associationRoleType } = this.data;
 
           const pulls = [
-            pull.SalesTerm({
-              object: this.data.id,
-              include: {
-                TermType: x,
-              },
-            }),
             pull.TermType({
               predicate: new Equals({ propertyType: m.TermType.IsActive, value: true }),
               sort: [new Sort(m.TermType.Name)],
             }),
           ];
 
-          if (create && this.data.associationId) {
+          if (!isCreate) {
+            pulls.push(
+              pull.SalesTerm({
+                object: this.data.id,
+                include: {
+                  TermType: x,
+                },
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls.push(pull.SalesInvoice({ object: this.data.associationId }), pull.SalesOrder({ object: this.data.associationId }));
           }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))
-            .pipe(map((loaded) => ({ loaded, create, objectType, associationRoleType })));
+            .pipe(map((loaded) => ({ loaded, create: isCreate, objectType, associationRoleType })));
         })
       )
       .subscribe(({ loaded, create, objectType, associationRoleType }) => {

@@ -48,13 +48,18 @@ export class DisbursementEditComponent extends TestScope implements OnInit, OnDe
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.Disbursement({
-              object: this.data.id,
-              include: {
-                PaymentApplications: x,
-              },
-            }),
           ];
+          
+          if (!isCreate) {
+            pulls.push(
+              pull.Disbursement({
+                object: this.data.id,
+                include: {
+                  PaymentApplications: x,
+                },
+              }),
+            );
+          }
 
           if (isCreate && this.data.associationId) {
             pulls.push(

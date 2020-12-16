@@ -67,26 +67,6 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
           const isCreate = this.data.id === undefined;
 
           let pulls = [
-            pull.LetterCorrespondence({
-              object: this.data.id,
-              include: {
-                FromParty: {
-                  CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                },
-                ToParty: {
-                  CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                },
-                PostalAddress: {
-                  Country: x
-                },
-                EventPurposes: x,
-                CommunicationEventState: x
-              }
-            }),
             pull.Organisation({
               object: this.internalOrganisationId.value,
               name: 'InternalOrganisation',
@@ -109,7 +89,39 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
             }),
           ];
 
-          if (isCreate) {
+          if (!isCreate) {
+            pulls = [
+              ...pulls,
+              pull.LetterCorrespondence({
+                object: this.data.id,
+                include: {
+                  FromParty: {
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x
+                    }
+                  },
+                  ToParty: {
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x
+                    }
+                  },
+                  PostalAddress: {
+                    Country: x
+                  },
+                  EventPurposes: x,
+                  CommunicationEventState: x
+                }
+              }),
+              pull.CommunicationEvent({
+                object: this.data.id,
+                fetch: {
+                  InvolvedParties: x,
+                }
+              }),
+            ];
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls = [
               ...pulls,
               pull.Organisation({
@@ -143,18 +155,6 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
                   }
                 }
               })
-            ];
-          }
-
-          if (!isCreate) {
-            pulls = [
-              ...pulls,
-              pull.CommunicationEvent({
-                object: this.data.id,
-                fetch: {
-                  InvolvedParties: x,
-                }
-              }),
             ];
           }
 

@@ -52,45 +52,56 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.PartyContactMechanism({
-              object: this.data.id,
-              include: {
-                ContactMechanism: {
-                  PostalAddress_Country: x,
-                },
-              },
-            }),
-            pull.Party({
-              object: this.data.associationId,
-            }),
-            pull.Person({
-              object: this.data.associationId,
-              fetch: {
-                CurrentOrganisationContactMechanisms: {
-                  include: {
-                    PostalAddress_Country: x,
-                  },
-                },
-              },
-            }),
-            pull.Party({
-              object: this.data.associationId,
-              name: 'test',
-              fetch: {
-                PartyContactMechanisms: {
-                  include: {
-                    ContactMechanism: {
-                      PostalAddress_Country: x,
-                    },
-                  },
-                },
-              },
-            }),
             pull.ContactMechanismPurpose({
               predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
               sort: new Sort(this.m.ContactMechanismPurpose.Name),
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.PartyContactMechanism({
+                object: this.data.id,
+                include: {
+                  ContactMechanism: {
+                    PostalAddress_Country: x,
+                  },
+                },
+              }),
+            );
+          }
+
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Party({
+                object: this.data.associationId,
+              }),
+              pull.Person({
+                object: this.data.associationId,
+                fetch: {
+                  CurrentOrganisationContactMechanisms: {
+                    include: {
+                      PostalAddress_Country: x,
+                    },
+                  },
+                },
+              }),
+              pull.Party({
+                object: this.data.associationId,
+                name: 'test',
+                fetch: {
+                  PartyContactMechanisms: {
+                    include: {
+                      ContactMechanism: {
+                        PostalAddress_Country: x,
+                      },
+                    },
+                  },
+                },
+              }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

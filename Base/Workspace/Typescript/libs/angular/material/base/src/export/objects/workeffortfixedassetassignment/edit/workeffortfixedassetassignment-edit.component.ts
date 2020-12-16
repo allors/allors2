@@ -63,9 +63,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
 
           const pulls = [
             pull.WorkEffort({
-              object: this.data.associationId,
-            }),
-            pull.WorkEffort({
               sort: new Sort(m.WorkEffort.Name)
             }),
             pull.SerialisedItem({
@@ -87,6 +84,14 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
                   FixedAsset: x,
                   AssetAssignmentStatus: x
                 }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.WorkEffort({
+                object: this.data.associationId,
               }),
             );
           }

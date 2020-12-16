@@ -50,17 +50,10 @@ export class ProductIdentificationEditComponent extends TestScope implements OnI
       .pipe(
         switchMap(() => {
 
-          const create = (this.data as IObject).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
           const { objectType, associationRoleType } = this.data;
 
           const pulls = [
-            pull.ProductIdentification(
-              {
-                object: this.data.id,
-                include: {
-                  ProductIdentificationType: x,
-                }
-              }),
             pull.ProductIdentificationType({
               predicate: new Equals({ propertyType: m.ProductIdentificationType.IsActive, value: true }),
               sort: [
@@ -69,7 +62,19 @@ export class ProductIdentificationEditComponent extends TestScope implements OnI
             })
           ];
 
-          if (create && this.data.associationId) {
+          if (!isCreate) {
+            pulls.push(
+              pull.ProductIdentification(
+                {
+                  object: this.data.id,
+                  include: {
+                    ProductIdentificationType: x,
+                  }
+                }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls.push(
               pull.Good({ object: this.data.associationId }),
               pull.Part({ object: this.data.associationId }),
@@ -78,7 +83,7 @@ export class ProductIdentificationEditComponent extends TestScope implements OnI
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, create, objectType, associationRoleType }))
+              map((loaded) => ({ loaded, create: isCreate, objectType, associationRoleType }))
             );
         })
       )

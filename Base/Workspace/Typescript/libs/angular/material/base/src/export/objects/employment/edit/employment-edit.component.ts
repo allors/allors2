@@ -70,20 +70,29 @@ export class EmploymentEditComponent extends TestScope implements OnInit, OnDest
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Employment({
-              object: this.data.id,
-              include: {
-                Employee: x,
-                Employer: x,
-                Parties: x
-              }
-            }),
-            pull.Party({
-              object: this.data.associationId,
-            }),
-            pull.Person({
-            }),
+            pull.Person(),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.Employment({
+                object: this.data.id,
+                include: {
+                  Employee: x,
+                  Employer: x,
+                  Parties: x
+                }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Party({
+                object: this.data.associationId,
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

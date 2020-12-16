@@ -53,17 +53,9 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
           const id = this.data.id;
 
           const pulls = [
-            pull.Organisation({ object: this.data.associationId }),
             pull.Organisation({
               name: 'InternalOrganisations',
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
-            }),
-            pull.RepeatingPurchaseInvoice({
-              object: id,
-              include: {
-                Frequency: x,
-                DayOfWeek: x,
-              },
             }),
             pull.TimeFrequency({
               predicate: new Equals({ propertyType: m.TimeFrequency.IsActive, value: true }),
@@ -71,6 +63,24 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
             }),
             pull.DayOfWeek(),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.RepeatingPurchaseInvoice({
+                object: id,
+                include: {
+                  Frequency: x,
+                  DayOfWeek: x,
+                },
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Organisation({ object: this.data.associationId }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

@@ -58,14 +58,6 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
           const isCreate = this.data.id === undefined;
 
           let pulls = [
-            pull.WorkEffortPurchaseOrderItemAssignment({
-              object: this.data.id,
-              include: {
-                Assignment: x,
-                PurchaseOrderItem: x
-              }
-            }
-            ),
             pull.PurchaseOrder({
               sort: new Sort(this.m.PurchaseOrder.OrderNumber),
               include: {
@@ -78,6 +70,18 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
               }
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.WorkEffortPurchaseOrderItemAssignment({
+                object: this.data.id,
+                include: {
+                  Assignment: x,
+                  PurchaseOrderItem: x
+                }
+              }),
+            );
+          }
 
           if (isCreate) {
             pulls = [

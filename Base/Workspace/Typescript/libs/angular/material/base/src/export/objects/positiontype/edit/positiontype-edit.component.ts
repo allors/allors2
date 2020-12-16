@@ -50,10 +50,15 @@ export class PositionTypeEditComponent extends TestScope implements OnInit, OnDe
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.PositionType({
-              object: this.data.id,
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.PositionType({
+                object: this.data.id,
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

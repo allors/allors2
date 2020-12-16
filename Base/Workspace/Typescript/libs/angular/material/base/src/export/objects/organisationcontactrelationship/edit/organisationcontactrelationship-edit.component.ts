@@ -58,22 +58,33 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.OrganisationContactRelationship({
-              object: this.data.id,
-              include: {
-                Organisation: x,
-                Contact: x,
-                Parties: x,
-              },
-            }),
-            pull.Party({
-              object: this.data.associationId,
-            }),
-            pull.Organisation({}),
+            pull.Organisation(),
             pull.OrganisationContactKind({
               sort: new Sort(this.m.OrganisationContactKind.Description),
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.OrganisationContactRelationship({
+                object: this.data.id,
+                include: {
+                  Organisation: x,
+                  Contact: x,
+                  Parties: x,
+                },
+              }),
+            );
+          }
+
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.Party({
+                object: this.data.associationId,
+              }),
+            );
+          }
 
           this.peopleFilter = Filters.peopleFilter(m);
 

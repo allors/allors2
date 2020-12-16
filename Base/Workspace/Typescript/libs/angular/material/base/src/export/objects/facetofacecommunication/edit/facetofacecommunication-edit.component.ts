@@ -62,23 +62,6 @@ export class FaceToFaceCommunicationEditComponent extends TestScope implements O
           const isCreate = this.data.id === undefined;
 
           let pulls = [
-            pull.FaceToFaceCommunication({
-              object: this.data.id,
-              include: {
-                FromParty: {
-                  CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                },
-                ToParty: {
-                  CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                },
-                EventPurposes: x,
-                CommunicationEventState: x
-              }
-            }),
             pull.Organisation({
               object: this.internalOrganisationId.value,
               name: 'InternalOrganisation',
@@ -99,7 +82,40 @@ export class FaceToFaceCommunicationEditComponent extends TestScope implements O
             }),
           ];
 
-          if (isCreate) {
+          if (!isCreate) {
+            pulls = [
+              ...pulls,
+              pull.FaceToFaceCommunication({
+                object: this.data.id,
+                include: {
+                  FromParty: {
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x
+                    }
+                  },
+                  ToParty: {
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x
+                    }
+                  },
+                  EventPurposes: x,
+                  CommunicationEventState: x
+                }
+              }),
+              pull.CommunicationEvent({
+                object: this.data.id,
+                fetch: {
+                  InvolvedParties: {
+                    include: {
+                      CurrentContacts: x
+                    }
+                  }
+                }
+              }),
+            ];
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls = [
               ...pulls,
               pull.Organisation({
@@ -129,22 +145,6 @@ export class FaceToFaceCommunicationEditComponent extends TestScope implements O
                   }
                 }
               })
-            ];
-          }
-
-          if (!isCreate) {
-            pulls = [
-              ...pulls,
-              pull.CommunicationEvent({
-                object: this.data.id,
-                fetch: {
-                  InvolvedParties: {
-                    include: {
-                      CurrentContacts: x
-                    }
-                  }
-                }
-              }),
             ];
           }
 

@@ -49,7 +49,7 @@ export class SalesOrderTransferEditComponent extends TestScope implements OnInit
       .pipe(
         switchMap(() => {
 
-          const create = (this.data as IObject).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
           const { objectType, associationRoleType } = this.data;
 
           const pulls = [
@@ -68,7 +68,19 @@ export class SalesOrderTransferEditComponent extends TestScope implements OnInit
             })
           ];
 
-          if (create && this.data.associationId) {
+          if (!isCreate) {
+            pulls.push(
+              pull.SalesTerm(
+                {
+                  object: this.data.id,
+                  include: {
+                    TermType: x,
+                  }
+                }),
+              );
+          }
+
+          if (isCreate && this.data.associationId) {
             pulls.push(
               pull.SalesInvoice({ object: this.data.associationId }),
               pull.SalesOrder({ object: this.data.associationId }),
@@ -77,7 +89,7 @@ export class SalesOrderTransferEditComponent extends TestScope implements OnInit
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, create, objectType, associationRoleType }))
+              map((loaded) => ({ loaded, create: isCreate, objectType, associationRoleType }))
             );
         })
       )
