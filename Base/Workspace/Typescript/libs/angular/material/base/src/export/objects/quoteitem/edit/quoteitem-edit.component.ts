@@ -125,54 +125,6 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
           const create = (this.data as IObject).id === undefined;
 
           const pulls = [
-            pull.QuoteItem({
-              object: this.data.id,
-              include: {
-                QuoteItemState: x,
-                RequestItem: x,
-                Product: x,
-                SerialisedItem: x,
-                AssignedVatRegime: {
-                  VatRate: x,
-                },
-                DerivedVatRegime: {
-                  VatRate: x,
-                },
-                AssignedIrpfRegime: {
-                  IrpfRate: x,
-                },
-                DerivedIrpfRegime: {
-                  IrpfRate: x,
-                },
-              },
-            }),
-            pull.QuoteItem({
-              object: this.data.id,
-              fetch: {
-                RequestItem: x,
-              },
-            }),
-            pull.QuoteItem({
-              object: this.data.id,
-              fetch: {
-                QuoteWhereQuoteItem: {
-                  include: {
-                    AssignedVatRegime: {
-                      VatRate: x,
-                    },
-                    DerivedVatRegime: {
-                      VatRate: x,
-                    },
-                    AssignedIrpfRegime: {
-                      IrpfRate: x,
-                    },
-                    DerivedIrpfRegime: {
-                      IrpfRate: x,
-                    },
-                  },
-                },
-              },
-            }),
             pull.VatRegime({
               sort: new Sort(m.VatRegime.Name),
             }),
@@ -196,6 +148,59 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
             pull.ShipmentItemState(),
             pull.ShipmentState(),
           ];
+
+          if (!create) {
+            pulls.push(
+              pull.QuoteItem({
+                object: this.data.id,
+                include: {
+                  QuoteItemState: x,
+                  RequestItem: x,
+                  Product: x,
+                  SerialisedItem: x,
+                  AssignedVatRegime: {
+                    VatRate: x,
+                  },
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                },
+              }),
+              pull.QuoteItem({
+                object: this.data.id,
+                fetch: {
+                  RequestItem: x,
+                },
+              }),
+              pull.QuoteItem({
+                object: this.data.id,
+                fetch: {
+                  QuoteWhereQuoteItem: {
+                    include: {
+                      AssignedVatRegime: {
+                        VatRate: x,
+                      },
+                      DerivedVatRegime: {
+                        VatRate: x,
+                      },
+                      AssignedIrpfRegime: {
+                        IrpfRate: x,
+                      },
+                      DerivedIrpfRegime: {
+                        IrpfRate: x,
+                      },
+                    },
+                  },
+                },
+              }),
+            );
+          }
 
           if (create && this.data.associationId) {
             pulls.push(

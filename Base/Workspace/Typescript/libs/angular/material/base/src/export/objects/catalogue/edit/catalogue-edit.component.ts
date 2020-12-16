@@ -62,20 +62,25 @@ export class CatalogueEditComponent extends TestScope implements OnInit, OnDestr
             this.fetcher.categories,
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
-            pull.Catalogue({
-              object: this.data.id,
-              include: {
-                CatalogueImage: x,
-                LocalisedNames: {
-                  Locale: x,
-                },
-                LocalisedDescriptions: {
-                  Locale: x
-                }
-              }
-            }),
             pull.Scope()
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.Catalogue({
+                object: this.data.id,
+                include: {
+                  CatalogueImage: x,
+                  LocalisedNames: {
+                    Locale: x,
+                  },
+                  LocalisedDescriptions: {
+                    Locale: x,
+                  },
+                },
+              }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(

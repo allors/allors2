@@ -58,25 +58,30 @@ export class ProductCategoryEditComponent extends TestScope implements OnInit, O
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
-            pull.ProductCategory(
-              {
-                object: this.data.id,
-                include: {
-                  Children: x,
-                  LocalisedNames: {
-                    Locale: x,
-                  },
-                  LocalisedDescriptions: {
-                    Locale: x,
-                  }
-                }
-              }
-            ),
             pull.Scope(),
             pull.ProductCategory({
               sort: new Sort(m.ProductCategory.Name),
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.ProductCategory(
+                {
+                  object: this.data.id,
+                  include: {
+                    Children: x,
+                    LocalisedNames: {
+                      Locale: x,
+                    },
+                    LocalisedDescriptions: {
+                      Locale: x,
+                    }
+                  }
+                }
+              ),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(

@@ -59,17 +59,6 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
           const isCreate = this.data.id === undefined;
 
           let pulls = [
-            pull.WorkEffortInventoryAssignment({
-              object: this.data.id,
-              include: {
-                Assignment: x,
-                InventoryItem: {
-                  Part: {
-                    InventoryItemKind: x
-                  },
-                }
-              }
-            }),
             pull.InventoryItem({
               sort: new Sort(m.InventoryItem.Name),
               include: {
@@ -89,6 +78,22 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
               }
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.WorkEffortInventoryAssignment({
+                object: this.data.id,
+                include: {
+                  Assignment: x,
+                  InventoryItem: {
+                    Part: {
+                      InventoryItemKind: x
+                    },
+                  }
+                }
+              }),
+            );
+          }
 
           if (isCreate) {
             pulls = [

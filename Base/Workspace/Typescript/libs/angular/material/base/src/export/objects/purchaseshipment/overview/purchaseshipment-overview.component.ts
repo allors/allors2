@@ -20,7 +20,6 @@ export class PurchaseShipmentOverviewComponent extends TestScope implements Afte
 
   public shipment: PurchaseShipment;
   public orderItems: ShipmentItem[] = [];
-  public goods: Good[] = [];
   public salesInvoice: SalesInvoice;
   public billingProcesses: BillingProcess[];
   public billingForOrderItems: BillingProcess;

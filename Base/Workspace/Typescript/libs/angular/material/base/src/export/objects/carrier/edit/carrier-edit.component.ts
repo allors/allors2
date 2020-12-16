@@ -53,10 +53,15 @@ export class CarrierEditComponent extends TestScope implements OnInit, OnDestroy
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.Carrier({
-              object: this.data.id,
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.Carrier({
+                object: this.data.id,
+              }),
+            );
+          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

@@ -53,15 +53,20 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.locales,
-            pull.Brand({
-              object: this.data.id,
-              include: {
-                LogoImage: x,
-                Models: x,
-                LocalisedDescriptions: x,
-              },
-            }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.Brand({
+                object: this.data.id,
+                include: {
+                  LogoImage: x,
+                  Models: x,
+                  LocalisedDescriptions: x,
+                },
+              }),
+            );
+          }
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

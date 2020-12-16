@@ -22,7 +22,6 @@ export class SalesInvoiceOverviewSummaryComponent {
   orders: SalesOrder[];
   repeatingInvoices: RepeatingSalesInvoice[];
   repeatingInvoice: RepeatingSalesInvoice;
-  goods: Good[] = [];
   print: Action;
   workEfforts: WorkEffort[];
   public hasIrpf: boolean;
@@ -49,7 +48,6 @@ export class SalesInvoiceOverviewSummaryComponent {
     const salesInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
     const salesOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
     const workEffortPullName = `${panel.name}_${this.m.WorkEffort.name}`;
-    const goodPullName = `${panel.name}_${this.m.Good.name}`;
     const repeatingSalesInvoicePullName = `${panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
@@ -109,10 +107,6 @@ export class SalesInvoiceOverviewSummaryComponent {
             WorkEfforts: x,
           },
         }),
-        pull.Good({
-          name: goodPullName,
-          sort: new Sort(m.Good.Name),
-        }),
         pull.RepeatingSalesInvoice({
           name: repeatingSalesInvoicePullName,
           predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, object: id }),
@@ -125,7 +119,6 @@ export class SalesInvoiceOverviewSummaryComponent {
     };
 
     panel.onPulled = (loaded) => {
-      this.goods = loaded.collections.Goods as Good[];
       this.orders = loaded.collections.SalesOrders as SalesOrder[];
       this.workEfforts = loaded.collections[workEffortPullName] as WorkEffort[];
       this.invoice = loaded.objects.SalesInvoice as SalesInvoice;

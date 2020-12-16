@@ -23,7 +23,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
   readonly m: Meta;
 
   workEffortFixedAssetAssignment: WorkEffortFixedAssetAssignment;
-  workEfforts: WorkEffort[];
   workEffort: WorkEffort;
   assignment: WorkEffort;
   serialisedItem: SerialisedItem;
@@ -62,14 +61,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.WorkEffortFixedAssetAssignment({
-              object: this.data.id,
-              include: {
-                Assignment: x,
-                FixedAsset: x,
-                AssetAssignmentStatus: x
-              }
-            }),
             pull.WorkEffort({
               object: this.data.associationId,
             }),
@@ -77,14 +68,24 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
               object: this.data.associationId,
               sort: new Sort(m.SerialisedItem.Name)
             }),
-            pull.WorkEffort({
-              sort: new Sort(m.WorkEffort.Name)
-            }),
             pull.AssetAssignmentStatus({
               predicate: new Equals({ propertyType: m.AssetAssignmentStatus.IsActive, value: true }),
               sort: new Sort(m.AssetAssignmentStatus.Name)
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.WorkEffortFixedAssetAssignment({
+                object: this.data.id,
+                include: {
+                  Assignment: x,
+                  FixedAsset: x,
+                  AssetAssignmentStatus: x
+                }
+              }),
+            );
+          }
 
           this.serialisedItemsFilter = Filters.serialisedItemsFilter(m);
 
@@ -100,7 +101,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
         this.allors.context.reset();
 
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
-        this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 

@@ -73,28 +73,33 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
           const isCreate = this.data.id === undefined;
 
           let pulls = [
-            pull.TimeEntry({
-              object: this.data.id,
-              include: {
-                TimeFrequency: x,
-                BillingFrequency: x,
-              },
-            }),
-            pull.TimeEntry({
-              object: this.data.id,
-              fetch: {
-                WorkEffort: {
-                  WorkEffortPartyAssignmentsWhereAssignment: {
-                    include: {
-                      Party: x,
-                    },
-                  },
-                },
-              },
-            }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.TimeEntry({
+                object: this.data.id,
+                include: {
+                  TimeFrequency: x,
+                  BillingFrequency: x,
+                },
+              }),
+              pull.TimeEntry({
+                object: this.data.id,
+                fetch: {
+                  WorkEffort: {
+                    WorkEffortPartyAssignmentsWhereAssignment: {
+                      include: {
+                        Party: x,
+                      },
+                    },
+                  },
+                },
+              }),
+            );
+          }
 
           if (isCreate) {
             pulls = [

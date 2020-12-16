@@ -109,54 +109,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.SalesOrderItem({
-              object: this.data.id,
-              include: {
-                SalesOrderItemState: x,
-                SalesOrderItemShipmentState: x,
-                SalesOrderItemInvoiceState: x,
-                SalesOrderItemPaymentState: x,
-                ReservedFromNonSerialisedInventoryItem: x,
-                ReservedFromSerialisedInventoryItem: x,
-                NextSerialisedItemAvailability: x,
-                Product: x,
-                SerialisedItem: x,
-                QuoteItem: x,
-                AssignedVatRegime: {
-                  VatRate: x,
-                },
-                AssignedIrpfRegime: {
-                  IrpfRate: x,
-                },
-                DerivedVatRegime: {
-                  VatRate: x,
-                },
-                DerivedIrpfRegime: {
-                  IrpfRate: x,
-                }
-            }
-            }),
-            pull.SalesOrderItem({
-              object: this.data.id,
-              fetch: {
-                SalesOrderWhereSalesOrderItem: {
-                  include: {
-                    AssignedVatRegime: {
-                      VatRate: x,
-                    },
-                    AssignedIrpfRegime: {
-                      IrpfRate: x,
-                    },
-                    DerivedVatRegime: {
-                      VatRate: x,
-                    },
-                    DerivedIrpfRegime: {
-                      IrpfRate: x,
-                    }
-                    }
-                }
-              }
-            }),
             pull.VatRegime({ 
               sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ 
@@ -181,6 +133,59 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
             pull.ShipmentItemState(),
             pull.ShipmentState(),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.SalesOrderItem({
+                object: this.data.id,
+                include: {
+                  SalesOrderItemState: x,
+                  SalesOrderItemShipmentState: x,
+                  SalesOrderItemInvoiceState: x,
+                  SalesOrderItemPaymentState: x,
+                  ReservedFromNonSerialisedInventoryItem: x,
+                  ReservedFromSerialisedInventoryItem: x,
+                  NextSerialisedItemAvailability: x,
+                  Product: x,
+                  SerialisedItem: x,
+                  QuoteItem: x,
+                  AssignedVatRegime: {
+                    VatRate: x,
+                  },
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  DerivedIrpfRegime: {
+                    IrpfRate: x,
+                  }
+              }
+              }),
+              pull.SalesOrderItem({
+                object: this.data.id,
+                fetch: {
+                  SalesOrderWhereSalesOrderItem: {
+                    include: {
+                      AssignedVatRegime: {
+                        VatRate: x,
+                      },
+                      AssignedIrpfRegime: {
+                        IrpfRate: x,
+                      },
+                      DerivedVatRegime: {
+                        VatRate: x,
+                      },
+                      DerivedIrpfRegime: {
+                        IrpfRate: x,
+                      }
+                      }
+                  }
+                }
+              }),
+            );
+          }
 
           if (isCreate && this.data.associationId) {
             pulls.push(

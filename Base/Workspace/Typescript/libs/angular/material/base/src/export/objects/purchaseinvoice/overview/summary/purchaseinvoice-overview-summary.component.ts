@@ -20,7 +20,6 @@ export class PurchasInvoiceOverviewSummaryComponent {
 
   orders: PurchaseOrder[];
   invoice: PurchaseInvoice;
-  goods: Good[] = [];
 
   print: Action;
   orderTotalExVat: number;
@@ -47,7 +46,6 @@ export class PurchasInvoiceOverviewSummaryComponent {
 
     const purchaseInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
     const purchaseOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
-    const goodPullName = `${panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, x } = this.metaService;
@@ -90,16 +88,11 @@ export class PurchasInvoiceOverviewSummaryComponent {
             PurchaseOrders: x,
           },
         }),
-        pull.Good({
-          name: goodPullName,
-          sort: new Sort(m.Good.Name),
-        })
       );
     };
 
     panel.onPulled = (loaded) => {
       this.invoice = loaded.objects[purchaseInvoicePullName] as PurchaseInvoice;
-      this.goods = loaded.collections[goodPullName] as Good[];
       this.orders = loaded.collections[purchaseOrderPullName] as PurchaseOrder[];
 
       this.orderTotalExVat = this.orders.reduce(

@@ -45,7 +45,6 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   addFacility = false;
   supplierOffering: SupplierOffering;
   facilities: Facility[];
-  supplierOfferings: SupplierOffering[];
   selectedFacility: Facility;
 
   private subscription: Subscription;
@@ -78,52 +77,6 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           const { id } = this.data;
 
           const pulls = [
-            pull.PurchaseOrderItem({
-              object: id,
-              include:
-              {
-                InvoiceItemType: x,
-                PurchaseOrderItemState: x,
-                PurchaseOrderItemShipmentState: x,
-                PurchaseOrderItemPaymentState: x,
-                Part: x,
-                SerialisedItem: x,
-                StoredInFacility: x,
-                AssignedVatRegime: {
-                  VatRate: x,
-                },
-                DerivedVatRegime: {
-                  VatRate: x,
-                },
-                AssignedIrpfRegime: {
-                  IrpfRate: x,
-                },
-                DerivedIrpfRegime: {
-                  IrpfRate: x,
-                }
-              }
-            }),
-            pull.PurchaseOrderItem({
-              object: id,
-              fetch: {
-                PurchaseOrderWherePurchaseOrderItem: {
-                  include: {
-                    AssignedVatRegime: {
-                      VatRate: x,
-                    },
-                    DerivedVatRegime: {
-                      VatRate: x,
-                    },
-                    AssignedIrpfRegime: {
-                      IrpfRate: x,
-                    },
-                    DerivedIrpfRegime: {
-                      IrpfRate: x,
-                    }
-                  }
-                }
-              }
-            }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name)
@@ -139,15 +92,59 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
             }),
           ];
 
-          if (isCreate && this.data.associationId) {
+          if (!isCreate) {
             pulls.push(
-              pull.SupplierOffering({
-                name: `AllSupplierOfferings`,
-                include: {
+              pull.PurchaseOrderItem({
+                object: id,
+                include:
+                {
+                  InvoiceItemType: x,
+                  PurchaseOrderItemState: x,
+                  PurchaseOrderItemShipmentState: x,
+                  PurchaseOrderItemPaymentState: x,
                   Part: x,
-                  Supplier: x
+                  SerialisedItem: x,
+                  StoredInFacility: x,
+                  AssignedVatRegime: {
+                    VatRate: x,
+                  },
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedIrpfRegime: {
+                    IrpfRate: x,
+                  }
                 }
               }),
+              pull.PurchaseOrderItem({
+                object: id,
+                fetch: {
+                  PurchaseOrderWherePurchaseOrderItem: {
+                    include: {
+                      AssignedVatRegime: {
+                        VatRate: x,
+                      },
+                      DerivedVatRegime: {
+                        VatRate: x,
+                      },
+                      AssignedIrpfRegime: {
+                        IrpfRate: x,
+                      },
+                      DerivedIrpfRegime: {
+                        IrpfRate: x,
+                      }
+                    }
+                  }
+                }
+              }),
+            );
+          }
+
+          if (isCreate && this.data.associationId) {
+            pulls.push(
               pull.PurchaseOrder({
                 object: this.data.associationId,
                 include: {
@@ -182,12 +179,6 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
         this.serviceItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'a4d2e6d0-c6c1-46ec-a1cf-3a64822e7a9e');
         this.timeItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'da178f93-234a-41ed-815c-819af8ca4e6f');
-
-        if (isCreate) {
-          this.supplierOfferings = loaded.collections.AllSupplierOfferings as SupplierOffering[];
-        } else {
-          this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        }
 
         this.partsFilter = new SearchFactory({
           objectType: this.m.NonUnifiedPart,

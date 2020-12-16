@@ -22,7 +22,6 @@ export class SalesInvoiceOverviewComponent extends TestScope implements AfterVie
   public invoice: SalesInvoice;
   public repeatingInvoices: RepeatingSalesInvoice[];
   public repeatingInvoice: RepeatingSalesInvoice;
-  public goods: Good[] = [];
 
   subscription: Subscription;
 
@@ -92,10 +91,6 @@ export class SalesInvoiceOverviewComponent extends TestScope implements AfterVie
                 }
               }
             }),
-            pull.Good(
-              {
-                sort: new Sort(m.Good.Name),
-              }),
             pull.RepeatingSalesInvoice(
               {
                 predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, object: id }),
@@ -118,7 +113,6 @@ export class SalesInvoiceOverviewComponent extends TestScope implements AfterVie
 
         this.panelManager.onPulled(loaded);
 
-        this.goods = loaded.collections.Goods as Good[];
         this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
         this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
         if (this.repeatingInvoices.length > 0) {

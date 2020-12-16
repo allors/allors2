@@ -85,46 +85,6 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
           const { id } = this.data;
 
           const pulls = [
-            pull.PurchaseInvoiceItem({
-              object: id,
-              include: {
-                PurchaseInvoiceItemState: x,
-                SerialisedItem: x,
-                AssignedVatRegime: {
-                  VatRate: x,
-                },
-                DerivedVatRegime: {
-                  VatRate: x,
-                },
-                AssignedIrpfRegime: {
-                  IrpfRate: x,
-                },
-                DerivedIrpfRegime: {
-                  IrpfRate: x,
-                },
-          },
-            }),
-            pull.PurchaseInvoiceItem({
-              object: id,
-              fetch: {
-                PurchaseInvoiceWherePurchaseInvoiceItem: {
-                  include: {
-                    AssignedVatRegime: {
-                      VatRate: x,
-                    },
-                    DerivedVatRegime: {
-                      VatRate: x,
-                    },
-                    AssignedIrpfRegime: {
-                      IrpfRate: x,
-                    },
-                    DerivedIrpfRegime: {
-                      IrpfRate: x,
-                    },
-                  },
-                },
-              },
-            }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -136,6 +96,51 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               sort: new Sort(m.IrpfRegime.Name),
             }),
           ];
+
+          if (!isCreate) {
+            pulls.push(
+              pull.PurchaseInvoiceItem({
+                object: id,
+                include: {
+                  PurchaseInvoiceItemState: x,
+                  SerialisedItem: x,
+                  AssignedVatRegime: {
+                    VatRate: x,
+                  },
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+            },
+              }),
+              pull.PurchaseInvoiceItem({
+                object: id,
+                fetch: {
+                  PurchaseInvoiceWherePurchaseInvoiceItem: {
+                    include: {
+                      AssignedVatRegime: {
+                        VatRate: x,
+                      },
+                      DerivedVatRegime: {
+                        VatRate: x,
+                      },
+                      AssignedIrpfRegime: {
+                        IrpfRate: x,
+                      },
+                      DerivedIrpfRegime: {
+                        IrpfRate: x,
+                      },
+                    },
+                  },
+                },
+              }),
+            );
+          }
 
           if (this.data.associationId) {
             pulls.push(

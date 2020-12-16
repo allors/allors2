@@ -21,7 +21,6 @@ export class PurchaseInvoiceOverviewComponent extends TestScope implements After
 
   order: PurchaseOrder;
   invoice: PurchaseInvoice;
-  goods: Good[] = [];
 
   subscription: Subscription;
 
@@ -83,9 +82,6 @@ export class PurchaseInvoiceOverviewComponent extends TestScope implements After
                 }
               },
             }),
-            pull.Good({
-              sort: new Sort(m.Good.Name)
-            })
           ];
 
           this.panelManager.onPull(pulls);
@@ -100,7 +96,6 @@ export class PurchaseInvoiceOverviewComponent extends TestScope implements After
 
         this.panelManager.onPulled(loaded);
 
-        this.goods = loaded.collections.Goods as Good[];
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
 

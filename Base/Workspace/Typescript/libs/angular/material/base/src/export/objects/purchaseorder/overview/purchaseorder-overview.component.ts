@@ -20,7 +20,6 @@ export class PurchaseOrderOverviewComponent extends TestScope implements AfterVi
 
   public order: PurchaseOrder;
   public orderItems: PurchaseOrderItem[] = [];
-  public goods: Good[] = [];
 
   subscription: Subscription;
 

@@ -19,16 +19,8 @@ export class SalesOrderOverviewComponent extends TestScope implements AfterViewI
 
   title = 'Sales Order';
 
-  public order: SalesOrder;
-  public orderItems: SalesOrderItem[] = [];
-  public goods: Good[] = [];
-  public salesInvoice: SalesInvoice;
-  public billingProcesses: BillingProcess[];
-  public billingForOrderItems: BillingProcess;
-  public selectedSerialisedInventoryState: string;
-  public inventoryItemStates: SerialisedInventoryItemState[];
-
   subscription: Subscription;
+  order: SalesOrder;
 
   constructor(
     @Self() public panelManager: PanelManagerService,
@@ -63,56 +55,6 @@ export class SalesOrderOverviewComponent extends TestScope implements AfterViewI
           const pulls = [
             pull.SalesOrder({
               object: this.panelManager.id,
-              include: {
-                SalesOrderItems: {
-                  Product: x,
-                  InvoiceItemType: x,
-                  SalesOrderItemState: x,
-                  SalesOrderItemShipmentState: x,
-                  SalesOrderItemPaymentState: x,
-                  SalesOrderItemInvoiceState: x,
-                },
-                SalesTerms: {
-                  TermType: x,
-                },
-                BillToCustomer: x,
-                BillToContactPerson: x,
-                ShipToCustomer: x,
-                ShipToContactPerson: x,
-                ShipToEndCustomer: x,
-                ShipToEndCustomerContactPerson: x,
-                BillToEndCustomer: x,
-                BillToEndCustomerContactPerson: x,
-                SalesOrderState: x,
-                SalesOrderShipmentState: x,
-                SalesOrderInvoiceState: x,
-                SalesOrderPaymentState: x,
-                CreatedBy: x,
-                LastModifiedBy: x,
-                Quote: x,
-                DerivedShipToAddress: {
-                  Country: x,
-                },
-                DerivedBillToEndCustomerContactMechanism: {
-                  PostalAddress_Country: x
-                },
-                DerivedShipToEndCustomerAddress: {
-                  Country: x,
-                },
-                DerivedBillToContactMechanism: {
-                  PostalAddress_Country: x
-                }
-              }
-            }),
-            pull.SalesOrder({
-              object: this.panelManager.id,
-              fetch: { SalesInvoicesWhereSalesOrder: x }
-            }),
-            pull.Good({ sort: new Sort(m.Good.Name) }),
-            pull.BillingProcess({ sort: new Sort(m.BillingProcess.Name) }),
-            pull.SerialisedInventoryItemState({
-              predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
-              sort: new Sort(m.SerialisedInventoryItemState.Name)
             }),
           ];
 
@@ -129,13 +71,6 @@ export class SalesOrderOverviewComponent extends TestScope implements AfterViewI
         this.panelManager.onPulled(loaded);
 
         this.order = loaded.objects.SalesOrder as SalesOrder;
-        this.goods = loaded.collections.Goods as Good[];
-        this.salesInvoice = loaded.objects.SalesInvoice as SalesInvoice;
-        this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
-        this.billingProcesses = loaded.collections.BillingProcesses as BillingProcess[];
-        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId === 'ab01ccc2-6480-4fc0-b20e-265afd41fae2');
-        this.orderItems = this.order.SalesOrderItems;
-
       });
   }
 
