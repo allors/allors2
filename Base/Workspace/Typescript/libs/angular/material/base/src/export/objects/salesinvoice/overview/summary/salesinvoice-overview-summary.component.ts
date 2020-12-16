@@ -125,7 +125,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
       this.hasIrpf = Number(this.invoice.TotalIrpf) !== 0;
 
-      if (this.repeatingInvoices.length > 0) {
+      if (this.repeatingInvoices) {
         this.repeatingInvoice = this.repeatingInvoices[0];
       } else {
         this.repeatingInvoice = undefined;
