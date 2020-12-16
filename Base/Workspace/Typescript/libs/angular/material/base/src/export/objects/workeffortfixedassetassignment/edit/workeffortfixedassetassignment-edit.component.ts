@@ -34,6 +34,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
   externalCustomer: boolean;
 
   serialisedItemsFilter: SearchFactory;
+  workEfforts: WorkEffort[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -63,6 +64,9 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
           const pulls = [
             pull.WorkEffort({
               object: this.data.associationId,
+            }),
+            pull.WorkEffort({
+              sort: new Sort(m.WorkEffort.Name)
             }),
             pull.SerialisedItem({
               object: this.data.associationId,
@@ -101,6 +105,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
         this.allors.context.reset();
 
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
+        this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 
