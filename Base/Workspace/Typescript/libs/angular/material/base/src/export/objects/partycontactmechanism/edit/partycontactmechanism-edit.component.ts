@@ -68,9 +68,23 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
                   },
                 },
               }),
+              pull.PartyContactMechanism({
+                object: this.data.id,
+                name: 'test',
+                fetch: {
+                  PartyWherePartyContactMechanism: {
+                    PartyContactMechanisms: {
+                      include: {
+                        ContactMechanism: {
+                          PostalAddress_Country: x,
+                        },
+                      }
+                    },
+                  },
+                },
+              }),
             );
           }
-
 
           if (isCreate && this.data.associationId) {
             pulls.push(
