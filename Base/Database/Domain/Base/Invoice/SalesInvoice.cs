@@ -555,7 +555,7 @@ namespace Allors.Domain
             var year = this.InvoiceDate.Year;
 
             var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Session()).Extent();
-            fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+            fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearStoreSequenceNumbers.FiscalYear, year);
             var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
 
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))

@@ -316,8 +316,8 @@ namespace Allors.Domain
 
             invoice1.Send();
 
-            Assert.False(store.ExistSalesInvoiceCounter);
-            Assert.Equal(this.Session.Now().Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
+            Assert.False(store.ExistSalesInvoiceNumberCounter);
+            Assert.Equal(this.Session.Now().Year, store.FiscalYearsStoreSequenceNumbers.First.FiscalYear);
             Assert.Equal("1", invoice1.InvoiceNumber);
 
             var invoice2 = new SalesInvoiceBuilder(this.Session)
@@ -331,8 +331,8 @@ namespace Allors.Domain
 
             invoice2.Send();
 
-            Assert.False(store.ExistSalesInvoiceCounter);
-            Assert.Equal(this.Session.Now().Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
+            Assert.False(store.ExistSalesInvoiceNumberCounter);
+            Assert.Equal(this.Session.Now().Year, store.FiscalYearsStoreSequenceNumbers.First.FiscalYear);
             Assert.Equal("2", invoice2.InvoiceNumber);
         }
 

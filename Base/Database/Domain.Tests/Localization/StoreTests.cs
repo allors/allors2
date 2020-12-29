@@ -43,12 +43,12 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithSalesInvoiceCounter(new CounterBuilder(this.Session).Build()).Build();
+            builder.WithSalesInvoiceNumberCounter(new CounterBuilder(this.Session).Build()).Build();
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithFiscalYearInvoiceNumber(new FiscalYearInvoiceNumberBuilder(this.Session).WithFiscalYear(DateTime.Today.Year).Build());
+            builder.WithFiscalYearsStoreSequenceNumber(new FiscalYearStoreSequenceNumbersBuilder(this.Session).WithFiscalYear(DateTime.Today.Year).Build());
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);

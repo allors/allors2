@@ -95,7 +95,8 @@ namespace Tests
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
                 serialisedItemSoldOns: serialisedItemSoldOns,
-                collectiveWorkEffortInvoice: true);
+                collectiveWorkEffortInvoice: true,
+                invoiceSequence: new InvoiceSequences(this.Session).EnforcedSequence);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: this.Session,
@@ -149,7 +150,8 @@ namespace Tests
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
                 serialisedItemSoldOns: serialisedItemSoldOns,
-                collectiveWorkEffortInvoice: true);
+                collectiveWorkEffortInvoice: true,
+                invoiceSequence: new InvoiceSequences(this.Session).EnforcedSequence);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
             var faker = this.Session.Faker();
