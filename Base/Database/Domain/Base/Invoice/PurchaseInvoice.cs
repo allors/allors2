@@ -111,8 +111,14 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber)
             {
-                this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(this.InvoiceDate.Year);
-                this.SortableInvoiceNumber = this.Session().GetSingleton().SortableNumber(this.BilledTo.PurchaseInvoiceNumberPrefix, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
+                var year = this.InvoiceDate.Year;
+                this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(year);
+
+                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(this.Session()).Extent();
+                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+
+                this.SortableInvoiceNumber = this.Session().GetSingleton().SortableNumber(fiscalYearInternalOrganisationSequenceNumbers?.PurchaseInvoiceNumberPrefix ?? this.BilledTo.PurchaseInvoiceNumberPrefix, this.InvoiceNumber, year.ToString());
             }
 
             if (this.BilledFrom is Organisation supplier)

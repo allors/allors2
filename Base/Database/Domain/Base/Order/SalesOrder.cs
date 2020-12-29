@@ -183,8 +183,14 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber && this.ExistStore)
             {
-                this.OrderNumber = this.Store.NextSalesOrderNumber(this.OrderDate.Year);
-                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(this.Store.SalesOrderNumberPrefix, this.OrderNumber, this.OrderDate.Year.ToString());
+                var year = this.OrderDate.Year;
+                this.OrderNumber = this.Store.NextSalesOrderNumber(year);
+
+                var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Session()).Extent();
+                fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearStoreSequenceNumbers.FiscalYear, year);
+                var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
+
+                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(fiscalYearStoreSequenceNumbers?.SalesOrderNumberPrefix ?? this.Store.SalesOrderNumberPrefix, this.OrderNumber, year.ToString());
             }
 
             if (this.BillToCustomer?.BaseIsActiveCustomer(this.TakenBy, this.OrderDate) == false)

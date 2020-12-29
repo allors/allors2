@@ -7,6 +7,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Linq;
+    using Allors.Meta;
 
     public static partial class QuoteExtensions
     {
@@ -35,8 +36,14 @@ namespace Allors.Domain
 
             if (!@this.ExistQuoteNumber && @this.ExistIssuer)
             {
-                @this.QuoteNumber = @this.Issuer.NextQuoteNumber(session.Now().Year);
-                ((QuoteDerivedRoles)@this).SortableQuoteNumber = @this.Session().GetSingleton().SortableNumber(@this.Issuer.QuoteNumberPrefix, @this.QuoteNumber, @this.IssueDate.Year.ToString());
+                var year = @this.IssueDate.Year;
+                @this.QuoteNumber = @this.Issuer.NextQuoteNumber(year);
+
+                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
+                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+
+                ((QuoteDerivedRoles)@this).SortableQuoteNumber = @this.Session().GetSingleton().SortableNumber(fiscalYearInternalOrganisationSequenceNumbers?.QuoteNumberPrefix ?? @this.Issuer.QuoteNumberPrefix, @this.QuoteNumber, year.ToString());
             }
 
             if (@this.QuoteState.IsCreated)

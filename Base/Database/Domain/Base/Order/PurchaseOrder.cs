@@ -189,8 +189,14 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber)
             {
-                this.OrderNumber = this.OrderedBy?.NextPurchaseOrderNumber(this.OrderDate.Year);
-                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(this.OrderedBy?.PurchaseOrderNumberPrefix, this.OrderNumber, this.OrderDate.Year.ToString());
+                var year = this.OrderDate.Year;
+                this.OrderNumber = this.OrderedBy?.NextPurchaseOrderNumber(year);
+
+                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(this.Session()).Extent();
+                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+
+                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(fiscalYearInternalOrganisationSequenceNumbers?.PurchaseOrderNumberPrefix ?? this.OrderedBy?.PurchaseOrderNumberPrefix, this.OrderNumber, year.ToString());
             }
 
             if (this.TakenViaSupplier is Organisation supplier)

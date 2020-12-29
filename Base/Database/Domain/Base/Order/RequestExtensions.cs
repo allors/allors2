@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using Allors.Meta;
 
     public static partial class RequestExtensions
     {
@@ -60,8 +61,14 @@ namespace Allors.Domain
 
             if (@this.ExistRecipient && !@this.ExistRequestNumber)
             {
-                @this.RequestNumber = @this.Recipient.NextRequestNumber(session.Now().Year);
-                ((RequestDerivedRoles)@this).SortableRequestNumber = @this.Session().GetSingleton().SortableNumber(@this.Recipient.RequestNumberPrefix, @this.RequestNumber, @this.RequestDate.Year.ToString());
+                var year = @this.RequestDate.Year;
+                @this.RequestNumber = @this.Recipient.NextRequestNumber(year);
+
+                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
+                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+
+                ((RequestDerivedRoles)@this).SortableRequestNumber = @this.Session().GetSingleton().SortableNumber(fiscalYearInternalOrganisationSequenceNumbers?.RequestNumberPrefix ?? @this.Recipient.RequestNumberPrefix, @this.RequestNumber, year.ToString());
             }
 
             @this.DeriveInitialObjectState();

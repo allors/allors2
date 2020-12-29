@@ -25,13 +25,13 @@ namespace Allors.Domain
                     .Build();
 
                 return new PrefetchPolicyBuilder()
-                    .WithRule(M.Organisation.RequestCounter.RoleType)
-                    .WithRule(M.Organisation.QuoteCounter.RoleType)
-                    .WithRule(M.Organisation.PurchaseInvoiceCounter.RoleType)
-                    .WithRule(M.Organisation.PurchaseOrderCounter.RoleType)
+                    .WithRule(M.Organisation.RequestNumberCounter.RoleType)
+                    .WithRule(M.Organisation.QuoteNumberCounter.RoleType)
+                    .WithRule(M.Organisation.PurchaseInvoiceNumberCounter.RoleType)
+                    .WithRule(M.Organisation.PurchaseOrderNumberCounter.RoleType)
                     .WithRule(M.Organisation.SubAccountCounter.RoleType)
-                    .WithRule(M.Organisation.IncomingShipmentCounter.RoleType)
-                    .WithRule(M.Organisation.WorkEffortCounter.RoleType)
+                    .WithRule(M.Organisation.IncomingShipmentNumberCounter.RoleType)
+                    .WithRule(M.Organisation.WorkEffortNumberCounter.RoleType)
                     .WithRule(M.Organisation.InvoiceSequence.RoleType)
                     .WithRule(M.Organisation.ContactsUserGroup)
                     .WithRule(M.Organisation.OrganisationContactRelationshipsWhereOrganisation, organisationContactRelationshipPrefetch)
@@ -117,59 +117,6 @@ namespace Allors.Domain
             var singleton = session.GetSingleton();
 
             session.Prefetch(this.PrefetchPolicy);
-
-            if (this.IsInternalOrganisation)
-            {
-                if (!this.ExistRequestCounter)
-                {
-                    this.RequestCounter = new CounterBuilder(session).Build();
-                }
-
-                if (!this.ExistQuoteCounter)
-                {
-                    this.QuoteCounter = new CounterBuilder(session).Build();
-                }
-
-                if (!this.ExistPurchaseInvoiceCounter)
-                {
-                    this.PurchaseInvoiceCounter = new CounterBuilder(session).Build();
-                }
-
-                if (!this.ExistPurchaseOrderCounter)
-                {
-                    this.PurchaseOrderCounter = new CounterBuilder(session).Build();
-                }
-
-                if (!this.ExistSubAccountCounter)
-                {
-                    this.SubAccountCounter = new CounterBuilder(session).Build();
-                }
-
-                if (!this.ExistIncomingShipmentCounter)
-                {
-                    this.IncomingShipmentCounter = new CounterBuilder(session).Build();
-                }
-
-                if (!this.ExistWorkEffortCounter)
-                {
-                    this.WorkEffortCounter = new CounterBuilder(session).Build();
-                }
-
-                if (!this.ExistInvoiceSequence)
-                {
-                    this.InvoiceSequence = new InvoiceSequenceBuilder(session).Build();
-                }
-
-                if (this.DoAccounting && !this.ExistFiscalYearStartMonth)
-                {
-                    this.FiscalYearStartMonth = 1;
-                }
-
-                if (this.DoAccounting && !this.ExistFiscalYearStartDay)
-                {
-                    this.FiscalYearStartDay = 1;
-                }
-            }
 
             this.PartyName = this.Name;
 

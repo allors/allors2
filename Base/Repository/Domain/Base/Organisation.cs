@@ -18,6 +18,8 @@ namespace Allors.Repository
 
         public string TransactionReferenceNumber { get; set; }
 
+        public FiscalYearInternalOrganisationSequenceNumbers[] FiscalYearsInternalOrganisationSequenceNumbers { get; set; }
+
         public JournalEntryNumber[] JournalEntryNumbers { get; set; }
 
         public Country EuListingState { get; set; }
@@ -28,7 +30,7 @@ namespace Allors.Repository
 
         public PaymentMethod DefaultCollectionMethod { get; set; }
 
-        public Counter PurchaseInvoiceCounter { get; set; }
+        public Counter PurchaseInvoiceNumberCounter { get; set; }
 
         public AccountingPeriod ActualAccountingPeriod { get; set; }
 
@@ -40,7 +42,7 @@ namespace Allors.Repository
 
         public CostCenterSplitMethod CostCenterSplitMethod { get; set; }
 
-        public Counter PurchaseOrderCounter { get; set; }
+        public Counter PurchaseOrderNumberCounter { get; set; }
 
         public GeneralLedgerAccount SalesPaymentDifferencesAccount { get; set; }
 
@@ -58,7 +60,7 @@ namespace Allors.Repository
 
         public Counter AccountingTransactionCounter { get; set; }
 
-        public Counter IncomingShipmentCounter { get; set; }
+        public Counter IncomingShipmentNumberCounter { get; set; }
 
         public GeneralLedgerAccount RetainedEarningsAccount { get; set; }
 
@@ -72,9 +74,9 @@ namespace Allors.Repository
 
         public string TransactionReferenceNumberPrefix { get; set; }
 
-        public Counter QuoteCounter { get; set; }
+        public Counter QuoteNumberCounter { get; set; }
 
-        public Counter RequestCounter { get; set; }
+        public Counter RequestNumberCounter { get; set; }
 
         public GeneralLedgerAccount PurchasePaymentDifferencesAccount { get; set; }
 
@@ -228,9 +230,9 @@ namespace Allors.Repository
 
         public bool CollectiveWorkEffortInvoice { get; set; }
 
-        public Counter WorkEffortCounter { get; set; }
+        public Counter WorkEffortNumberCounter { get; set; }
 
-        public string WorkEffortPrefix { get; set; }
+        public string WorkEffortNumberPrefix { get; set; }
 
         public bool RequireExistingWorkEffortPartyAssignment { get; set; }
 

@@ -138,8 +138,14 @@ namespace Allors.Domain
 
             if (!this.ExistShipmentNumber && this.ExistStore)
             {
-                this.ShipmentNumber = this.Store.NextShipmentNumber();
-                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(this.Store.OutgoingShipmentNumberPrefix, this.ShipmentNumber, this.CreationDate.Value.Year.ToString());
+                var year = this.CreationDate.Value.Year;
+                this.ShipmentNumber = this.Store.NextOutgoingShipmentNumber(year);
+
+                var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Session()).Extent();
+                fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+                var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
+
+                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(fiscalYearStoreSequenceNumbers?.OutgoingShipmentNumberPrefix ?? this.Store.OutgoingShipmentNumberPrefix, this.ShipmentNumber, year.ToString());
             }
 
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();

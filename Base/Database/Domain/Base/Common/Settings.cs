@@ -13,17 +13,17 @@ namespace Allors.Domain
         {
             if (!this.ExistSkuCounter)
             {
-                this.SkuCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.SkuCounter = new CounterBuilder(this.Strategy.Session).Build();
             }
 
             if (!this.ExistSerialisedItemCounter)
             {
-                this.SerialisedItemCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.SerialisedItemCounter = new CounterBuilder(this.Strategy.Session).Build();
             }
 
             if (!this.ExistProductNumberCounter)
             {
-                this.ProductNumberCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.ProductNumberCounter = new CounterBuilder(this.Strategy.Session).Build();
             }
         }
 

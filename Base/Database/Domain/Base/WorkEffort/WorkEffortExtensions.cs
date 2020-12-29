@@ -52,8 +52,14 @@ namespace Allors.Domain
 
             if (!@this.ExistWorkEffortNumber && @this.ExistTakenBy)
             {
-                @this.DerivedRoles.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
-                @this.DerivedRoles.SortableWorkEffortNumber = @this.Session().GetSingleton().SortableNumber(@this.TakenBy.WorkEffortPrefix, @this.WorkEffortNumber, @this.CreationDate.Value.Year.ToString());
+                var year = @this.CreationDate.Value.Year;
+                @this.DerivedRoles.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber(year);
+
+                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
+                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+
+                @this.DerivedRoles.SortableWorkEffortNumber = @this.Session().GetSingleton().SortableNumber(fiscalYearInternalOrganisationSequenceNumbers?.WorkEffortNumberPrefix ?? @this.TakenBy.WorkEffortNumberPrefix, @this.WorkEffortNumber, year.ToString());
             }
 
             if (!@this.ExistExecutedBy && @this.ExistTakenBy)

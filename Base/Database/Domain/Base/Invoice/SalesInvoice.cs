@@ -552,16 +552,22 @@ namespace Allors.Domain
         {
             var singleton = this.Session().GetSingleton();
 
+            var year = this.InvoiceDate.Year;
+
+            var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Session()).Extent();
+            fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
+            var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
+
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))
             {
-                this.InvoiceNumber = this.Store.NextInvoiceNumber(this.InvoiceDate.Year);
-                this.SortableInvoiceNumber = singleton.SortableNumber(this.Store.SalesInvoiceNumberPrefix, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
+                this.InvoiceNumber = this.Store.NextSalesInvoiceNumber(this.InvoiceDate.Year);
+                this.SortableInvoiceNumber = singleton.SortableNumber(fiscalYearStoreSequenceNumbers?.SalesInvoiceNumberPrefix ?? this.Store.SalesInvoiceNumberPrefix, this.InvoiceNumber, year.ToString());
             }
 
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).CreditNote))
             {
                 this.InvoiceNumber = this.Store.NextCreditNoteNumber(this.InvoiceDate.Year);
-                this.SortableInvoiceNumber = singleton.SortableNumber(this.Store.CreditNoteNumberPrefix, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
+                this.SortableInvoiceNumber = singleton.SortableNumber(fiscalYearStoreSequenceNumbers?.CreditNoteNumberPrefix ?? this.Store.CreditNoteNumberPrefix, this.InvoiceNumber, year.ToString());
             }
 
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).NotPaid;
