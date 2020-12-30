@@ -190,10 +190,10 @@ namespace Allors.Domain
             if (!this.ExistOrderNumber)
             {
                 var year = this.OrderDate.Year;
-                this.OrderNumber = this.OrderedBy?.NextPurchaseOrderNumber(year);
+                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber(year);
 
                 var fiscalYearInternalOrganisationSequenceNumbers = this.OrderedBy?.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
-                var prefix = fiscalYearInternalOrganisationSequenceNumbers == null ? this.OrderedBy?.PurchaseOrderNumberPrefix : fiscalYearInternalOrganisationSequenceNumbers.PurchaseOrderNumberPrefix;
+                var prefix = this.OrderedBy.InvoiceSequence.IsEnforcedSequence ? this.OrderedBy?.PurchaseOrderNumberPrefix : fiscalYearInternalOrganisationSequenceNumbers.PurchaseOrderNumberPrefix;
                 this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(prefix, this.OrderNumber, year.ToString());
             }
 
