@@ -115,6 +115,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
+            this.InternalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
             var store = new StoreBuilder(this.Session).WithName("store")
                 .WithDefaultFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
                 .WithOutgoingShipmentNumberPrefix("the format is ")
@@ -170,6 +171,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipFromWithShipmentNumberPrefix_WhenDeriving_ThenSortableShipmentNumberIsSet()
         {
+            this.InternalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
             this.InternalOrganisation.StoresWhereInternalOrganisation.First.OutgoingShipmentNumberPrefix = "prefix-";
             this.Session.Derive();
 

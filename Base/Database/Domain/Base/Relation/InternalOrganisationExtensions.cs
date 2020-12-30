@@ -200,6 +200,11 @@ namespace Allors.Domain
                     {
                         @this.IncomingShipmentNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
                     }
+
+                    if (!@this.ExistWorkEffortNumberCounter)
+                    {
+                        @this.WorkEffortNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
+                    }
                 }
             }
         }

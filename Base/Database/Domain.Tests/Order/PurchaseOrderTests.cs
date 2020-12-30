@@ -136,6 +136,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithFormat_ThenFormattedOrderNumberShouldBeReturned()
         {
+            this.InternalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
@@ -184,6 +185,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenBilledToWithOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
         {
+            this.InternalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
             this.InternalOrganisation.PurchaseOrderNumberPrefix = "prefix-";
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
@@ -204,6 +206,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenBilledToWithParametrizedOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
         {
+            this.InternalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
             this.InternalOrganisation.PurchaseOrderNumberPrefix = "prefix-{year}-";
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
