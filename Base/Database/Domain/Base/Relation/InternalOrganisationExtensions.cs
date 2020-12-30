@@ -202,16 +202,6 @@ namespace Allors.Domain
                         @this.PurchaseInvoiceNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
                     }
 
-                    if (!@this.ExistRequestNumberCounter)
-                    {
-                        @this.RequestNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
-                    }
-
-                    if (!@this.ExistQuoteNumberCounter)
-                    {
-                        @this.QuoteNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
-                    }
-
                     if (!@this.ExistPurchaseOrderNumberCounter)
                     {
                         @this.PurchaseOrderNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
@@ -221,7 +211,26 @@ namespace Allors.Domain
                     {
                         @this.IncomingShipmentNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
                     }
+                }
 
+                if (@this.RequestSequence != new RequestSequences(@this.Strategy.Session).RestartOnFiscalYear)
+                {
+                    if (!@this.ExistRequestNumberCounter)
+                    {
+                        @this.RequestNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
+                    }
+                }
+
+                if (@this.QuoteSequence != new QuoteSequences(@this.Strategy.Session).RestartOnFiscalYear)
+                {
+                    if (!@this.ExistQuoteNumberCounter)
+                    {
+                        @this.QuoteNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
+                    }
+                }
+
+                if (@this.WorkEffortSequence != new WorkEffortSequences(@this.Strategy.Session).RestartOnFiscalYear)
+                {
                     if (!@this.ExistWorkEffortNumberCounter)
                     {
                         @this.WorkEffortNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();

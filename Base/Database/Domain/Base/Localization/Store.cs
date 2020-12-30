@@ -164,14 +164,18 @@ namespace Allors.Domain
                     this.SalesOrderNumberCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
 
-                if (!this.ExistOutgoingShipmentNumberCounter)
-                {
-                    this.OutgoingShipmentNumberCounter = new CounterBuilder(this.Strategy.Session).Build();
-                }
-
                 if (!this.ExistCreditNoteNumberCounter)
                 {
                     this.CreditNoteNumberCounter = new CounterBuilder(this.Strategy.Session).Build();
+                }
+            }
+
+            if (this.InternalOrganisation.CustomerShipmentSequence != new CustomerShipmentSequences(this.Session()).RestartOnFiscalYear)
+            {
+
+                if (!this.ExistOutgoingShipmentNumberCounter)
+                {
+                    this.OutgoingShipmentNumberCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
             }
 
