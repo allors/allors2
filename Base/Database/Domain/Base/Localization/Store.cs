@@ -19,9 +19,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Strategy.Session).Extent();
-                fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearStoreSequenceNumbers.FiscalYear, year);
-                var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
+                var fiscalYearStoreSequenceNumbers = this.FiscalYearsStoreSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearStoreSequenceNumbers == null)
                 {
@@ -41,9 +39,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Strategy.Session).Extent();
-                fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearStoreSequenceNumbers.FiscalYear, year);
-                var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
+                var fiscalYearStoreSequenceNumbers = this.FiscalYearsStoreSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearStoreSequenceNumbers == null)
                 {
@@ -63,9 +59,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Strategy.Session).Extent();
-                fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearStoreSequenceNumbers.FiscalYear, year);
-                var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
+                var fiscalYearStoreSequenceNumbers = this.FiscalYearsStoreSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearStoreSequenceNumbers == null)
                 {
@@ -85,9 +79,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsStoreSequenceNumbers = new FiscalYearsStoreSequenceNumbers(this.Strategy.Session).Extent();
-                fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearStoreSequenceNumbers.FiscalYear, year);
-                var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
+                var fiscalYearStoreSequenceNumbers = this.FiscalYearsStoreSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearStoreSequenceNumbers == null)
                 {

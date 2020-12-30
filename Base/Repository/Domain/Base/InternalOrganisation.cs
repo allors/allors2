@@ -59,7 +59,7 @@ namespace Allors.Repository
         [AssociationId("fc69f819-2ca0-4ac4-b36e-cfff791679a1")]
         [RoleId("d6e816ae-50c5-41c7-8877-9f4c30208d47")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter PurchaseInvoiceNumberCounter { get; set; }
@@ -119,7 +119,7 @@ namespace Allors.Repository
         [AssociationId("5e581649-0b45-498f-b274-fdcc05bb3894")]
         [RoleId("1069343b-d6d5-4418-abf9-688b9dcec6d0")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter PurchaseOrderNumberCounter { get; set; }
@@ -137,7 +137,7 @@ namespace Allors.Repository
         [AssociationId("7028e722-f29d-42f6-b7c5-d73c2e99c907")]
         [RoleId("48454368-06c6-4e64-876b-b5e4268407a4")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter SubAccountCounter { get; set; }
@@ -147,7 +147,7 @@ namespace Allors.Repository
         [AssociationId("27E7D099-3D94-4DCF-AFD2-9143A4815ECC")]
         [RoleId("A82306DA-FFA4-48D5-81EC-B657E2CB99C1")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter RequestNumberCounter { get; set; }
@@ -165,7 +165,7 @@ namespace Allors.Repository
         [AssociationId("ab8ace70-5d23-4ba0-83f7-471a8dbefeb6")]
         [RoleId("fa1a381c-a895-44d2-a028-860486b1d1af")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter IncomingShipmentNumberCounter { get; set; }
@@ -175,7 +175,7 @@ namespace Allors.Repository
         [AssociationId("687afb94-445e-41e2-bf22-deaac5b40e5a")]
         [RoleId("9fa5512e-098a-40fd-a821-38a5f5f280f5")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter QuoteNumberCounter { get; set; }
@@ -321,7 +321,7 @@ namespace Allors.Repository
         [AssociationId("47674006-74f4-497e-b9b6-1d5cff1ada0f")]
         [RoleId("0dc922be-86d0-469e-a9d2-5bf19a910994")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter AccountingTransactionCounter { get; set; }
@@ -604,7 +604,7 @@ namespace Allors.Repository
         [AssociationId("8D657926-5B1E-455F-9010-FD04ABD9192F")]
         [RoleId("7CEBA57D-3E60-47A8-9806-11B62C700C57")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         Counter WorkEffortNumberCounter { get; set; }

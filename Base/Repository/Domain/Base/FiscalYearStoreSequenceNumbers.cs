@@ -48,7 +48,7 @@ namespace Allors.Repository
         [AssociationId("3dfa99d4-7123-4431-b315-c57325b018c0")]
         [RoleId("84d6acfa-d071-46ff-a541-e6225c79674c")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Required]
         public Counter SalesInvoiceNumberCounter { get; set; }
@@ -76,7 +76,7 @@ namespace Allors.Repository
         [AssociationId("43079efb-996a-48ec-84ed-6da4f3a2e896")]
         [RoleId("ab2c877e-e21a-46bb-a05d-7a6f0a2b9d22")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Required]
         public Counter CreditNoteNumberCounter { get; set; }
@@ -95,7 +95,7 @@ namespace Allors.Repository
         [AssociationId("d5cc5e38-6473-4648-8bb6-7286c8f2a895")]
         [RoleId("6e3f1fd9-e25a-4f43-b6c8-fcfe9e6a41cb")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Required]
         public Counter OutgoingShipmentNumberCounter { get; set; }
@@ -114,7 +114,7 @@ namespace Allors.Repository
         [AssociationId("0fd9a662-682d-4d73-b2da-ee3e20c20f20")]
         [RoleId("aa227f01-d469-41f9-a61a-ab5c322dd69c")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Required]
         public Counter SalesOrderNumberCounter { get; set; }

@@ -39,7 +39,7 @@ namespace Allors.Repository
         [AssociationId("fd79cb48-f076-45d2-b1c6-7e8483cfe508")]
         [RoleId("45bf9f09-86ed-403b-972e-d6ed60985b87")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         public Counter PurchaseInvoiceNumberCounter { get; set; }
@@ -58,7 +58,7 @@ namespace Allors.Repository
         [AssociationId("21637835-b9f3-49dd-bf9b-315a0346d134")]
         [RoleId("fc887d98-5806-4d57-8b74-743873fe2b0b")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         public Counter PurchaseOrderNumberCounter { get; set; }
@@ -77,7 +77,7 @@ namespace Allors.Repository
         [AssociationId("aaf33c4f-f722-41bb-aa3e-79570d0d89d9")]
         [RoleId("d45450b5-11a9-4bd6-89a9-c4ba027a6043")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         public Counter RequestNumberCounter { get; set; }
@@ -96,7 +96,7 @@ namespace Allors.Repository
         [AssociationId("f7d98c10-f95f-4852-9973-7c76e9c87afe")]
         [RoleId("50b5f0f0-37ef-40f2-8e66-a9ad17cac8b5")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         public Counter IncomingShipmentNumberCounter { get; set; }
@@ -115,7 +115,7 @@ namespace Allors.Repository
         [AssociationId("720f2c78-feec-407f-ae6f-14f9fdac9f2a")]
         [RoleId("4ae74b3f-3530-4eac-8681-dea2344373de")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         public Counter QuoteNumberCounter { get; set; }
@@ -134,7 +134,7 @@ namespace Allors.Repository
         [AssociationId("f5656a0a-2d86-4432-ad71-647201663b2b")]
         [RoleId("1e5e9eed-5c81-4705-b6e0-f5ae53a29d9a")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Workspace]
         public Counter WorkEffortNumberCounter { get; set; }

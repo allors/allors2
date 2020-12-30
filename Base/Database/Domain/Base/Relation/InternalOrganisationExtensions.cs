@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
     using Allors.Meta;
 
     public static partial class InternalOrganisationExtensions
@@ -243,9 +244,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+                var fiscalYearInternalOrganisationSequenceNumbers = @this.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearInternalOrganisationSequenceNumbers == null)
                 {
@@ -265,9 +264,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+                var fiscalYearInternalOrganisationSequenceNumbers = @this.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearInternalOrganisationSequenceNumbers == null)
                 {
@@ -287,9 +284,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+                var fiscalYearInternalOrganisationSequenceNumbers = @this.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearInternalOrganisationSequenceNumbers == null)
                 {
@@ -309,9 +304,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+                var fiscalYearInternalOrganisationSequenceNumbers = @this.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearInternalOrganisationSequenceNumbers == null)
                 {
@@ -331,9 +324,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+                var fiscalYearInternalOrganisationSequenceNumbers = @this.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearInternalOrganisationSequenceNumbers == null)
                 {
@@ -353,9 +344,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(@this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
+                var fiscalYearInternalOrganisationSequenceNumbers = @this.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
 
                 if (fiscalYearInternalOrganisationSequenceNumbers == null)
                 {

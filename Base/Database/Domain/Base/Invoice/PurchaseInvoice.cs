@@ -114,10 +114,7 @@ namespace Allors.Domain
                 var year = this.InvoiceDate.Year;
                 this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(year);
 
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
-
+                var fiscalYearInternalOrganisationSequenceNumbers = this.BilledTo.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
                 var prefix = fiscalYearInternalOrganisationSequenceNumbers == null ? this.BilledTo.PurchaseInvoiceNumberPrefix : fiscalYearInternalOrganisationSequenceNumbers.PurchaseInvoiceNumberPrefix;
                 this.SortableInvoiceNumber = this.Session().GetSingleton().SortableNumber(prefix, this.InvoiceNumber, year.ToString());
             }
