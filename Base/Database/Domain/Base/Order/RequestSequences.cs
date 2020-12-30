@@ -9,8 +9,8 @@ namespace Allors.Domain
 
     public partial class RequestSequences
     {
-        private static readonly Guid EnforcedSequenceId = new Guid("053a8ea8-c384-49de-96ae-f7b5d76da514");
-        private static readonly Guid RestartOnFiscalYearId = new Guid("53bb4bfd-7092-4790-9c50-3d95e7460d70");
+        public static readonly Guid EnforcedSequenceId = new Guid("053a8ea8-c384-49de-96ae-f7b5d76da514");
+        public static readonly Guid RestartOnFiscalYearId = new Guid("53bb4bfd-7092-4790-9c50-3d95e7460d70");
 
         private UniquelyIdentifiableSticky<RequestSequence> cache;
 
@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             merge(RestartOnFiscalYearId, v =>
             {
-                v.Name = "Restart each fiscal year (no gaps, reset to '1' each year";
+                v.Name = "Restart each fiscal year";
                 localisedName.Set(v, dutchLocale, "Herstart elk fiscaal jaar (aansluitend, begint elk jaar met nummer '1'");
                 v.IsActive = true;
             });

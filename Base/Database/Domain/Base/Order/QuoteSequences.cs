@@ -9,8 +9,8 @@ namespace Allors.Domain
 
     public partial class QuoteSequences
     {
-        private static readonly Guid EnforcedSequenceId = new Guid("d8b83e48-4469-4640-a782-c33dbb7fb492");
-        private static readonly Guid RestartOnFiscalYearId = new Guid("88def14a-c69a-4873-b68c-865507daf89a");
+        public static readonly Guid EnforcedSequenceId = new Guid("d8b83e48-4469-4640-a782-c33dbb7fb492");
+        public static readonly Guid RestartOnFiscalYearId = new Guid("88def14a-c69a-4873-b68c-865507daf89a");
 
         private UniquelyIdentifiableSticky<QuoteSequence> cache;
 

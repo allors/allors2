@@ -9,8 +9,8 @@ namespace Allors.Domain
 
     public partial class CustomerShipmentSequences
     {
-        private static readonly Guid EnforcedSequenceId = new Guid("6ef7385c-d31c-4dff-80b9-5c9b5904d32b");
-        private static readonly Guid RestartOnFiscalYearId = new Guid("e8534cca-df20-428e-9376-ee9385b918b0");
+        public static readonly Guid EnforcedSequenceId = new Guid("6ef7385c-d31c-4dff-80b9-5c9b5904d32b");
+        public static readonly Guid RestartOnFiscalYearId = new Guid("e8534cca-df20-428e-9376-ee9385b918b0");
 
         private UniquelyIdentifiableSticky<CustomerShipmentSequence> cache;
 

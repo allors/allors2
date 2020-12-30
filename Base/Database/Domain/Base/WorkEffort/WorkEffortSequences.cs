@@ -9,8 +9,8 @@ namespace Allors.Domain
 
     public partial class WorkEffortSequences
     {
-        private static readonly Guid EnforcedSequenceId = new Guid("b1042800-5af6-4a78-9c8d-535cf480cb64");
-        private static readonly Guid RestartOnFiscalYearId = new Guid("553f63dd-65d9-4a11-8f6a-70cba8a4a26f");
+        public static readonly Guid EnforcedSequenceId = new Guid("b1042800-5af6-4a78-9c8d-535cf480cb64");
+        public static readonly Guid RestartOnFiscalYearId = new Guid("553f63dd-65d9-4a11-8f6a-70cba8a4a26f");
 
         private UniquelyIdentifiableSticky<WorkEffortSequence> cache;
 
