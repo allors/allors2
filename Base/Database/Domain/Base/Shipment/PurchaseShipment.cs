@@ -93,7 +93,8 @@ namespace Allors.Domain
                 fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
                 var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
 
-                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(fiscalYearInternalOrganisationSequenceNumbers?.IncomingShipmentNumberPrefix ?? ((InternalOrganisation)this.ShipToParty).IncomingShipmentNumberPrefix, this.ShipmentNumber, year.ToString());
+                var prefix = fiscalYearInternalOrganisationSequenceNumbers == null ? ((InternalOrganisation)this.ShipToParty).IncomingShipmentNumberPrefix : fiscalYearInternalOrganisationSequenceNumbers.IncomingShipmentNumberPrefix;
+                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(prefix, this.ShipmentNumber, year.ToString());
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)

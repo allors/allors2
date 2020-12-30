@@ -190,7 +190,8 @@ namespace Allors.Domain
                 fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearStoreSequenceNumbers.FiscalYear, year);
                 var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
 
-                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(fiscalYearStoreSequenceNumbers?.SalesOrderNumberPrefix ?? this.Store.SalesOrderNumberPrefix, this.OrderNumber, year.ToString());
+                var prefix = fiscalYearStoreSequenceNumbers == null ? this.Store.SalesOrderNumberPrefix : fiscalYearStoreSequenceNumbers.SalesOrderNumberPrefix;
+                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(prefix, this.OrderNumber, year.ToString());
             }
 
             if (this.BillToCustomer?.BaseIsActiveCustomer(this.TakenBy, this.OrderDate) == false)

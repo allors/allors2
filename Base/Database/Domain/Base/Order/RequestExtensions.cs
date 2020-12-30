@@ -68,7 +68,8 @@ namespace Allors.Domain
                 fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
                 var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
 
-                ((RequestDerivedRoles)@this).SortableRequestNumber = @this.Session().GetSingleton().SortableNumber(fiscalYearInternalOrganisationSequenceNumbers?.RequestNumberPrefix ?? @this.Recipient.RequestNumberPrefix, @this.RequestNumber, year.ToString());
+                var prefix = fiscalYearInternalOrganisationSequenceNumbers == null ? @this.Recipient.RequestNumberPrefix : fiscalYearInternalOrganisationSequenceNumbers.RequestNumberPrefix;
+                ((RequestDerivedRoles)@this).SortableRequestNumber = @this.Session().GetSingleton().SortableNumber(prefix, @this.RequestNumber, year.ToString());
             }
 
             @this.DeriveInitialObjectState();

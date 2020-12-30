@@ -145,7 +145,8 @@ namespace Allors.Domain
                 fiscalYearsStoreSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
                 var fiscalYearStoreSequenceNumbers = fiscalYearsStoreSequenceNumbers.First;
 
-                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(fiscalYearStoreSequenceNumbers?.OutgoingShipmentNumberPrefix ?? this.Store.OutgoingShipmentNumberPrefix, this.ShipmentNumber, year.ToString());
+                var prefix = fiscalYearStoreSequenceNumbers == null ? this.Store.OutgoingShipmentNumberPrefix : fiscalYearStoreSequenceNumbers.OutgoingShipmentNumberPrefix;
+                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(prefix, this.ShipmentNumber, year.ToString());
             }
 
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
