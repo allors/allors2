@@ -140,7 +140,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenIssuerWithQuoteNumberPrefix_WhenDeriving_ThenSortableQuoteNumberIsSet()
         {
-            this.InternalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
+            this.InternalOrganisation.QuoteSequence = new QuoteSequences(this.Session).EnforcedSequence;
             this.InternalOrganisation.QuoteNumberPrefix = "prefix-";
             this.Session.Derive();
 
@@ -159,7 +159,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenIssuerWithParametrizedQuoteNumberPrefix_WhenDeriving_ThenSortableQuoteNumberIsSet()
         {
-            this.InternalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
+            this.InternalOrganisation.QuoteSequence = new QuoteSequences(this.Session).EnforcedSequence;
             this.InternalOrganisation.QuoteNumberPrefix = "prefix-{year}-";
             this.Session.Derive();
 

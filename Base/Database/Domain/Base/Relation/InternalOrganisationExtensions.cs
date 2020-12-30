@@ -164,6 +164,26 @@ namespace Allors.Domain
                     @this.InvoiceSequence = new InvoiceSequences(@this.Strategy.Session).RestartOnFiscalYear;
                 }
 
+                if (!@this.ExistRequestSequence)
+                {
+                    @this.RequestSequence = new RequestSequences(@this.Strategy.Session).EnforcedSequence;
+                }
+
+                if (!@this.ExistQuoteSequence)
+                {
+                    @this.QuoteSequence = new QuoteSequences(@this.Strategy.Session).EnforcedSequence;
+                }
+
+                if (!@this.ExistCustomerShipmentSequence)
+                {
+                    @this.CustomerShipmentSequence = new CustomerShipmentSequences(@this.Strategy.Session).EnforcedSequence;
+                }
+
+                if (!@this.ExistWorkEffortSequence)
+                {
+                    @this.WorkEffortSequence = new WorkEffortSequences(@this.Strategy.Session).EnforcedSequence;
+                }
+
                 if (!@this.ExistFiscalYearStartMonth)
                 {
                     @this.FiscalYearStartMonth = 1;
@@ -239,7 +259,7 @@ namespace Allors.Domain
 
         public static string NextQuoteNumber(this InternalOrganisation @this, int year)
         {
-            if (@this.InvoiceSequence.Equals(new InvoiceSequences(@this.Session()).EnforcedSequence))
+            if (@this.QuoteSequence.Equals(new QuoteSequences(@this.Session()).EnforcedSequence))
             {
                 return string.Concat(@this.QuoteNumberPrefix, @this.QuoteNumberCounter.NextValue()).Replace("{year}", year.ToString());
             }
@@ -261,7 +281,7 @@ namespace Allors.Domain
 
         public static string NextRequestNumber(this InternalOrganisation @this, int year)
         {
-            if (@this.InvoiceSequence.Equals(new InvoiceSequences(@this.Session()).EnforcedSequence))
+            if (@this.RequestSequence.Equals(new RequestSequences(@this.Session()).EnforcedSequence))
             {
                 return string.Concat(@this.RequestNumberPrefix, @this.RequestNumberCounter.NextValue()).Replace("{year}", year.ToString());
             }
@@ -327,7 +347,7 @@ namespace Allors.Domain
 
         public static string NextWorkEffortNumber(this InternalOrganisation @this, int year)
         {
-            if (@this.InvoiceSequence.Equals(new InvoiceSequences(@this.Session()).EnforcedSequence))
+            if (@this.WorkEffortSequence.Equals(new WorkEffortSequences(@this.Session()).EnforcedSequence))
             {
                 return string.Concat(@this.WorkEffortNumberPrefix, @this.WorkEffortNumberCounter.NextValue()).Replace("{year}", year.ToString());
             }

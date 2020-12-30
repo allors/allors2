@@ -57,7 +57,7 @@ namespace Allors.Domain
 
         public string NextOutgoingShipmentNumber(int year)
         {
-            if (this.InternalOrganisation.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
+            if (this.InternalOrganisation.CustomerShipmentSequence.Equals(new CustomerShipmentSequences(this.Strategy.Session).EnforcedSequence))
             {
                 return string.Concat(this.OutgoingShipmentNumberPrefix, this.OutgoingShipmentNumberCounter.NextValue()).Replace("{year}", year.ToString());
             }

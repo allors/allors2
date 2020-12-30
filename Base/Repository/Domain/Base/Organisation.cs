@@ -36,6 +36,14 @@ namespace Allors.Repository
 
         public InvoiceSequence InvoiceSequence { get; set; }
 
+        public RequestSequence RequestSequence { get; set; }
+
+        public QuoteSequence QuoteSequence { get; set; }
+
+        public CustomerShipmentSequence CustomerShipmentSequence { get; set; }
+
+        public WorkEffortSequence WorkEffortSequence { get; set; }
+
         public PaymentMethod[] ActiveCollectionMethods { get; set; }
 
         public decimal MaximumAllowedPaymentDifference { get; set; }

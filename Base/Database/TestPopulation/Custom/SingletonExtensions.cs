@@ -89,7 +89,11 @@ namespace Allors
                 purchaseOrderApprovalThresholdLevel2: 5000M,
                 serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true,
-                invoiceSequence: new InvoiceSequences(@this.Session()).EnforcedSequence);
+                invoiceSequence: new InvoiceSequences(@this.Session()).EnforcedSequence,
+                requestSequence: new RequestSequences(@this.Session()).EnforcedSequence,
+                quoteSequence: new QuoteSequences(@this.Session()).EnforcedSequence,
+                customerShipmentSequence: new CustomerShipmentSequences(@this.Session()).EnforcedSequence,
+                workEffortSequence: new WorkEffortSequences(@this.Session()).EnforcedSequence);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: @this.Session(),
@@ -144,7 +148,11 @@ namespace Allors
                 purchaseOrderApprovalThresholdLevel2: null,
                 serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true,
-                invoiceSequence: new InvoiceSequences(@this.Session()).EnforcedSequence);
+                invoiceSequence: new InvoiceSequences(@this.Session()).EnforcedSequence,
+                requestSequence: new RequestSequences(@this.Session()).EnforcedSequence,
+                quoteSequence: new QuoteSequences(@this.Session()).EnforcedSequence,
+                customerShipmentSequence: new CustomerShipmentSequences(@this.Session()).EnforcedSequence,
+                workEffortSequence: new WorkEffortSequences(@this.Session()).EnforcedSequence);
 
             // Give Administrator access
             new EmploymentBuilder(@this.Session()).WithEmployee(administrator).WithEmployer(allors).Build();

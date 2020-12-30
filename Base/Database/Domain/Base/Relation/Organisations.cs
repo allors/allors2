@@ -7,7 +7,7 @@ namespace Allors.Domain
 {
     using System;
     using System.IO;
-
+    using System.Linq;
     using Allors.Meta;
 
     public partial class Organisations
@@ -75,7 +75,11 @@ namespace Allors.Domain
             decimal? purchaseOrderApprovalThresholdLevel2,
             SerialisedItemSoldOn[] serialisedItemSoldOns,
             bool collectiveWorkEffortInvoice,
-            InvoiceSequence invoiceSequence)
+            InvoiceSequence invoiceSequence,
+            RequestSequence requestSequence,
+            QuoteSequence quoteSequence,
+            CustomerShipmentSequence customerShipmentSequence,
+            WorkEffortSequence workEffortSequence)
         {
             var postalAddress1 = new PostalAddressBuilder(session)
                     .WithAddress1(address)
@@ -106,6 +110,10 @@ namespace Allors.Domain
                 .WithName(name)
                 .WithPreferredCurrency(new Currencies(session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithInvoiceSequence(invoiceSequence)
+                .WithRequestSequence(requestSequence)
+                .WithQuoteSequence(quoteSequence)
+                .WithCustomerShipmentSequence(customerShipmentSequence)
+                .WithWorkEffortSequence(workEffortSequence)
                 .WithFiscalYearStartMonth(01)
                 .WithFiscalYearStartDay(01)
                 .WithDoAccounting(false)
@@ -121,11 +129,13 @@ namespace Allors.Domain
 
             if (invoiceSequence == new InvoiceSequences(session).RestartOnFiscalYear)
             {
-                var sequenceNumbers = new FiscalYearInternalOrganisationSequenceNumbersBuilder(session).WithFiscalYear(session.Now().Year).Build();
+                var sequenceNumbers = internalOrganisation.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == session.Now().Year);
+                if (sequenceNumbers == null)
+                {
+                    sequenceNumbers = new FiscalYearInternalOrganisationSequenceNumbersBuilder(session).WithFiscalYear(session.Now().Year).Build();
+                    internalOrganisation.AddFiscalYearsInternalOrganisationSequenceNumber(sequenceNumbers);
+                }
 
-                sequenceNumbers.RequestNumberPrefix = requestNumberPrefix;
-                sequenceNumbers.QuoteNumberPrefix = quoteNumberPrefix;
-                sequenceNumbers.WorkEffortNumberPrefix = workEffortPrefix;
                 sequenceNumbers.PurchaseOrderNumberPrefix = purchaseOrderNumberPrefix;
                 sequenceNumbers.PurchaseInvoiceNumberPrefix = purchaseInvoiceNumberPrefix;
 
@@ -138,24 +148,9 @@ namespace Allors.Domain
                 {
                     sequenceNumbers.PurchaseInvoiceNumberCounter = new CounterBuilder(session).WithValue(purchaseInvoiceCounterValue).Build();
                 }
-
-                if (requestCounterValue != null)
-                {
-                    sequenceNumbers.RequestNumberCounter = new CounterBuilder(session).WithValue(requestCounterValue).Build();
-                }
-
-                if (quoteCounterValue != null)
-                {
-                    sequenceNumbers.QuoteNumberCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
-                }
-
-                internalOrganisation.AddFiscalYearsInternalOrganisationSequenceNumber(sequenceNumbers);
             }
             else
             {
-                internalOrganisation.RequestNumberPrefix = requestNumberPrefix;
-                internalOrganisation.QuoteNumberPrefix = quoteNumberPrefix;
-                internalOrganisation.WorkEffortNumberPrefix = workEffortPrefix;
                 internalOrganisation.PurchaseOrderNumberPrefix = purchaseOrderNumberPrefix;
                 internalOrganisation.PurchaseInvoiceNumberPrefix = purchaseInvoiceNumberPrefix;
 
@@ -168,16 +163,74 @@ namespace Allors.Domain
                 {
                     internalOrganisation.PurchaseInvoiceNumberCounter = new CounterBuilder(session).WithValue(purchaseInvoiceCounterValue).Build();
                 }
+            }
+
+            if (requestSequence == new RequestSequences(session).RestartOnFiscalYear)
+            {
+                var sequenceNumbers = internalOrganisation.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == session.Now().Year);
+                if (sequenceNumbers == null)
+                {
+                    sequenceNumbers = new FiscalYearInternalOrganisationSequenceNumbersBuilder(session).WithFiscalYear(session.Now().Year).Build();
+                    internalOrganisation.AddFiscalYearsInternalOrganisationSequenceNumber(sequenceNumbers);
+                }
+
+                sequenceNumbers.RequestNumberPrefix = requestNumberPrefix;
+
+                if (requestCounterValue != null)
+                {
+                    sequenceNumbers.RequestNumberCounter = new CounterBuilder(session).WithValue(requestCounterValue).Build();
+                }
+            }
+            else
+            {
+                internalOrganisation.RequestNumberPrefix = requestNumberPrefix;
 
                 if (requestCounterValue != null)
                 {
                     internalOrganisation.RequestNumberCounter = new CounterBuilder(session).WithValue(requestCounterValue).Build();
                 }
+            }
+
+            if (quoteSequence == new QuoteSequences(session).RestartOnFiscalYear)
+            {
+                var sequenceNumbers = internalOrganisation.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == session.Now().Year);
+                if (sequenceNumbers == null)
+                {
+                    sequenceNumbers = new FiscalYearInternalOrganisationSequenceNumbersBuilder(session).WithFiscalYear(session.Now().Year).Build();
+                    internalOrganisation.AddFiscalYearsInternalOrganisationSequenceNumber(sequenceNumbers);
+                }
+
+                sequenceNumbers.QuoteNumberPrefix = quoteNumberPrefix;
+
+                if (quoteCounterValue != null)
+                {
+                    sequenceNumbers.QuoteNumberCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
+                }
+            }
+            else
+            {
+                internalOrganisation.QuoteNumberPrefix = quoteNumberPrefix;
 
                 if (quoteCounterValue != null)
                 {
                     internalOrganisation.QuoteNumberCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
                 }
+            }
+
+            if (workEffortSequence == new WorkEffortSequences(session).RestartOnFiscalYear)
+            {
+                var sequenceNumbers = internalOrganisation.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == session.Now().Year);
+                if (sequenceNumbers == null)
+                {
+                    sequenceNumbers = new FiscalYearInternalOrganisationSequenceNumbersBuilder(session).WithFiscalYear(session.Now().Year).Build();
+                    internalOrganisation.AddFiscalYearsInternalOrganisationSequenceNumber(sequenceNumbers);
+                }
+
+                sequenceNumbers.WorkEffortNumberPrefix = workEffortPrefix;
+            }
+            else
+            {
+                internalOrganisation.WorkEffortNumberPrefix = workEffortPrefix;
             }
 
             OwnBankAccount defaultCollectionMethod = null;
