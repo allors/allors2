@@ -42,6 +42,8 @@ namespace Allors.Repository
 
         public CustomerShipmentSequence CustomerShipmentSequence { get; set; }
 
+        public PurchaseShipmentSequence PurchaseShipmentSequence { get; set; }
+
         public WorkEffortSequence WorkEffortSequence { get; set; }
 
         public PaymentMethod[] ActiveCollectionMethods { get; set; }

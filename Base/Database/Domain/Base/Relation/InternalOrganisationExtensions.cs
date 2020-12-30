@@ -180,6 +180,11 @@ namespace Allors.Domain
                     @this.CustomerShipmentSequence = new CustomerShipmentSequences(@this.Strategy.Session).EnforcedSequence;
                 }
 
+                if (!@this.ExistPurchaseShipmentSequence)
+                {
+                    @this.PurchaseShipmentSequence = new PurchaseShipmentSequences(@this.Strategy.Session).EnforcedSequence;
+                }
+
                 if (!@this.ExistWorkEffortSequence)
                 {
                     @this.WorkEffortSequence = new WorkEffortSequences(@this.Strategy.Session).EnforcedSequence;
@@ -206,11 +211,6 @@ namespace Allors.Domain
                     {
                         @this.PurchaseOrderNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
                     }
-
-                    if (!@this.ExistIncomingShipmentNumberCounter)
-                    {
-                        @this.IncomingShipmentNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
-                    }
                 }
 
                 if (@this.RequestSequence != new RequestSequences(@this.Strategy.Session).RestartOnFiscalYear)
@@ -234,6 +234,14 @@ namespace Allors.Domain
                     if (!@this.ExistWorkEffortNumberCounter)
                     {
                         @this.WorkEffortNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
+                    }
+                }
+
+                if (@this.PurchaseShipmentSequence != new PurchaseShipmentSequences(@this.Strategy.Session).RestartOnFiscalYear)
+                {
+                    if (!@this.ExistIncomingShipmentNumberCounter)
+                    {
+                        @this.IncomingShipmentNumberCounter = new CounterBuilder(@this.Strategy.Session).Build();
                     }
                 }
             }
@@ -307,7 +315,7 @@ namespace Allors.Domain
 
         public static string NextShipmentNumber(this InternalOrganisation @this, int year)
         {
-            if (@this.InvoiceSequence.Equals(new InvoiceSequences(@this.Session()).EnforcedSequence))
+            if (@this.PurchaseShipmentSequence.Equals(new PurchaseShipmentSequences(@this.Session()).EnforcedSequence))
             {
                 return string.Concat(@this.IncomingShipmentNumberPrefix, @this.IncomingShipmentNumberCounter.NextValue()).Replace("{year}", year.ToString());
             }

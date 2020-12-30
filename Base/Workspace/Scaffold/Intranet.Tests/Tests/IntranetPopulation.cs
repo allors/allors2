@@ -100,6 +100,7 @@ namespace Tests
                 requestSequence: new RequestSequences(this.Session).EnforcedSequence,
                 quoteSequence: new QuoteSequences(this.Session).EnforcedSequence,
                 customerShipmentSequence: new CustomerShipmentSequences(this.Session).EnforcedSequence,
+                purchaseShipmentSequence: new PurchaseShipmentSequences(this.Session).EnforcedSequence,
                 workEffortSequence: new WorkEffortSequences(this.Session).EnforcedSequence);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -159,6 +160,7 @@ namespace Tests
                 requestSequence: new RequestSequences(this.Session).EnforcedSequence,
                 quoteSequence: new QuoteSequences(this.Session).EnforcedSequence,
                 customerShipmentSequence: new CustomerShipmentSequences(this.Session).EnforcedSequence,
+                purchaseShipmentSequence: new PurchaseShipmentSequences(this.Session).EnforcedSequence,
                 workEffortSequence: new WorkEffortSequences(this.Session).EnforcedSequence);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;

@@ -79,6 +79,7 @@ namespace Allors.Domain
             RequestSequence requestSequence,
             QuoteSequence quoteSequence,
             CustomerShipmentSequence customerShipmentSequence,
+            PurchaseShipmentSequence purchaseShipmentSequence,
             WorkEffortSequence workEffortSequence)
         {
             var postalAddress1 = new PostalAddressBuilder(session)
@@ -113,6 +114,7 @@ namespace Allors.Domain
                 .WithRequestSequence(requestSequence)
                 .WithQuoteSequence(quoteSequence)
                 .WithCustomerShipmentSequence(customerShipmentSequence)
+                .WithPurchaseShipmentSequence(purchaseShipmentSequence)
                 .WithWorkEffortSequence(workEffortSequence)
                 .WithFiscalYearStartMonth(01)
                 .WithFiscalYearStartDay(01)

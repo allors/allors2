@@ -105,6 +105,16 @@ namespace Allors.Repository
         CustomerShipmentSequence CustomerShipmentSequence { get; set; }
 
         #region Allors
+        [Id("b04166d7-cd76-40cc-984b-edfe25630f02")]
+        [AssociationId("34b34717-0d64-4e07-bdfa-633a3ebccc6e")]
+        [RoleId("ad80c0aa-658f-4896-aaaf-4f90e490c378")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        PurchaseShipmentSequence PurchaseShipmentSequence { get; set; }
+
+        #region Allors
         [Id("23bc3a20-aea2-4e05-b792-fdcf92def95b")]
         [AssociationId("3ac88339-6fce-4a79-a43b-9b959b28a096")]
         [RoleId("4babe525-c0ac-4d58-9862-88ac11a679bd")]

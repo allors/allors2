@@ -89,10 +89,7 @@ namespace Allors.Domain
                 var year = this.Strategy.Session.Now().Year;
                 this.ShipmentNumber = shipToParty.NextShipmentNumber(year);
 
-                var fiscalYearsInternalOrganisationSequenceNumbers = new FiscalYearsInternalOrganisationSequenceNumbers(this.Session()).Extent();
-                fiscalYearsInternalOrganisationSequenceNumbers.Filter.AddEquals(M.FiscalYearInternalOrganisationSequenceNumbers.FiscalYear, year);
-                var fiscalYearInternalOrganisationSequenceNumbers = fiscalYearsInternalOrganisationSequenceNumbers.First;
-
+                var fiscalYearInternalOrganisationSequenceNumbers = shipToParty.FiscalYearsInternalOrganisationSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
                 var prefix = fiscalYearInternalOrganisationSequenceNumbers == null ? ((InternalOrganisation)this.ShipToParty).IncomingShipmentNumberPrefix : fiscalYearInternalOrganisationSequenceNumbers.IncomingShipmentNumberPrefix;
                 this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(prefix, this.ShipmentNumber, year.ToString());
             }
