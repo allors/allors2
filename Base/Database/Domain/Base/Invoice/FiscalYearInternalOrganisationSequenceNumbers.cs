@@ -8,6 +8,39 @@ namespace Allors.Domain
     // TODO: Why not use Counters?
     public partial class FiscalYearInternalOrganisationSequenceNumbers
     {
+        public void BaseOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistPurchaseOrderNumberCounter)
+            {
+                this.PurchaseOrderNumberCounter = new CounterBuilder(this.Session()).Build();
+            }
+
+            if (!this.ExistPurchaseInvoiceNumberCounter)
+            {
+                this.PurchaseInvoiceNumberCounter = new CounterBuilder(this.Session()).Build();
+            }
+
+            if (!this.ExistRequestNumberCounter)
+            {
+                this.RequestNumberCounter = new CounterBuilder(this.Session()).Build();
+            }
+
+            if (!this.ExistQuoteNumberCounter)
+            {
+                this.QuoteNumberCounter = new CounterBuilder(this.Session()).Build();
+            }
+
+            if (!this.ExistIncomingShipmentNumberCounter)
+            {
+                this.IncomingShipmentNumberCounter = new CounterBuilder(this.Session()).Build();
+            }
+
+            if (!this.ExistWorkEffortNumberCounter)
+            {
+                this.WorkEffortNumberCounter = new CounterBuilder(this.Session()).Build();
+            }
+        }
+
         public string NextPurchaseOrderNumber(int year)
         {
             var number = this.PurchaseOrderNumberCounter.NextValue();
