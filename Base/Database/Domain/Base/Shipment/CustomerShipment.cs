@@ -136,6 +136,13 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistShipFromParty && internalOrganisations.Count() == 1)
+            {
+                this.ShipFromParty = internalOrganisations.First();
+            }
+
             if (!this.ExistShipmentNumber && this.ExistStore)
             {
                 var year = this.CreationDate.Value.Year;
@@ -144,13 +151,6 @@ namespace Allors.Domain
                 var fiscalYearStoreSequenceNumbers = this.Store.FiscalYearsStoreSequenceNumbers.FirstOrDefault(v => v.FiscalYear == year);
                 var prefix = ((InternalOrganisation)this.ShipFromParty).CustomerShipmentSequence.IsEnforcedSequence ? this.Store.OutgoingShipmentNumberPrefix : fiscalYearStoreSequenceNumbers.OutgoingShipmentNumberPrefix;
                 this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(prefix, this.ShipmentNumber, year.ToString());
-            }
-
-            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
-            if (!this.ExistShipFromParty && internalOrganisations.Count() == 1)
-            {
-                this.ShipFromParty = internalOrganisations.First();
             }
 
             derivation.Validation.AssertExists(this, this.Meta.ShipToParty);
