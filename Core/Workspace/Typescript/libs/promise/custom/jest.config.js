@@ -1,6 +1,5 @@
 module.exports = {
-  name: 'promise-custom',
-  preset: '../../../jest.config.js',
+  preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -21,4 +20,5 @@ module.exports = {
       },
     ],
   ],
+  displayName: 'promise-custom',
 };

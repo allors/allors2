@@ -1,4 +1,4 @@
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 import { PullRequest } from '@allors/protocol/system';
 import { Pull, Extent, Result, Fetch, Tree, Node } from '@allors/data/system';
@@ -12,7 +12,7 @@ import { Loaded } from '@allors/angular/services/core';
 let fixture: Fixture;
 
 describe('Extent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     fixture = new Fixture();
   }));
 
