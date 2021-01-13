@@ -173,7 +173,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), quote.QuoteNumber.Split('-').Last())), quote.SortableQuoteNumber);
+            var number = int.Parse(quote.QuoteNumber.Split('-').Last()).ToString("000000");
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), number)), quote.SortableQuoteNumber);
         }
     }
 }
