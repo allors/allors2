@@ -268,5 +268,28 @@ namespace Allors.Domain
                 }
             }
         }
+
+        public static void DeriveRelationships(this Party @this)
+        {
+            var now = @this.Session().Now();
+
+            ((PartyDerivedRoles)@this).CurrentPartyContactMechanisms = @this.PartyContactMechanisms
+                .Where(v => v.FromDate <= now && (!v.ExistThroughDate || v.ThroughDate >= now))
+                .ToArray();
+
+            ((PartyDerivedRoles)@this).InactivePartyContactMechanisms = @this.PartyContactMechanisms
+                .Except(@this.CurrentPartyContactMechanisms)
+                .ToArray();
+
+            var allPartyRelationshipsWhereParty = @this.PartyRelationshipsWhereParty;
+
+            ((PartyDerivedRoles)@this).CurrentPartyRelationships = allPartyRelationshipsWhereParty
+                .Where(v => v.FromDate <= now && (!v.ExistThroughDate || v.ThroughDate >= now))
+                .ToArray();
+
+            ((PartyDerivedRoles)@this).InactivePartyRelationships = allPartyRelationshipsWhereParty
+                .Except(@this.CurrentPartyRelationships)
+                .ToArray();
+        }
     }
 }
