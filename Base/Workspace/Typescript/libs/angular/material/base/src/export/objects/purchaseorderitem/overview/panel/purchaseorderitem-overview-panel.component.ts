@@ -122,6 +122,7 @@ export class PurchaseOrderItemOverviewPanelComponent extends TestScope {
           fetch: {
             PurchaseOrderItems: {
               include: {
+                InvoiceItemType: x,
                 PurchaseOrderItemState: x,
                 Part: x,
                 SerialisedItem: x,
