@@ -268,7 +268,7 @@ export function appInitFactory(workspaceService: WorkspaceService) {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
 
     MatAutocompleteModule,
     MatButtonModule,

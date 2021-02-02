@@ -1,4 +1,4 @@
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 import { PullRequest } from '@allors/protocol/system';
 import { Organisation } from '@allors/domain/generated';
@@ -12,7 +12,7 @@ let fixture: Fixture;
 let organisations: Organisation[] = [];
 
 describe('Method', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     fixture = new Fixture();
   }));
 

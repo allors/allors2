@@ -69,7 +69,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), request.RequestNumber.Split('-').Last())), request.SortableRequestNumber);
+            var number = int.Parse(request.RequestNumber.Split('-').Last()).ToString("000000");
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), number)), request.SortableRequestNumber);
         }
     }
 }

@@ -1,4 +1,4 @@
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 import { PullRequest } from '@allors/protocol/system';
 import { Pull, Extent, Result, Fetch, Tree, Node } from '@allors/data/system';
@@ -13,7 +13,7 @@ let fixture: Fixture;
 let people: Person[] = [];
 
 describe('Instantiate', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     fixture = new Fixture();
   }));
 

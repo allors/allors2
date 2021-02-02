@@ -862,7 +862,7 @@ export function appInitFactory(workspaceService: WorkspaceService, internalOrgan
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
 
     MatAutocompleteModule,
     MatBadgeModule,
