@@ -7,10 +7,10 @@
     <mat-card-title>{{order.OrderNumber}}</mat-card-title>
 
     <mat-card-subtitle>
-      <div>{{order.SalesOrderState?.Name}}</div>
-      <div>{{order.SalesOrderShipmentState?.Name}}</div>
-      <div>{{order.SalesOrderInvoiceState?.Name}}</div>
-      <div>{{order.SalesOrderPaymentState?.Name}}</div>
+      <div>Status: {{order.SalesOrderState?.Name}}</div>
+      <div>Shipment: {{order.SalesOrderShipmentState?.Name}}</div>
+      <div>Invoice:{{order.SalesOrderInvoiceState?.Name}}</div>
+      <div>Payment: {{order.SalesOrderPaymentState?.Name}}</div>
       <div>{{order.DerivedShipToAddress?.displayName}}</div>
     </mat-card-subtitle>
 

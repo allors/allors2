@@ -148,6 +148,18 @@ namespace Allors.Domain
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
             var shipped = new ShipmentStates(this.Session()).Shipped;
 
+            if (this.SalesOrderItemState.IsProvisional)
+            {
+                this.DerivedShipFromAddress = this.AssignedShipFromAddress ?? salesOrder.DerivedShipFromAddress;
+                this.DerivedShipToAddress = this.AssignedShipToAddress ?? this.AssignedShipToParty?.ShippingAddress ?? salesOrder.DerivedShipToAddress;
+                this.DerivedShipToParty = this.AssignedShipToParty ?? salesOrder.ShipToCustomer;
+                this.DerivedDeliveryDate = this.AssignedDeliveryDate ?? salesOrder.DeliveryDate;
+                this.DerivedVatRegime = this.AssignedVatRegime ?? salesOrder.DerivedVatRegime;
+                this.VatRate = this.DerivedVatRegime?.VatRate;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? salesOrder.DerivedIrpfRegime;
+                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
+            }
+
             if (!this.ExistDerivationTrigger)
             {
                 this.DerivationTrigger = Guid.NewGuid();
