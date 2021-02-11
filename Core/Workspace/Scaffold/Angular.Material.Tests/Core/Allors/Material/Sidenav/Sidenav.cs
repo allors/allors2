@@ -52,6 +52,7 @@ namespace Tests
             }
 
             link.Click();
+            this.Driver.WaitForAngular();
         }
 
         private Element Group(string name) => new Element(this.Driver, new ByChained(this.Selector, By.XPath($".//span[contains(text(), '{name}')]")));
