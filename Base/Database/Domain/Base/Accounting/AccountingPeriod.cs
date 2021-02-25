@@ -9,6 +9,7 @@ namespace Allors.Domain
 
     using Allors.Meta;
 
+
     public partial class AccountingPeriod
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
