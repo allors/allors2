@@ -442,6 +442,16 @@ namespace Allors.Repository
         public PurchaseInvoice PurchaseInvoice { get; set; }
 
         #region Allors
+        [Id("3e1631d0-40bb-457f-aa04-2351cac53dc4")]
+        [AssociationId("809d68f6-b16d-424f-aabb-c8eccf4b0608")]
+        [RoleId("6dba454c-e2ab-4f1e-a01c-f49c32ea2687")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public SalesInvoice CreditedFromInvoice { get; set; }
+
+        #region Allors
         [Id("8F2706C3-445B-4B75-941E-A5E07CBEBF02")]
         [AssociationId("0E53F127-669D-4808-8D36-D0C9FBC64756")]
         [RoleId("79506919-A450-42F3-9109-250665C17A6A")]

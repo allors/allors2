@@ -25,6 +25,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   print: Action;
   workEfforts: WorkEffort[];
   public hasIrpf: boolean;
+  creditNote: SalesInvoice;
 
   get totalIrpfIsPositive(): boolean {
     return +(this.invoice.TotalIrpf) > 0;
@@ -49,6 +50,7 @@ export class SalesInvoiceOverviewSummaryComponent {
     const salesOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
     const workEffortPullName = `${panel.name}_${this.m.WorkEffort.name}`;
     const repeatingSalesInvoicePullName = `${panel.name}_${this.m.Good.name}`;
+    const creditNotePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, x } = this.metaService;
@@ -70,6 +72,7 @@ export class SalesInvoiceOverviewSummaryComponent {
             PrintDocument: {
               Media: x,
             },
+            CreditedFromInvoice: x,
             BillToCustomer: x,
             BillToContactPerson: x,
             ShipToCustomer: x,
@@ -107,6 +110,13 @@ export class SalesInvoiceOverviewSummaryComponent {
             WorkEfforts: x,
           },
         }),
+        pull.SalesInvoice({
+          name: creditNotePullName,
+          object: id,
+          fetch: {
+            SalesInvoiceWhereCreditedFromInvoice: x,
+          },
+        }),
         pull.RepeatingSalesInvoice({
           name: repeatingSalesInvoicePullName,
           predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, object: id }),
@@ -124,6 +134,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
       this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
       this.hasIrpf = Number(this.invoice.TotalIrpf) !== 0;
+      this.creditNote = loaded.objects[creditNotePullName] as SalesInvoice;
 
       if (this.repeatingInvoices) {
         this.repeatingInvoice = this.repeatingInvoices[0];

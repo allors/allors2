@@ -336,9 +336,14 @@ namespace Allors.Domain
                     @this.DerivedRoles.CanInvoice = false;
                 }
 
-                if (@this.ExistWorkEffortBillingsWhereWorkEffort)
+                foreach(WorkEffortBilling workEffortBilling in @this.WorkEffortBillingsWhereWorkEffort)
                 {
-                    @this.DerivedRoles.CanInvoice = false;
+                    if (workEffortBilling.InvoiceItem is SalesInvoiceItem invoiceItem
+                        && invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceType.IsSalesInvoice
+                        && !invoiceItem.SalesInvoiceWhereSalesInvoiceItem.ExistSalesInvoiceWhereCreditedFromInvoice)
+                    {
+                        @this.DerivedRoles.CanInvoice = false;
+                    }
                 }
 
                 if (@this.CanInvoice)
@@ -349,11 +354,6 @@ namespace Allors.Domain
                         {
                             @this.DerivedRoles.CanInvoice = false;
                             break;
-                        }
-
-                        if (timeEntry.ExistTimeEntryBillingsWhereTimeEntry)
-                        {
-                            @this.DerivedRoles.CanInvoice = false;
                         }
                     }
                 }

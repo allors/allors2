@@ -9,8 +9,8 @@ namespace Allors.Domain
 
     public partial class SalesInvoiceTypes
     {
-        private static readonly Guid SalesInvoiceId = new Guid("92411BF1-835E-41f8-80AF-6611EFCE5B32");
-        private static readonly Guid CreditNoteId = new Guid("EF5B7C52-E782-416D-B46F-89C8C7A5C24D");
+        public static readonly Guid SalesInvoiceId = new Guid("92411BF1-835E-41f8-80AF-6611EFCE5B32");
+        public static readonly Guid CreditNoteId = new Guid("EF5B7C52-E782-416D-B46F-89C8C7A5C24D");
 
         private UniquelyIdentifiableSticky<SalesInvoiceType> cache;
 

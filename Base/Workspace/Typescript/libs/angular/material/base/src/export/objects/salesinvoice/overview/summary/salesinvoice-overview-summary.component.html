@@ -52,6 +52,24 @@
       </div>
     </div>
 
+    <div *ngIf="creditNote" (click)="navigation.overview(creditNote)" style="cursor: pointer;">
+      <div style="color: grey">
+        Credited with:
+      </div>
+      <div>
+        {{creditNote.InvoiceNumber}}
+      </div>
+    </div>
+
+    <div *ngIf="invoice.CreditedFromInvoice" (click)="navigation.overview(invoice.CreditedFromInvoice)" style="cursor: pointer;">
+      <div style="color: grey">
+        From Sales Invoice:
+      </div>
+      <div>
+        {{invoice.CreditedFromInvoice.InvoiceNumber}}
+      </div>
+    </div>
+
     <div *ngFor="let order of orders" (click)="navigation.overview(order)" style="cursor: pointer;">
       <div style="color: grey">
         Order
