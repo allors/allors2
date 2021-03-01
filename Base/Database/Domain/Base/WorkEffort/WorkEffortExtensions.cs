@@ -355,6 +355,11 @@ namespace Allors.Domain
                             @this.DerivedRoles.CanInvoice = false;
                             break;
                         }
+
+                        if (timeEntry.ExistTimeEntryBillingsWhereTimeEntry)
+                        {
+                            @this.DerivedRoles.CanInvoice = false;
+                        }
                     }
                 }
 
