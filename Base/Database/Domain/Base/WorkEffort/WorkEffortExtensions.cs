@@ -355,6 +355,16 @@ namespace Allors.Domain
                             @this.DerivedRoles.CanInvoice = false;
                             break;
                         }
+
+                        foreach (TimeEntryBilling timeEntryBilling in timeEntry.TimeEntryBillingsWhereTimeEntry)
+                        {
+                            if (timeEntryBilling.InvoiceItem is SalesInvoiceItem invoiceItem
+                                && invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceType.IsSalesInvoice
+                                && !invoiceItem.SalesInvoiceWhereSalesInvoiceItem.ExistSalesInvoiceWhereCreditedFromInvoice)
+                            {
+                                @this.DerivedRoles.CanInvoice = false;
+                            }
+                        }
                     }
                 }
 
