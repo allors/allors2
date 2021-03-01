@@ -355,7 +355,6 @@ namespace Allors.Domain
                             @this.DerivedRoles.CanInvoice = false;
                             break;
                         }
-
                         foreach (TimeEntryBilling timeEntryBilling in timeEntry.TimeEntryBillingsWhereTimeEntry)
                         {
                             if (timeEntryBilling.InvoiceItem is SalesInvoiceItem invoiceItem
