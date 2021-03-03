@@ -39,7 +39,7 @@ interface Row extends TableRow {
   dueDate: string;
   description: string;
   totalExVat: string;
-  totalIncVat: string;
+  grandTotal: string;
   lastModifiedDate: string;
 }
 
@@ -181,7 +181,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         { name: 'state' },
         { name: 'description', sort: true },
         { name: 'totalExVat', sort: true },
-        { name: 'totalIncVat', sort: true },
+        { name: 'grandTotal', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -282,7 +282,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
               dueDate: `${v.DueDate && format(new Date(v.DueDate), 'dd-MM-yyyy')}`,
               description: v.Description,
               totalExVat: v.TotalExVat,
-              totalIncVat: v.TotalIncVat,
+              grandTotal: v.GrandTotal,
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
             } as Row;
           });
