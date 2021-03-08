@@ -104,6 +104,8 @@ namespace Allors.Repository
 
         public int SortableInvoiceNumber { get; set; }
 
+        public Guid DerivationTrigger { get; set; }
+
         #endregion
 
         #region ObjectStates

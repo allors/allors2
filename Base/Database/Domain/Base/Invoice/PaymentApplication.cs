@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
     using Allors.Meta;
     using Resources;
@@ -70,6 +71,19 @@ namespace Allors.Domain
             if (this.ExistInvoiceItem && totalInvoiceItemAmountPaid > this.InvoiceItem.TotalIncVat)
             {
                 derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
+            }
+        }
+
+        public void BaseDelete(DeletableDelete method)
+        {
+            if (this.ExistInvoice)
+            {
+                //this.Invoice.DerivationTrigger = Guid.NewGuid();
+            }
+
+            if (this.ExistInvoiceItem)
+            {
+                this.InvoiceItem.DerivationTrigger = Guid.NewGuid();
             }
         }
     }
