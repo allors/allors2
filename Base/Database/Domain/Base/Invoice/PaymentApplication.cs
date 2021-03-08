@@ -78,7 +78,7 @@ namespace Allors.Domain
         {
             if (this.ExistInvoice)
             {
-                //this.Invoice.DerivationTrigger = Guid.NewGuid();
+                this.Invoice.DerivationTrigger = Guid.NewGuid();
             }
 
             if (this.ExistInvoiceItem)
