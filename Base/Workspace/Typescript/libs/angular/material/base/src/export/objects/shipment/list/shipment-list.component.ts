@@ -107,16 +107,20 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
-            return [
-              refresh,
-              filterFields,
-              sort,
-              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-              internalOrganisationId,
-            ];
-          },
-          [, , , , ,]
-        ),
+            pageEvent =
+            previousRefresh !== refresh || filterFields !== previousFilterFields
+              ? {
+                  ...pageEvent,
+                  pageIndex: 0,
+                }
+              : pageEvent;
+
+          if (pageEvent.pageIndex === 0) {
+            this.table.pageIndex = 0;
+          }
+
+          return [refresh, filterFields, sort, pageEvent, internalOrganisationId];
+        }),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
           fromInternalOrganisationPredicate.object = internalOrganisationId;
           toInternalOrganisationPredicate.object = internalOrganisationId;

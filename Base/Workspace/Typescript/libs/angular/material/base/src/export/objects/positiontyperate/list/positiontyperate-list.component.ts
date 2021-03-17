@@ -88,15 +88,20 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-            return [
-              refresh,
-              filterFields,
-              sort,
-              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            ];
-          },
-          [, , , ,]
-        ),
+            pageEvent =
+            previousRefresh !== refresh || filterFields !== previousFilterFields
+              ? {
+                  ...pageEvent,
+                  pageIndex: 0,
+                }
+              : pageEvent;
+
+          if (pageEvent.pageIndex === 0) {
+            this.table.pageIndex = 0;
+          }
+
+          return [refresh, filterFields, sort, pageEvent];
+        }),
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.PositionTypeRate({

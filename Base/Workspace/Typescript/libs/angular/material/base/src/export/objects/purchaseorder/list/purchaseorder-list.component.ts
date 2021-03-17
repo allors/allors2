@@ -105,31 +105,31 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseOrder.OrderedBy });
 
-    const predicate = new And([
-      internalOrganisationPredicate,
-      this.filter.definition.predicate
-    ]);
+    const predicate = new And([internalOrganisationPredicate, this.filter.definition.predicate]);
 
     this.subscription = combineLatest([
       this.refreshService.refresh$,
       this.filter.fields$,
       this.table.sort$,
       this.table.pager$,
-      this.internalOrganisationId.observable$
+      this.internalOrganisationId.observable$,
     ])
       .pipe(
-        scan(
-          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
-            return [
-              refresh,
-              filterFields,
-              sort,
-              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-              internalOrganisationId,
-            ];
-          },
-          [, , , , ,]
-        ),
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
+          pageEvent =
+            previousRefresh !== refresh || filterFields !== previousFilterFields
+              ? {
+                  ...pageEvent,
+                  pageIndex: 0,
+                }
+              : pageEvent;
+
+          if (pageEvent.pageIndex === 0) {
+            this.table.pageIndex = 0;
+          }
+
+          return [refresh, filterFields, sort, pageEvent, internalOrganisationId];
+        }),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
           internalOrganisationPredicate.object = internalOrganisationId;
 

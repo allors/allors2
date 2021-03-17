@@ -20,6 +20,8 @@ export class Table<Row extends TableRow> implements BaseTable {
   columns: Column[];
   actions: Action[];
   defaultAction?: Action;
+
+  pageIndex: number;
   pageSize?: number;
   pageSizeOptions?: number[];
 

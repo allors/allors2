@@ -74,10 +74,20 @@ export class NotificationListComponent extends TestScope implements OnInit, OnDe
       .pipe(
         scan(
           ([previousRefresh], [refresh, sort, pageEvent]) => {
-            return [refresh, sort, previousRefresh !== refresh ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent];
-          },
-          [, , , ,]
-        ),
+            pageEvent =
+            previousRefresh !== refresh
+              ? {
+                  ...pageEvent,
+                  pageIndex: 0,
+                }
+              : pageEvent;
+
+          if (pageEvent.pageIndex === 0) {
+            this.table.pageIndex = 0;
+          }
+
+          return [refresh, sort, pageEvent];
+        }),
         switchMap(([, ,]) => {
           const pulls = [
             pull.Person({

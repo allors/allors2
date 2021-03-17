@@ -18,6 +18,7 @@ export interface BaseTable {
   selection: SelectionModel<TableRow>;
   actions: Action[];
   defaultAction?: Action;
+  pageIndex: number;
   pageSize?: number;
   pageSizeOptions?: number[];
 

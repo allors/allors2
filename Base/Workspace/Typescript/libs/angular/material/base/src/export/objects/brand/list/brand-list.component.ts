@@ -65,7 +65,7 @@ export class BrandsOverviewComponent extends TestScope implements OnInit, OnDest
   }
 
   ngOnInit(): void {
-    const { m, pull } = this.metaService;
+    const { m, x, pull } = this.metaService;
 
     const predicate = new And([new Like({ roleType: m.Brand.Name, parameter: 'name' })]);
 
@@ -80,15 +80,21 @@ export class BrandsOverviewComponent extends TestScope implements OnInit, OnDest
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-            return [
-              refresh,
-              filterFields,
-              sort,
-              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            ];
-          },
-          [, , , ,],
-        ),
+
+            pageEvent =
+            previousRefresh !== refresh || filterFields !== previousFilterFields
+              ? {
+                  ...pageEvent,
+                  pageIndex: 0,
+                }
+              : pageEvent;
+
+          if (pageEvent.pageIndex === 0) {
+            this.table.pageIndex = 0;
+          }
+
+          return [refresh, filterFields, sort, pageEvent];
+        }),
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.Brand({

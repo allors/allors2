@@ -46,7 +46,7 @@
     <tr mat-row *matRowDef="let row; columns: table.columnNames;" [attr.data-allors-id]="row.object?.id"></tr>
   </table>
 
-  <mat-paginator *ngIf="table.pageSize" [length]="table?.total" [pageSize]="table.pageSize" [pageSizeOptions]="table.pageSizeOptions"
+  <mat-paginator *ngIf="table.pageSize" [length]="table?.total" [pageIndex]="table.pageIndex" [pageSize]="table.pageSize" [pageSizeOptions]="table.pageSizeOptions"
   (page)="table.page($event)"></mat-paginator>
 
 </div>
