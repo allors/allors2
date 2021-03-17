@@ -96,7 +96,24 @@ namespace Allors.Server
                         else
                         {
                             name ??= extent.ObjectType.PluralName;
-                            response.AddCollection(name, objects);
+ 
+                            if (result.Skip.HasValue || result.Take.HasValue)
+                            {
+                                var paged = result.Skip.HasValue ? objects.Skip(result.Skip.Value) : objects;
+                                if (result.Take.HasValue)
+                                {
+                                    paged = paged.Take(result.Take.Value);
+                                }
+
+                                paged = paged.ToArray();
+
+                                response.AddValue(name + "_total", extent.Build(this.session, this.pull.Parameters).Count.ToString());
+                                response.AddCollection(name, paged);
+                            }
+                            else
+                            {
+                                response.AddCollection(name, objects);
+                            }
                         }
                     }
                     catch (Exception e)
