@@ -28,6 +28,9 @@ namespace Components
             this.Input.SendKeys(value);
 
             this.Driver.WaitForAngular();
+
+            value = value.Replace("'", @"\'");
+
             var optionSelector = By.CssSelector($"mat-option[data-allors-option-display='{selection ?? value}'] span");
             var option = this.Driver.FindElement(optionSelector);
             option.Click();
