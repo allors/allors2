@@ -27,10 +27,9 @@ namespace Tests.PhoneCommunicationTests
         public OrganisationPhoneCommunicationCreateTest(TestFixture fixture)
             : base(fixture)
         {
-            var organisation = new Organisations(this.Session).Extent().First;
-
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
+            var organisation = allors.ActiveCustomers.First;
 
             this.editCommunicationEvent = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
