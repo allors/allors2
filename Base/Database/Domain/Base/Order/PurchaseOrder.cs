@@ -217,8 +217,8 @@ namespace Allors.Domain
             {
                 this.DerivedLocale = this.Locale ?? this.OrderedBy?.Locale;
                 this.DerivedCurrency = this.AssignedCurrency ?? this.OrderedBy?.PreferredCurrency;
-                this.DerivedVatRegime = this.AssignedVatRegime ?? this.TakenViaSupplier?.VatRegime;
-                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.TakenViaSupplier?.IrpfRegime;
+                this.DerivedVatRegime = this.AssignedVatRegime;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime;
                 this.DerivedShipToAddress = this.AssignedShipToAddress ?? this.OrderedBy?.ShippingAddress;
                 this.DerivedBillToContactMechanism = this.AssignedBillToContactMechanism ?? this.OrderedBy?.BillingAddress ?? this.OrderedBy?.GeneralCorrespondence;
                 this.DerivedTakenViaContactMechanism = this.AssignedTakenViaContactMechanism ?? this.TakenViaSupplier?.OrderAddress;

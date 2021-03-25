@@ -49,12 +49,12 @@
         <a-mat-textarea class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Description"
           class="col-md-12"></a-mat-textarea>
       </div>
-      
+
       <div class="row">
         <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.DerivedVatRegime" [assignedRoleType]="m.PurchaseOrderItem.AssignedVatRegime"
-          [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
-        <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.DerivedIrpfRegime" [assignedRoleType]="m.PurchaseOrderItem.AssignedIrpfRegime"
-          [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
+        [derivedInitialRole]="vatRegimeInitialRole" [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+        <a-mat-select *ngIf="showIrpf" class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.DerivedIrpfRegime" [assignedRoleType]="m.PurchaseOrderItem.AssignedIrpfRegime"
+        [derivedInitialRole]="irpfRegimeInitialRole" [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
       </div>
 
       <div class="row">

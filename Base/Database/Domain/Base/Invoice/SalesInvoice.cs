@@ -159,13 +159,19 @@ namespace Allors.Domain
             {
                 this.DerivedLocale = this.Locale ?? this.BillToCustomer?.Locale ?? this.BilledFrom?.Locale;
                 this.DerivedCurrency = this.AssignedCurrency ?? this.BillToCustomer?.PreferredCurrency ?? this.BillToCustomer?.Locale?.Country?.Currency ?? this.BilledFrom?.PreferredCurrency;
-                this.DerivedVatRegime = this.AssignedVatRegime ?? this.BillToCustomer?.VatRegime;
-                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.BillToCustomer?.IrpfRegime;
+                this.DerivedVatRegime = this.AssignedVatRegime;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime;
                 this.DerivedBilledFromContactMechanism = this.AssignedBilledFromContactMechanism ?? this.BilledFrom?.BillingAddress ?? this.BilledFrom?.GeneralCorrespondence;
                 this.DerivedBillToContactMechanism = this.AssignedBillToContactMechanism ?? this.BillToCustomer?.BillingAddress;
                 this.DerivedBillToEndCustomerContactMechanism = this.AssignedBillToEndCustomerContactMechanism ?? this.BillToEndCustomer?.BillingAddress;
                 this.DerivedShipToEndCustomerAddress = this.AssignedShipToEndCustomerAddress ?? this.ShipToEndCustomer?.ShippingAddress;
                 this.DerivedShipToAddress = this.AssignedShipToAddress ?? this.ShipToCustomer?.ShippingAddress;
+
+                if (this.ExistInvoiceDate)
+                {
+                    this.DerivedVatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= this.InvoiceDate && (!v.ExistThroughDate || v.ThroughDate >= this.InvoiceDate));
+                    this.DerivedIrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= this.InvoiceDate && (!v.ExistThroughDate || v.ThroughDate >= this.InvoiceDate));
+                }
             }
 
             this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.Strategy.Session.Now().Date);
@@ -215,6 +221,8 @@ namespace Allors.Domain
 
             var validInvoiceItems = this.SalesInvoiceItems.Where(v => v.IsValid).ToArray();
             this.ValidInvoiceItems = validInvoiceItems;
+
+            this.DeriveVatClause();
 
             var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.InvoiceDate);
 
@@ -312,12 +320,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        discountVat = Math.Round(discount * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        discountVat = Math.Round(discount * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        discountIrpf = Math.Round(discount * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        discountIrpf = Math.Round(discount * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -331,12 +339,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        surchargeVat = Math.Round(surcharge * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        surchargeVat = Math.Round(surcharge * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -350,12 +358,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        feeVat = Math.Round(fee * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        feeVat = Math.Round(fee * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        feeIrpf = Math.Round(fee * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        feeIrpf = Math.Round(fee * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -369,12 +377,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        shippingVat = Math.Round(shipping * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        shippingVat = Math.Round(shipping * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -388,12 +396,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
             }
@@ -496,13 +504,6 @@ namespace Allors.Domain
                     }
                 }
             }
-
-            if (this.ExistDerivedVatRegime && this.DerivedVatRegime.ExistVatClause)
-            {
-                this.DerivedVatClause = this.DerivedVatRegime.VatClause;
-            }
-
-            this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
 
             this.BaseOnDeriveCustomers(derivation);
 
@@ -960,6 +961,27 @@ namespace Allors.Domain
             if (this.ExistShipToCustomer && !this.Customers.Contains(this.ShipToCustomer))
             {
                 this.AddCustomer(this.ShipToCustomer);
+            }
+        }
+
+        public void BaseDeriveVatClause(SalesInvoiceDeriveVatClause method)
+        {
+            if (!method.Result.HasValue)
+            {
+                if (this.ExistAssignedVatClause)
+                {
+                    this.DerivedVatClause = this.AssignedVatClause;
+                }
+                else if (this.ExistDerivedVatRegime && this.DerivedVatRegime.ExistVatClause)
+                {
+                    this.DerivedVatClause = this.DerivedVatRegime.VatClause;
+                }
+                else
+                {
+                    this.RemoveDerivedVatClause();
+                }
+
+                method.Result = true;
             }
         }
 

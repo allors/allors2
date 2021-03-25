@@ -30,7 +30,7 @@ namespace Allors.Domain
         private BasePrice currentFeature1BasePrice;
         private BasePrice currentGood1Feature1BasePrice;
         private SalesInvoice invoice;
-        private VatRate vatRate21;
+        private VatRegime vatRegime;
 
         public SalesInvoiceItemTests()
         {
@@ -40,7 +40,7 @@ namespace Allors.Domain
 
             this.internalOrganisation = this.Session.GetSingleton();
 
-            this.vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            this.vatRegime = new VatRegimes(this.Session).BelgiumStandard;
 
             this.mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             this.kiev = new CityBuilder(this.Session).WithName("Kiev").Build();
@@ -60,7 +60,7 @@ namespace Allors.Domain
             this.finishedGood = this.good.Part;
 
             this.feature1 = new ColourBuilder(this.Session)
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("white")
                 .Build();
 
@@ -243,7 +243,7 @@ namespace Allors.Domain
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).ZeroRated)
                 .Build();
 
             this.Session.Derive();
@@ -266,7 +266,7 @@ namespace Allors.Domain
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).ZeroRated)
                 .Build();
 
             this.Session.Derive();
@@ -357,7 +357,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(quantity)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(item1);
@@ -368,13 +368,13 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
-            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2), item1.UnitVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * 21 / 100, 2), item1.UnitVat);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalExVat);
-            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantity, item1.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * 21 / 100, 2) * quantity, item1.TotalVat);
 
             var purchasePrice = this.goodPurchasePrice.Price * 0.5M;
 
@@ -382,7 +382,7 @@ namespace Allors.Domain
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalExVat);
-            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantity, this.invoice.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * 21 / 100, 2) * quantity, this.invoice.TotalVat);
         }
 
         [Fact]
@@ -395,7 +395,7 @@ namespace Allors.Domain
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(3)
                 .WithAssignedUnitPrice(15)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
@@ -440,7 +440,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(quantity)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .WithAssignedIrpfRegime(irpfRegime)
                 .Build();
 
@@ -452,21 +452,21 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
-            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2), item1.UnitVat);
-            Assert.Equal(Math.Round(item1.UnitPrice * irpfRegime.IrpfRate.Rate / 100, 2), item1.UnitIrpf);
+            Assert.Equal(Math.Round(item1.UnitPrice * 21 / 100, 2), item1.UnitVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * 19 / 100, 2), item1.UnitIrpf);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalExVat);
-            Assert.Equal(Math.Round(item1.UnitPrice * irpfRegime.IrpfRate.Rate / 100, 2) * quantity, item1.TotalIrpf);
+            Assert.Equal(Math.Round(item1.UnitPrice * 19 / 100, 2) * quantity, item1.TotalIrpf);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalExVat);
-            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantity, this.invoice.TotalVat);
-            Assert.Equal(Math.Round(item1.UnitPrice * irpfRegime.IrpfRate.Rate / 100, 2) * quantity, this.invoice.TotalIrpf);
+            Assert.Equal(Math.Round(item1.UnitPrice * 21 / 100, 2) * quantity, this.invoice.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * 19 / 100, 2) * quantity, this.invoice.TotalIrpf);
         }
 
         [Fact]
@@ -1926,7 +1926,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithQuantity(1)
                 .WithAssignedUnitPrice(100M)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(item1);
@@ -1963,7 +1963,7 @@ namespace Allors.Domain
             this.currentGood1BasePrice = (BasePrice)session.Instantiate(this.currentGood1BasePrice);
             this.currentGood1Feature1BasePrice = (BasePrice)session.Instantiate(this.currentGood1Feature1BasePrice);
             this.invoice = (SalesInvoice)session.Instantiate(this.invoice);
-            this.vatRate21 = (VatRate)session.Instantiate(this.vatRate21);
+            this.vatRegime = (VatRegime)session.Instantiate(this.vatRegime);
         }
     }
 }

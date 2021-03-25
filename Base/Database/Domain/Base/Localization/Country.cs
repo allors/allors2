@@ -30,6 +30,17 @@ namespace Allors.Domain
                 this.RemoveIbanLength();
                 this.RemoveIbanRegex();
             }
+
+            foreach(VatRegime vatRegime in this.VatRegimesWhereCountry)
+            {
+                var previousCountry = vatRegime.CurrentVersion?.Country;
+                if (previousCountry != null && previousCountry != vatRegime.Country)
+                {
+                    previousCountry.RemoveDerivedVatRegime(vatRegime);
+                }
+
+                this.AddDerivedVatRegime(vatRegime);
+            }
         }
     }
 }

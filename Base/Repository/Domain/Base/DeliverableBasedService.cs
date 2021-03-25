@@ -60,7 +60,7 @@ namespace Allors.Repository
 
         public Product[] ProductObsolescences { get; set; }
 
-        public VatRate VatRate { get; set; }
+        public VatRegime VatRegime { get; set; }
 
         public PriceComponent[] BasePrices { get; set; }
 

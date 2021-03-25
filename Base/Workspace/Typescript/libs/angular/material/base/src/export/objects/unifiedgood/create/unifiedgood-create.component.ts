@@ -12,7 +12,6 @@ import {
   Settings,
   InventoryItemKind,
   Good,
-  VatRate,
   ProductNumber,
   UnifiedGood,
 } from '@allors/domain/generated';
@@ -34,7 +33,6 @@ export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnD
 
   productTypes: ProductType[];
   inventoryItemKinds: InventoryItemKind[];
-  vatRates: VatRate[];
   goodIdentificationTypes: ProductIdentificationType[];
   productNumber: ProductNumber;
   settings: Settings;
@@ -67,7 +65,6 @@ export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnD
             this.fetcher.Settings,
             pull.InventoryItemKind(),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
-            pull.VatRate(),
             pull.ProductIdentificationType(),
           ];
 
@@ -79,15 +76,12 @@ export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnD
 
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.settings = loaded.objects.Settings as Settings;
 
-        const vatRateZero = this.vatRates.find((v: VatRate) => parseFloat(v.Rate) === 0);
         this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.good = this.allors.context.create('UnifiedGood') as UnifiedGood;
-        this.good.VatRate = vatRateZero;
 
         if (!this.settings.UseProductNumberCounter) {
           this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;

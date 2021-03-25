@@ -302,8 +302,17 @@
                 </mat-card>
               </div>
             </div>
-        
+    
             <div class="row">
+              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedCurrency"
+              [assignedRoleType]="m.PurchaseInvoice.AssignedCurrency"
+              [options]="currencies" label="Currency" display="IsoCode"></a-mat-select>
+              <a-mat-select *ngIf="!showIrpf" class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedVatRegime"
+                [assignedRoleType]="m.PurchaseInvoice.AssignedVatRegime"
+                [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+            </div>
+        
+            <div *ngIf="showIrpf" class="row">
               <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedVatRegime"
                 [assignedRoleType]="m.PurchaseInvoice.AssignedVatRegime"
                 [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
@@ -320,12 +329,6 @@
             <div class="row">
               <a-mat-input class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-input>
               <a-mat-input class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.ActualInvoiceAmount"></a-mat-input>
-            </div>
-    
-            <div class="row">
-              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.PurchaseInvoice.DerivedCurrency"
-              [assignedRoleType]="m.PurchaseInvoice.AssignedCurrency"
-              [options]="currencies" label="Currency" display="IsoCode"></a-mat-select>
             </div>
         
             <div class="row">

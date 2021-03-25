@@ -711,6 +711,16 @@ namespace Allors.Repository
         [Workspace]
         SerialisedItemSoldOn[] SerialisedItemSoldOns { get; set; }
 
+        #region Allors
+        [Id("c62ad8a4-b40f-4b9e-ae27-31f1e614b1cc")]
+        [AssociationId("bd713013-30f3-433f-82a2-3b37b61c70ff")]
+        [RoleId("10bb4e18-f633-4564-8ef4-b7b35dffce3b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Country Country { get; set; }
+
         #region inherited methods
 
         #endregion

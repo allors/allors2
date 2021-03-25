@@ -122,7 +122,7 @@ namespace Allors.Domain
             var belgium = new Countries(this.Session).CountryByIsoCode["BE"];
             var euro = belgium.Currency;
 
-            var bank = new BankBuilder(this.Session).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(belgium).WithName("ING BelgiÃ«").WithBic("BBRUBEBB").Build();
 
             var ownBankAccount = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("BE23 3300 6167 6391")
@@ -168,7 +168,7 @@ namespace Allors.Domain
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            good.VatRate = new VatRateBuilder(this.Session).WithRate(0).Build();
+            good.VatRegime = new VatRegimes(this.Session).ZeroRated;
 
             this.Session.Derive();
 
@@ -234,7 +234,7 @@ namespace Allors.Domain
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            good.VatRate = new VatRateBuilder(this.Session).WithRate(0).Build();
+            good.VatRegime = new VatRegimes(this.Session).ZeroRated;
 
             this.Session.Derive();
 

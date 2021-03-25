@@ -11,9 +11,13 @@ namespace Allors.Repository
     #region Allors
     [Id("a5e29ca1-80de-4de4-9085-b69f21550b5a")]
     #endregion
-    public partial class VatRate : UniquelyIdentifiable
+    public partial class VatRate : UniquelyIdentifiable, Period
     {
         #region inherited properties
+        public DateTime FromDate { get; set; }
+
+        public DateTime ThroughDate { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -92,16 +96,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public VatRatePurchaseKind VatRatePurchaseKind { get; set; }
-
-        #region Allors
-        [Id("8b37058f-49bd-4cc6-8c26-9a9e7c6700ad")]
-        [AssociationId("71231b78-14e7-41c3-8691-745f4dd9c919")]
-        [RoleId("00945490-ff10-440b-be3b-de563caf892f")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public VatTariff VatTariff { get; set; }
 
         #region Allors
         [Id("958c1fda-0126-4b0a-8967-5d9df3ba50dc")]

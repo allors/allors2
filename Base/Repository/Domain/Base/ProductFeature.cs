@@ -63,13 +63,13 @@ namespace Allors.Repository
         ProductFeature[] IncompatibleFeatures { get; set; }
 
         #region Allors
-        [Id("efe16e22-edfb-40b1-83c0-110f874c285a")]
-        [AssociationId("3c78c391-cf55-40ce-9d11-a0600787ed82")]
-        [RoleId("6c3e8238-f1dd-4461-a73b-0927cd26db29")]
+        [Id("1256ee14-4e29-4ba6-a83f-ed2428178731")]
+        [AssociationId("7ef4811d-1fde-48a4-a024-ec68c7dd344d")]
+        [RoleId("50780176-3820-470d-be0c-5dba407ce749")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        VatRate VatRate { get; set; }
+        VatRegime VatRegime { get; set; }
     }
 }

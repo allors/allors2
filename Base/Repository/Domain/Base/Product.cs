@@ -97,14 +97,14 @@ namespace Allors.Repository
         Product[] ProductObsolescences { get; set; }
 
         #region Allors
-        [Id("f26e4376-4e3f-4d7d-8814-54d19c977a76")]
-        [AssociationId("7da35b67-dbf4-46ce-9f53-d6af8b4e208d")]
-        [RoleId("2c8e75e5-e030-4108-b528-c16aaeea40b8")]
+        [Id("29d3d43b-6332-4a13-830b-44ab828c357b")]
+        [AssociationId("c9d0fd8f-f178-4444-b6c2-f3a8a34a20b4")]
+        [RoleId("f685b66a-b6b3-477e-99f2-58da0db5da89")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        VatRate VatRate { get; set; }
+        VatRegime VatRegime { get; set; }
 
         #region Allors
         [Id("f2abc02c-67a1-42b7-83f5-195841e58a6a")]

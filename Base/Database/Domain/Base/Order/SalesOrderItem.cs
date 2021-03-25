@@ -155,9 +155,9 @@ namespace Allors.Domain
                 this.DerivedShipToParty = this.AssignedShipToParty ?? salesOrder.ShipToCustomer;
                 this.DerivedDeliveryDate = this.AssignedDeliveryDate ?? salesOrder.DeliveryDate;
                 this.DerivedVatRegime = this.AssignedVatRegime ?? salesOrder.DerivedVatRegime;
-                this.VatRate = this.DerivedVatRegime?.VatRate;
+                this.VatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= salesOrder.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= salesOrder.OrderDate));
                 this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? salesOrder.DerivedIrpfRegime;
-                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
+                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= salesOrder.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= salesOrder.OrderDate));
             }
 
             if (!this.ExistDerivationTrigger)

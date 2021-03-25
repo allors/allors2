@@ -42,6 +42,11 @@ export class FetcherService {
         BillingAddress: x,
         ShippingAddress: x,
         GeneralCorrespondence: x,
+        Country: {
+          DerivedVatRegimes: {
+            VatRates: x,
+          }
+        }
       }
     });
   }

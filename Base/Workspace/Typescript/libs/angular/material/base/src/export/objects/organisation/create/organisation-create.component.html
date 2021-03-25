@@ -12,13 +12,6 @@
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.VatRegime"
-          [options]="vatRegimes" display="Name"></a-mat-select>
-        <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.IrpfRegime"
-          [options]="irpfRegimes" display="Name"></a-mat-select>
-      </div>
-
-      <div class="row">
         <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.LegalForm"
           [options]="legalForms" display="Description"></a-mat-select>
         <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales"

@@ -74,12 +74,11 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
   customersFilter: SearchFactory;
   currencyInitialRole: Currency;
-  vatRegimeInitialRole: VatRegime;
-  irpfRegimeInitialRole: IrpfRegime;
   billToContactMechanismInitialRole: ContactMechanism;
   billToEndCustomerContactMechanismInitialRole: ContactMechanism;
   shipToEndCustomerAddressInitialRole: ContactMechanism;
   shipToAddressInitialRole: PostalAddress;
+  showIrpf: boolean;
 
   get billToCustomerIsPerson(): boolean {
     return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === this.m.Person.name;
@@ -124,7 +123,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.IsoCode),
             }),
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.SalesInvoiceType({
               predicate: new Equals({ propertyType: m.SalesInvoiceType.IsActive, value: true }),
@@ -139,9 +137,10 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
       )
       .subscribe((loaded) => {
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.salesInvoiceTypes = loaded.collections.SalesInvoiceTypes as SalesInvoiceType[];
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
 
         this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
@@ -339,8 +338,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         object: party,
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -397,8 +394,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         object: party,
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -453,8 +448,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         object: party,
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -508,8 +501,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         object: party,
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -542,8 +533,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
   private setDerivedInitialRoles() {
     this.currencyInitialRole = this.invoice.BillToCustomer?.PreferredCurrency ?? this.invoice.BillToCustomer?.Locale?.Country?.Currency ?? this.invoice.BilledFrom?.PreferredCurrency;
-    this.vatRegimeInitialRole = this.invoice.BillToCustomer?.VatRegime;
-    this.irpfRegimeInitialRole = this.invoice.BillToCustomer?.IrpfRegime;
     this.billToContactMechanismInitialRole = this.invoice.BillToCustomer?.BillingAddress ?? this.invoice.BillToCustomer?.ShippingAddress ?? this.invoice.BillToCustomer?.GeneralCorrespondence;
     this.billToEndCustomerContactMechanismInitialRole = this.invoice.BillToEndCustomer?.BillingAddress ?? this.invoice.BillToEndCustomer?.ShippingAddress ?? this.invoice.BillToEndCustomer?.GeneralCorrespondence;
     this.shipToEndCustomerAddressInitialRole = this.invoice.ShipToEndCustomer?.ShippingAddress ?? this.invoice.ShipToEndCustomer?.GeneralCorrespondence;

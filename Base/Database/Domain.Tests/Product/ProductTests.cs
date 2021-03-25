@@ -13,10 +13,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenDeliverableBasedService_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            this.Session.Derive();
-            this.Session.Commit();
-
             var builder = new DeliverableBasedServiceBuilder(this.Session);
             builder.Build();
 
@@ -24,7 +20,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithVatRate(vatRate21);
+            builder.WithVatRegime(new VatRegimes(this.Session).BelgiumStandard);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -40,11 +36,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenTimeAndMaterialsService_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             var builder = new TimeAndMaterialsServiceBuilder(this.Session);
             builder.Build();
 
@@ -61,7 +52,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var finishedGood = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
@@ -93,7 +83,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithVatRate(vatRate21);
+            builder.WithVatRegime(new VatRegimes(this.Session).BelgiumStandard);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);

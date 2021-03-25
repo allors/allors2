@@ -154,7 +154,7 @@ namespace Allors.Domain
 
             var derivationLog = this.Session.Derive(false);
             Assert.True(derivationLog.HasErrors);
-            Assert.Contains(M.Receipt.Amount.RoleType, derivationLog.Errors[0].RoleTypes);
+            Assert.Contains(M.PaymentApplication.AmountApplied, derivationLog.Errors[0].RoleTypes);
         }
 
         private void InstantiateObjects(ISession session)

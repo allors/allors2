@@ -79,14 +79,13 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
   customersFilter: SearchFactory;
   currencyInitialRole: Currency;
-  vatRegimeInitialRole: VatRegime;
-  irpfRegimeInitialRole: IrpfRegime;
   takenByContactMechanismInitialRole: ContactMechanism;
   billToContactMechanismInitialRole: ContactMechanism;
   billToEndCustomerContactMechanismInitialRole: ContactMechanism;
   shipToEndCustomerAddressInitialRole: ContactMechanism;
   shipFromAddressInitialRole: PostalAddress;
   shipToAddressInitialRole: PostalAddress;
+  showIrpf: boolean;
 
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
@@ -133,7 +132,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.IsoCode)
             }),
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: internalOrganisationId }),
@@ -165,9 +163,10 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.stores = loaded.collections.Stores as Store[];
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
 
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
@@ -389,8 +388,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
               Currency: x,
             }
           },
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -457,8 +454,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
               Currency: x,
             }
           },
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -525,8 +520,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
               Currency: x,
             }
           },
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -591,8 +584,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
               Currency: x,
             }
           },
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
           BillingAddress: x,
           ShippingAddress: x,
@@ -626,14 +617,11 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
   private setDerivedInitialRoles() {
     this.currencyInitialRole = this.order.BillToCustomer?.PreferredCurrency ?? this.order.BillToCustomer?.Locale?.Country?.Currency ?? this.order.TakenBy?.PreferredCurrency;
-    this.vatRegimeInitialRole = this.order.BillToCustomer?.VatRegime;
-    this.irpfRegimeInitialRole = this.order.BillToCustomer?.IrpfRegime;
     this.takenByContactMechanismInitialRole = this.order.TakenBy?.OrderAddress ?? this.order.TakenBy?.BillingAddress ?? this.order.TakenBy?.GeneralCorrespondence;
     this.billToContactMechanismInitialRole = this.order.BillToCustomer?.BillingAddress ?? this.order.BillToCustomer?.ShippingAddress ?? this.order.BillToCustomer?.GeneralCorrespondence;
     this.billToEndCustomerContactMechanismInitialRole = this.order.BillToEndCustomer?.BillingAddress ?? this.order.BillToEndCustomer?.ShippingAddress ?? this.order.BillToEndCustomer?.GeneralCorrespondence;
     this.shipToEndCustomerAddressInitialRole = this.order.ShipToEndCustomer?.ShippingAddress ?? this.order.ShipToEndCustomer?.GeneralCorrespondence;
     this.shipFromAddressInitialRole = this.order.TakenBy?.ShippingAddress;
     this.shipToAddressInitialRole = this.order.ShipToCustomer?.ShippingAddress;
-
   }
 }

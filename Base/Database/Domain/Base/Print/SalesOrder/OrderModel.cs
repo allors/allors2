@@ -34,12 +34,12 @@ namespace Allors.Domain.Print.SalesOrderModel
             // TODO: Where does the currency come from?
             this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.VatRate = order.DerivedVatRegime?.VatRate?.Rate.ToString("n2");
+            this.VatRate = order.DerivedVatRate?.Rate.ToString("n2");
             this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
 
             // IRPF is subtracted for total amount to pay
             var totalIrpf = order.TotalIrpf * -1;
-            this.IrpfRate = order.DerivedIrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.IrpfRate = order.DerivedIrpfRate?.Rate.ToString("n2");
             this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE"));
             this.PrintIrpf = order.TotalIrpf != 0;
 

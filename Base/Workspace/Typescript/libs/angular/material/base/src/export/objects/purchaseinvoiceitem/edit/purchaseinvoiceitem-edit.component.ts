@@ -19,11 +19,12 @@ import {
   InvoiceItemType,
   SupplierOffering,
   UnifiedGood,
+  Organisation,
 } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta, TreeFactory } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { Filters } from '@allors/angular/base';
+import { FetcherService, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -55,18 +56,23 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
   serialised: boolean;
   nonUnifiedPart: boolean;
   unifiedGood: boolean;
+  showIrpf: boolean;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
 
   private subscription: Subscription;
   partsFilter: SearchFactory;
   supplierOffering: SupplierOffering;
   
   unifiedGoodsFilter: SearchFactory;
+  internalOrganisation: Organisation;
 
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<PurchaseInvoiceItemEditComponent>,
     public metaService: MetaService,
+    private fetcher: FetcherService,
     public refreshService: RefreshService,
     private saveService: SaveService
   ) {
@@ -85,12 +91,10 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
           const { id } = this.data;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
-            }),
-            pull.VatRegime({
-              sort: new Sort(m.VatRegime.Name),
             }),
             pull.IrpfRegime({
               sort: new Sort(m.IrpfRegime.Name),
@@ -104,17 +108,11 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
                 include: {
                   PurchaseInvoiceItemState: x,
                   SerialisedItem: x,
-                  AssignedVatRegime: {
-                    VatRate: x,
-                  },
                   DerivedVatRegime: {
-                    VatRate: x,
-                  },
-                  AssignedIrpfRegime: {
-                    IrpfRate: x,
+                    VatRates: x,
                   },
                   DerivedIrpfRegime: {
-                    IrpfRate: x,
+                    IrpfRates: x,
                   },
             },
               }),
@@ -123,17 +121,11 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
                 fetch: {
                   PurchaseInvoiceWherePurchaseInvoiceItem: {
                     include: {
-                      AssignedVatRegime: {
-                        VatRate: x,
-                      },
                       DerivedVatRegime: {
-                        VatRate: x,
-                      },
-                      AssignedIrpfRegime: {
-                        IrpfRate: x,
+                        VatRates: x,
                       },
                       DerivedIrpfRegime: {
-                        IrpfRate: x,
+                        IrpfRates: x,
                       },
                     },
                   },
@@ -147,17 +139,11 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               pull.PurchaseInvoice({
                 object: this.data.associationId,
                 include: {
-                  AssignedVatRegime: {
-                    VatRate: x,
-                  },
                   DerivedVatRegime: {
-                    VatRate: x,
-                  },
-                  AssignedIrpfRegime: {
-                    IrpfRate: x,
+                    VatRates: x,
                   },
                   DerivedIrpfRegime: {
-                    IrpfRate: x,
+                    IrpfRates: x,
                   },
                 },
               })
@@ -172,9 +158,11 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.invoiceItem = loaded.objects.PurchaseInvoiceItem as PurchaseInvoiceItem;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
@@ -203,6 +191,8 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
           this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
           this.invoiceItem = this.allors.context.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
+          this.vatRegimeInitialRole = this.invoice.DerivedVatRegime;
+          this.irpfRegimeInitialRole = this.invoice.DerivedIrpfRegime;
         } else {
           this.invoice = this.invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem;
 

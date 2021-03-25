@@ -123,9 +123,11 @@
             <div class="row">
               <a-mat-select class="col-md-6" [object]="productQuote" [roleType]="m.ProductQuote.DerivedCurrency" [assignedRoleType]="m.ProductQuote.AssignedCurrency"
                 [options]="currencies" label="Currency" display="Name"></a-mat-select>
+                <a-mat-select *ngIf="!showIrpf" class="col-md" [object]="productQuote" [roleType]="m.ProductQuote.DerivedVatRegime" [assignedRoleType]="m.ProductQuote.AssignedVatRegime"
+                [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
             </div>
       
-            <div class="row">
+            <div *ngIf="showIrpf" class="row">
               <a-mat-select class="col-md" [object]="productQuote" [roleType]="m.ProductQuote.DerivedVatRegime" [assignedRoleType]="m.ProductQuote.AssignedVatRegime"
                 [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
               <a-mat-select class="col-md" [object]="productQuote" [roleType]="m.ProductQuote.DerivedIrpfRegime" [assignedRoleType]="m.ProductQuote.AssignedIrpfRegime"

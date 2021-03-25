@@ -180,13 +180,15 @@ namespace Allors.Domain
                 this.PurchaseOrderItemState = states.Rejected;
             }
 
+            var order = this.PurchaseOrderWherePurchaseOrderItem;
+
             if (this.IsValid)
             {
                 this.DerivedDeliveryDate = this.AssignedDeliveryDate ?? this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate;
                 this.DerivedVatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedVatRegime;
-                this.VatRate = this.DerivedVatRegime?.VatRate;
+                this.VatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= order.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= order.OrderDate));
                 this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedIrpfRegime;
-                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
+                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= order.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= order.OrderDate));
 
                 this.UnitBasePrice = 0;
                 this.UnitDiscount = 0;
@@ -199,7 +201,6 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    var order = this.PurchaseOrderWherePurchaseOrderItem;
                     this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
                 }
 

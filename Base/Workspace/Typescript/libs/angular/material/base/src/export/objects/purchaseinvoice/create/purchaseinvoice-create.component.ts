@@ -80,13 +80,12 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
   customersFilter: SearchFactory;
   employeeFilter: SearchFactory;
   suppliersFilter: SearchFactory;
-  vatRegimeInitialRole: VatRegime;
-  irpfRegimeInitialRole: IrpfRegime;
   billedFromContactMechanismInitialRole: ContactMechanism;
   shipToCustomerAddressInitialRole: ContactMechanism;
   billToEndCustomerContactMechanismInitialRole: ContactMechanism;
   shipToEndCustomerAddressInitialRole: ContactMechanism;
   currencyInitialRole: Currency;
+  showIrpf: boolean;
 
   get shipToCustomerIsPerson(): boolean {
     return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;
@@ -125,7 +124,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
@@ -148,7 +146,8 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
@@ -364,8 +363,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         object: party,
         name: 'selectedSupplier',
         include: {
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
         }
       }),
@@ -386,8 +383,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         this.billedFromContacts = loaded.collections.CurrentContacts as Person[];
 
         const selectedSupplier = loaded.objects.selectedSupplier as Organisation;
-        this.vatRegimeInitialRole = selectedSupplier.VatRegime;
-        this.irpfRegimeInitialRole = selectedSupplier.IrpfRegime;
         this.billedFromContactMechanismInitialRole = selectedSupplier.OrderAddress;
       });
   }
@@ -422,7 +417,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         name: 'selectedParty',
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
           BillingAddress: x,
           GeneralCorrespondence: x,
         }
@@ -476,7 +470,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         name: 'selectedParty',
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
           BillingAddress: x,
           GeneralCorrespondence: x,
         }
@@ -535,7 +528,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
         name: 'selectedParty',
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
           BillingAddress: x,
           GeneralCorrespondence: x,
         }

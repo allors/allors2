@@ -369,16 +369,6 @@ namespace Allors.Repository
         Currency PreferredCurrency { get; set; }
 
         #region Allors
-        [Id("36648D37-BBD7-4C78-87D0-8CB77DABF7ED")]
-        [AssociationId("FEB03ADD-B2FE-4221-94A5-B690860407EB")]
-        [RoleId("79BD622C-4C66-4FE7-B4A8-19821DD38A17")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        VatRegime VatRegime { get; set; }
-
-        #region Allors
         [Id("E25BB549-9B1B-4FAF-A62C-72EB95897D0F")]
         [AssociationId("7E0B4EC2-FC0D-48D9-980B-C05280897499")]
         [RoleId("B4146BF3-EC12-44C4-8202-B08CFE491104")]

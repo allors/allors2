@@ -322,7 +322,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
                 .WithAssignedUnitPrice(15)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -358,7 +358,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -2013,7 +2013,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.variantGood)
                 .WithQuantityOrdered(quantityOrdered)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -2137,7 +2137,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);

@@ -299,10 +299,10 @@
 
       <div class="row">
         <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedVatRegime"
-          [assignedRoleType]="m.SalesOrder.AssignedVatRegime" [derivedInitialRole]="vatRegimeInitialRole"
+          [assignedRoleType]="m.SalesOrder.AssignedVatRegime"
           [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
-        <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedIrpfRegime"
-          [assignedRoleType]="m.SalesOrder.AssignedIrpfRegime" [derivedInitialRole]="irpfRegimeInitialRole"
+        <a-mat-select *ngIf="showIrpf" class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedIrpfRegime"
+          [assignedRoleType]="m.SalesOrder.AssignedIrpfRegime"
           [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
       </div>
 

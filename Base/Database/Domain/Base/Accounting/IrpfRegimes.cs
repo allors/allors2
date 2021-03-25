@@ -40,25 +40,28 @@ namespace Allors.Domain
             {
                 v.Name = "IRPF Assessable 15%";
                 localisedName.Set(v, dutchLocale, "IRPF-plichtig 15%");
-                v.IrpfRate = new IrpfRates(this.Session).fifteen;
                 v.IsActive = true;
             });
+            var irpfregime = new IrpfRegimes(this.Session).FindBy(M.VatRegime.UniqueId, Assessable15Id);
+            irpfregime.AddIrpfRate(new IrpfRates(this.Session).fifteen);
 
             merge(Assessable19Id, v =>
             {
                 v.Name = "IRPF Assessable 19%";
                 localisedName.Set(v, dutchLocale, "IRPF-plichtig 19%");
-                v.IrpfRate = new IrpfRates(this.Session).nineteen;
                 v.IsActive = true;
             });
+            irpfregime = new IrpfRegimes(this.Session).FindBy(M.VatRegime.UniqueId, Assessable19Id);
+            irpfregime.AddIrpfRate(new IrpfRates(this.Session).nineteen);
 
             merge(ExemptId, v =>
             {
                 v.Name = "Exempt";
                 localisedName.Set(v, dutchLocale, "Vrijgesteld");
-                v.IrpfRate = new IrpfRates(this.Session).Zero;
                 v.IsActive = true;
             });
+            irpfregime = new IrpfRegimes(this.Session).FindBy(M.VatRegime.UniqueId, ExemptId);
+            irpfregime.AddIrpfRate(new IrpfRates(this.Session).Zero);
         }
     }
 }

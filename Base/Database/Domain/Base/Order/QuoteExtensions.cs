@@ -50,8 +50,8 @@ namespace Allors.Domain
 
                 quoteDerivedRoles.DerivedLocale = @this.Locale ?? @this.Receiver?.Locale ?? @this.Issuer?.Locale;
                 quoteDerivedRoles.DerivedCurrency = @this.AssignedCurrency ?? @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
-                quoteDerivedRoles.DerivedVatRegime = @this.AssignedVatRegime ?? @this.Receiver?.VatRegime;
-                quoteDerivedRoles.DerivedIrpfRegime = @this.AssignedIrpfRegime ?? @this.Receiver?.IrpfRegime;
+                quoteDerivedRoles.DerivedVatRegime = @this.AssignedVatRegime;
+                quoteDerivedRoles.DerivedIrpfRegime = @this.AssignedIrpfRegime;
             }
 
             foreach (QuoteItem quoteItem in @this.QuoteItems)
@@ -59,10 +59,10 @@ namespace Allors.Domain
                 var quoteItemDerivedRoles = (QuoteItemDerivedRoles)quoteItem;
 
                 quoteItemDerivedRoles.DerivedVatRegime = quoteItem.AssignedVatRegime ?? @this.DerivedVatRegime;
-                quoteItemDerivedRoles.VatRate = quoteItem.DerivedVatRegime?.VatRate;
+                quoteItemDerivedRoles.VatRate = quoteItem.DerivedVatRegime?.VatRates.First(v => v.FromDate <= @this.IssueDate && (!v.ExistThroughDate || v.ThroughDate >= @this.IssueDate));
 
                 quoteItemDerivedRoles.DerivedIrpfRegime = quoteItem.AssignedIrpfRegime ?? @this.DerivedIrpfRegime;
-                quoteItemDerivedRoles.IrpfRate = quoteItem.DerivedIrpfRegime?.IrpfRate;
+                quoteItemDerivedRoles.IrpfRate = quoteItem.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= @this.IssueDate && (!v.ExistThroughDate || v.ThroughDate >= @this.IssueDate));
             }
 
             @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);

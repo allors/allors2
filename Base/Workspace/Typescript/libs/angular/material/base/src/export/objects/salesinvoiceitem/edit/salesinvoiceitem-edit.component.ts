@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
-import { InventoryItem, Part, Facility, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedItemAvailability, NonUnifiedPart } from '@allors/domain/generated';
+import { InventoryItem, Part, Facility, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedItemAvailability, NonUnifiedPart, Organisation } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
@@ -48,7 +48,11 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
   inRent: SerialisedItemAvailability;
 
   goodsFilter: SearchFactory;
-
+  internalOrganisation: Organisation;
+  showIrpf: boolean;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
+  
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
@@ -80,14 +84,13 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
           const { id } = this.data;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             this.fetcher.warehouses,
             pull.SerialisedItemAvailability(),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
             }),
-            pull.VatRegime({ 
-              sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ 
               sort: new Sort(m.IrpfRegime.Name) }),
             pull.SerialisedItemAvailability(),
@@ -105,17 +108,11 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
                   Facility: {
                     Owner: x,
                   },
-                  AssignedVatRegime: {
-                    VatRate: x,
-                  },
                   DerivedVatRegime: {
-                    VatRate: x,
-                  },
-                  AssignedIrpfRegime: {
-                    IrpfRate: x,
+                    VatRates: x,
                   },
                   DerivedIrpfRegime: {
-                    IrpfRate: x,
+                    IrpfRates: x,
                   }
                 }
               }),
@@ -124,17 +121,11 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
                 fetch: {
                   SalesInvoiceWhereSalesInvoiceItem: {
                     include: {
-                      AssignedVatRegime: {
-                        VatRate: x,
-                      },
                       DerivedVatRegime: {
-                        VatRate: x,
-                      },
-                      AssignedIrpfRegime: {
-                        IrpfRate: x,
+                        VatRates: x,
                       },
                       DerivedIrpfRegime: {
-                        IrpfRate: x,
+                        IrpfRates: x,
                       }
                     }
                   }
@@ -148,17 +139,11 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
               pull.SalesInvoice({
                 object: this.data.associationId,
                 include: {
-                  AssignedVatRegime: {
-                    VatRate: x,
-                  },
                   DerivedVatRegime: {
-                    VatRate: x,
-                  },
-                  AssignedIrpfRegime: {
-                    IrpfRate: x,
+                    VatRates: x,
                   },
                   DerivedIrpfRegime: {
-                    IrpfRate: x,
+                    IrpfRates: x,
                   }
                 }
               })
@@ -176,10 +161,12 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.invoiceItem = loaded.objects.SalesInvoiceItem as SalesInvoiceItem;
         this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
         this.facilities = loaded.collections.Facilities as Facility[];
@@ -195,6 +182,8 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
           this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
           this.invoiceItem = this.allors.context.create('SalesInvoiceItem') as SalesInvoiceItem;
           this.invoice.AddSalesInvoiceItem(this.invoiceItem);
+          this.vatRegimeInitialRole = this.invoice.DerivedVatRegime;
+          this.irpfRegimeInitialRole = this.invoice.DerivedIrpfRegime;
         } else {
           this.title = 'Edit invoice Item';
           this.invoice = this.invoiceItem.SalesInvoiceWhereSalesInvoiceItem;

@@ -372,6 +372,15 @@
             </div>
 
             <div class="row">
+              <a-mat-select class="col-md-6" [object]="order" [roleType]="m.SalesOrder.DerivedCurrency" 
+                [assignedRoleType]="m.SalesOrder.AssignedCurrency"
+                [options]="currencies" label="Currency" display="IsoCode"></a-mat-select>
+              <a-mat-select *ngIf="!showIrpf" class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedVatRegime"
+                [assignedRoleType]="m.SalesOrder.AssignedVatRegime"
+                [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+            </div>
+
+            <div *ngIf="showIrpf" class="row">
               <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedVatRegime"
                 [assignedRoleType]="m.SalesOrder.AssignedVatRegime"
                 [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
@@ -382,16 +391,10 @@
       
             <div class="row">
               <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedVatClause"
-                [options]="vatClauses" display="Name" label="Applied VAT clause"></a-mat-select>
-              <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.AssignedVatClause"
-                [options]="vatClauses" display="Name" label="Assign VAT clause"></a-mat-select>
+                [assignedRoleType]="m.SalesOrder.AssignedVatClause"
+                [options]="vatClauses" label="VAT clause" display="Name"></a-mat-select>
             </div>
 
-            <div class="row">
-              <a-mat-select class="col-md-6" [object]="order" [roleType]="m.SalesOrder.DerivedCurrency" 
-                [assignedRoleType]="m.SalesOrder.AssignedCurrency"
-                [options]="currencies" label="Currency" display="IsoCode"></a-mat-select>
-            </div>
 
             <div class="row">
               <a-mat-textarea class="col-md" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-textarea>

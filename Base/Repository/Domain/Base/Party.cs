@@ -408,26 +408,6 @@ namespace Allors.Repository
         Currency PreferredCurrency { get; set; }
 
         #region Allors
-        [Id("fafa35a1-7762-47f7-a9c2-28d3d0623e7c")]
-        [AssociationId("ef3ddd5a-7f11-4191-8098-18fa958f7f93")]
-        [RoleId("68f80581-9c1f-4f02-88dc-e6119ab6d135")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        VatRegime VatRegime { get; set; }
-
-        #region Allors
-        [Id("bf0b654e-405b-46a6-9118-23a6c5746a31")]
-        [AssociationId("c9baec49-e9d2-44eb-bab5-ce01c45e07fe")]
-        [RoleId("7253c357-4178-418a-b613-1be9a37a7957")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public IrpfRegime IrpfRegime { get; set; }
-
-        #region Allors
         [Id("29AAF778-37F7-4E29-9EED-16748C376D98")]
         [AssociationId("A7EED273-AD6A-4900-9DFD-D7524F640B54")]
         [RoleId("64713797-16F4-4040-81DC-018DBCAD5DAE")]

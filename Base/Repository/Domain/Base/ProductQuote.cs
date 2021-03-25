@@ -52,6 +52,8 @@ namespace Allors.Repository
 
         public VatRegime DerivedVatRegime { get; set; }
 
+        public VatRate DerivedVatRate { get; set; }
+
         public VatClause AssignedVatClause { get; set; }
 
         public VatClause DerivedVatClause { get; set; }
@@ -59,6 +61,8 @@ namespace Allors.Repository
         public IrpfRegime DerivedIrpfRegime { get; set; }
 
         public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public IrpfRate DerivedIrpfRate { get; set; }
 
         public Locale DerivedLocale { get; set; }
 

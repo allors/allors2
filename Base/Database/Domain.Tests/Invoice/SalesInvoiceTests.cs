@@ -620,7 +620,7 @@ namespace Allors.Domain
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithAssignedBillToContactMechanism(contactMechanism)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
             this.Session.Derive();
@@ -687,7 +687,7 @@ namespace Allors.Domain
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
             this.Session.Derive();
 
@@ -726,7 +726,7 @@ namespace Allors.Domain
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
             this.Session.Derive();
 
@@ -765,7 +765,7 @@ namespace Allors.Domain
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
             this.Session.Derive();
 
@@ -804,7 +804,7 @@ namespace Allors.Domain
                 .WithAssignedBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithOrderAdjustment(adjustment)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).DutchStandardTariff)
                 .Build();
             this.Session.Derive();
 
@@ -920,7 +920,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            good.VatRate = new VatRateBuilder(this.Session).WithRate(0).Build();
+            good.VatRegime = new VatRegimes(this.Session).ZeroRated;
 
             this.Session.Derive();
             this.Session.Commit();

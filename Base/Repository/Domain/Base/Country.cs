@@ -27,16 +27,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("13010743-231f-43a8-9539-b95b83ab15da")]
-        [AssociationId("de4d0d90-e41b-4b7c-bcdc-23269020ab4e")]
-        [RoleId("5e2328a6-5413-401f-8106-7b8b29907b06")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        [Workspace]
-        public VatRate[] VatRates { get; set; }
-
-        #region Allors
         [Id("2ecb8cfb-011d-4c31-a9cd-ed5a13ae23a4")]
         [AssociationId("ebdfd8e3-9d24-4721-b72b-5a5e4327d62b")]
         [RoleId("45aa4f50-a23b-4ce6-872f-d72b648e4e90")]
@@ -79,6 +69,17 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public VatForm VatForm { get; set; }
+
+        #region Allors
+        [Id("bc0bf6fb-d7d0-410e-ab14-5bc0e33f491d")]
+        [AssociationId("390fd915-4b64-4768-b8d1-93d3a16a09b5")]
+        [RoleId("59cb3e5b-0c74-423d-87c9-8b7532c5af04")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public VatRegime[] DerivedVatRegimes{ get; set; }
 
         #region Allors
         [Id("c231ce68-bf03-4122-8699-c3c6473ab90a")]

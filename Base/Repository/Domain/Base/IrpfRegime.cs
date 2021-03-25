@@ -43,7 +43,17 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        public IrpfRate IrpfRate { get; set; }
+        public IrpfRate ObsoleteIrpfRate { get; set; }
+
+        #region Allors
+        [Id("bd263133-c785-474e-bdc3-a38226cad2ba")]
+        [AssociationId("d83a1bf0-2964-4352-a5e8-bdf4d4d3d350")]
+        [RoleId("8060e5fd-72c5-4bb8-b787-1d979928a0fe")]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        public IrpfRate[] IrpfRates { get; set; }
 
         /// <summary>
         /// Contains the accounting account assigned for the invoices/credit memos of purchase.

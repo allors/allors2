@@ -84,8 +84,7 @@ namespace Allors.Domain
             var kinds = new InventoryItemKinds(this.Session);
             var unitsOfMeasure = new UnitsOfMeasure(this.Session);
             var unknown = new InventoryTransactionReasons(this.Session).Unknown;
-
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var vatRegime = new VatRegimes(this.Session).ZeroRated;
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var serialPart = this.CreatePart("FG1", kinds.Serialised);
             var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
@@ -96,7 +95,7 @@ namespace Allors.Domain
             serialPart.AddSerialisedItem(serialItem2);
             serialPart.AddSerialisedItem(serialItem3);
 
-            var good = this.CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, serialPart);
+            var good = this.CreateGood("10101", vatRegime, "good1", unitsOfMeasure.Piece, category, serialPart);
 
             // Act
             this.Session.Derive(true);
@@ -122,8 +121,7 @@ namespace Allors.Domain
             var serialized = new InventoryItemKinds(this.Session).Serialised;
             var piece = new UnitsOfMeasure(this.Session).Piece;
             var unknown = new InventoryTransactionReasons(this.Session).Unknown;
-
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var vatRegime = new VatRegimes(this.Session).ZeroRated;
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var finishedGood = this.CreatePart("FG1", serialized);
             var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
@@ -132,7 +130,7 @@ namespace Allors.Domain
             finishedGood.AddSerialisedItem(serialItem1);
             finishedGood.AddSerialisedItem(serialItem2);
 
-            var good = this.CreateGood("10101", vatRate21, "good1", piece, category, finishedGood);
+            var good = this.CreateGood("10101", vatRegime, "good1", piece, category, finishedGood);
 
             // Act
             this.Session.Derive(true);
@@ -155,12 +153,12 @@ namespace Allors.Domain
         private Facility CreateFacility(string name, FacilityType type, InternalOrganisation owner)
             => new FacilityBuilder(this.Session).WithName(name).WithFacilityType(type).WithOwner(owner).Build();
 
-        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
+        private Good CreateGood(string sku, VatRegime vatRegime, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new NonUnifiedGoodBuilder(this.Session)
                 .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification(sku)
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
-                .WithVatRate(vatRate)
+                .WithVatRegime(vatRegime)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)
                 .WithPart(part)

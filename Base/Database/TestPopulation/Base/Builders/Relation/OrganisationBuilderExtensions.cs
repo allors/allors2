@@ -18,7 +18,6 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithName(faker.Company.CompanyName());
             @this.WithEuListingState(euCountry);
-            @this.WithVatRegime(new VatRegimes(@this.Session).IntraCommunautair);
             @this.WithLegalForm(faker.Random.ListItem(@this.Session.Extent<LegalForm>()));
             @this.WithLocale(faker.Random.ListItem(@this.Session.GetSingleton().Locales));
             @this.WithTaxNumber($"{euCountry.IsoCode}{faker.Random.Number(99999999)}");
@@ -82,7 +81,6 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithName(company.CompanyName());
             @this.WithEuListingState(euCountry);
-            @this.WithVatRegime(new VatRegimes(@this.Session).IntraCommunautair);
             @this.WithLegalForm(faker.Random.ListItem(@this.Session.Extent<LegalForm>()));
             @this.WithLocale(faker.Random.ListItem(@this.Session.GetSingleton().Locales));
             @this.WithTaxNumber($"{euCountry.IsoCode}{faker.Random.Number(99999999)}");

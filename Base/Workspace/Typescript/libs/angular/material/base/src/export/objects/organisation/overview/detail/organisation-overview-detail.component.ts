@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, PanelService, ContextService, SingletonId } from '@allors/angular/services/core';
-import { Organisation, Currency, InternalOrganisation, IrpfRegime, VatRegime, CustomOrganisationClassification, IndustryClassification, LegalForm, Locale } from '@allors/domain/generated';
+import { Organisation, Currency, InternalOrganisation, CustomOrganisationClassification, IndustryClassification, LegalForm, Locale } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService } from '@allors/angular/base';
@@ -30,8 +30,6 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
 
   private subscription: Subscription;
   legalForms: LegalForm[];
-  vatRegimes: VatRegime[];
-  irpfRegimes: IrpfRegime[];
   currencies: Currency[];
 
   constructor(
@@ -123,12 +121,6 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
             pull.LegalForm({
               sort: new Sort(m.LegalForm.Description)
             }),
-            pull.VatRegime({
-              sort: new Sort(m.VatRegime.Name)
-            }),
-            pull.IrpfRegime({
-              sort: new Sort(m.IrpfRegime.Name)
-            })
           ];
 
           return this.allors.context
@@ -144,8 +136,6 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
       });
   }
 

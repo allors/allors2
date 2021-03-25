@@ -214,6 +214,12 @@ namespace Allors.Domain
             var miscellaneousVat = 0M;
             var miscellaneousIrpf = 0M;
 
+            if (this.ExistIssueDate)
+            {
+                this.DerivedVatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= this.IssueDate && (!v.ExistThroughDate || v.ThroughDate >= this.IssueDate));
+                this.DerivedIrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= this.IssueDate && (!v.ExistThroughDate || v.ThroughDate >= this.IssueDate));
+            }
+
             foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
             {
                 if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
@@ -226,12 +232,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        discountVat = Math.Round(discount * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        discountVat = Math.Round(discount * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        discountIrpf = Math.Round(discount * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        discountIrpf = Math.Round(discount * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -245,12 +251,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        surchargeVat = Math.Round(surcharge * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        surchargeVat = Math.Round(surcharge * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -264,12 +270,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        feeVat = Math.Round(fee * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        feeVat = Math.Round(fee * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        feeIrpf = Math.Round(fee * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        feeIrpf = Math.Round(fee * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -283,12 +289,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        shippingVat = Math.Round(shipping * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        shippingVat = Math.Round(shipping * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -302,12 +308,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
             }

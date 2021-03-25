@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
     using System.Text;
     using Allors.Meta;
     using Resources;
@@ -158,10 +159,10 @@ namespace Allors.Domain
             }
 
             this.DerivedVatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem?.DerivedVatRegime;
-            this.VatRate = this.DerivedVatRegime?.VatRate;
+            this.VatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= salesInvoice.InvoiceDate && (!v.ExistThroughDate || v.ThroughDate >= salesInvoice.InvoiceDate));
 
             this.DerivedIrpfRegime = this.ExistAssignedIrpfRegime ? this.AssignedIrpfRegime : this.SalesInvoiceWhereSalesInvoiceItem?.DerivedIrpfRegime;
-            this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
+            this.IrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= salesInvoice.InvoiceDate && (!v.ExistThroughDate || v.ThroughDate >= salesInvoice.InvoiceDate));
 
             if (this.ExistInvoiceItemType && this.IsSubTotalItem().Result == true && this.Quantity <= 0)
             {

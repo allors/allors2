@@ -28,7 +28,7 @@ namespace Allors.Repository
 
         public ProductFeature[] IncompatibleFeatures { get; set; }
 
-        public VatRate VatRate { get; set; }
+        public VatRegime VatRegime { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 

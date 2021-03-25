@@ -38,7 +38,6 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
   categories: ProductCategory[];
   productTypes: ProductType[];
   manufacturers: Organisation[];
-  vatRates: VatRate[];
   ownerships: Ownership[];
   organisations: Organisation[];
   goodIdentificationTypes: ProductIdentificationType[];
@@ -79,7 +78,6 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
             this.fetcher.Settings,
-            pull.VatRate(),
             pull.ProductIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
           ];
@@ -94,16 +92,13 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
         this.allors.context.reset();
 
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.settings = loaded.objects.Settings as Settings;
 
-        const vatRateZero = this.vatRates.find((v: VatRate) => parseFloat(v.Rate) === 0);
         this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.good = this.allors.context.create('NonUnifiedGood') as Good;
-        this.good.VatRate = vatRateZero;
 
         if (!this.settings.UseProductNumberCounter) {
           this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;

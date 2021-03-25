@@ -501,7 +501,7 @@ namespace Allors.Domain
             var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithName(part.Name)
                 .WithPart(part)
-                .WithVatRate(new VatRates(this.Session).Zero)
+                .WithVatRegime(new VatRegimes(this.Session).ZeroRated)
                 .Build();
 
             this.Session.Derive();

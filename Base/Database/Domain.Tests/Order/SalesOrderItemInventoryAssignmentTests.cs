@@ -40,7 +40,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithPart(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithVatRegime(new VatRegimes(this.Session).BelgiumStandard)
                 .Build();
 
             this.Session.Derive();

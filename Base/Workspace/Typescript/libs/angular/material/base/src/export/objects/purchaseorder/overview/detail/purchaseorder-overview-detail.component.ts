@@ -54,6 +54,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
   suppliersFilter: SearchFactory;
   irpfRegimes: IrpfRegime[];
+  showIrpf: boolean;
 
   constructor(
     @Self() public allors: ContextService,
@@ -82,7 +83,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
         pulls.push(
 
-          this.fetcher.internalOrganisation,
           pull.PurchaseOrder({
             name: purchaseOrderPullName,
             object: this.panel.manager.id,
@@ -93,7 +93,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
     panel.onPulled = (loaded) => {
       if (this.panel.isCollapsed) {
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.order = loaded.objects[purchaseOrderPullName] as PurchaseOrder;
       }
     };
@@ -115,13 +114,13 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           const id = this.panel.manager.id;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.PurchaseOrder({
               object: id,
               include: {
                 OrderedBy: x,
                 StoredInFacility: x,
                 TakenViaSupplier: x,
-                AssignedTakenViaContactMechanism: x,
                 DerivedTakenViaContactMechanism: x,
                 TakenViaContactPerson: x,
                 BillToContactPerson: x,
@@ -129,28 +128,17 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
                 PurchaseOrderShipmentState: x,
                 CreatedBy: x,
                 LastModifiedBy: x,
-                AssignedShipToAddress: {
-                  Country: x,
-                },
                 DerivedShipToAddress: {
                   Country: x,
-                },
-                AssignedBillToContactMechanism: {
-                  PostalAddress_Country: x
                 },
                 DerivedBillToContactMechanism: {
                   PostalAddress_Country: x
                 },
-                AssignedVatRegime: {
-                  VatRate: x,
-                },
                 DerivedVatRegime: {
-                  VatRate: x,
+                  VatRates: x,
                 }
               }
             }),
-            pull.VatRate(),
-            pull.VatRegime(),
             pull.IrpfRegime(),
             pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.Currency({
@@ -169,9 +157,9 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
         this.allors.context.reset();
 
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
-
-        this.vatRates = loaded.collections.VatRates as VatRate[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.facilities  = loaded.collections.Facilities as Facility[];
         this.currencies = loaded.collections.Currencies as Currency[];

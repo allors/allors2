@@ -5,7 +5,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
 import { MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/services/core';
-import { Organisation, Facility, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, VatRate, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship, Locale } from '@allors/domain/generated';
+import { Organisation, Facility, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship, Locale } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService } from '@allors/angular/base';
@@ -32,7 +32,6 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
   productTypes: ProductType[];
   categories: ProductCategory[];
   manufacturers: Organisation[];
-  vatRates: VatRate[];
   suppliers: Organisation[];
   currentSuppliers: Set<Organisation>;
   activeSuppliers: Organisation[];
@@ -182,7 +181,6 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
             pull.InventoryItemKind(),
             pull.ProductIdentificationType(),
             pull.Facility(),
-            pull.VatRate(),
             pull.ProductIdentificationType(),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
@@ -233,7 +231,6 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];
         this.settings = loaded.objects.Settings as Settings;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];

@@ -196,10 +196,6 @@ namespace Allors.Repository
 
         public Currency PreferredCurrency { get; set; }
 
-        public VatRegime VatRegime { get; set; }
-
-        public IrpfRegime IrpfRegime { get; set; }
-
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public Locale Locale { get; set; }
@@ -261,6 +257,8 @@ namespace Allors.Repository
         public bool AutoGeneratePurchaseShipment { get; set; }
 
         public SerialisedItemSoldOn[] SerialisedItemSoldOns { get; set; }
+
+        public Country Country { get; set; }
 
         #endregion
 

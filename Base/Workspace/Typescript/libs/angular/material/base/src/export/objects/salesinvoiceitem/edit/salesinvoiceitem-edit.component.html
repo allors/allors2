@@ -39,10 +39,10 @@
       
       <div class="row">
         <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.DerivedVatRegime"
-          [assignedRoleType]="m.SalesInvoiceItem.AssignedVatRegime"
+          [derivedInitialRole]="vatRegimeInitialRole" [assignedRoleType]="m.SalesInvoiceItem.AssignedVatRegime"
           [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
-          <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.DerivedIrpfRegime"
-          [assignedRoleType]="m.SalesInvoiceItem.AssignedIrpfRegime"
+          <a-mat-select *ngIf="showIrpf" class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.DerivedIrpfRegime"
+          [derivedInitialRole]="irpfRegimeInitialRole" [assignedRoleType]="m.SalesInvoiceItem.AssignedIrpfRegime"
           [options]="irpfRegimes" label="Irpf Regime" display="Name"></a-mat-select>
       </div>
 

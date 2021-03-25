@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
-import { InventoryItem, Part, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItem, VatRegime, IrpfRegime, InvoiceItemType, Product, QuoteItem, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, SalesOrderItem, SerialisedItemAvailability, SalesOrder } from '@allors/domain/generated';
+import { InventoryItem, Part, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItem, VatRegime, IrpfRegime, InvoiceItemType, Product, QuoteItem, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, SalesOrderItem, SerialisedItemAvailability, SalesOrder, Organisation } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { Filters } from '@allors/angular/base';
+import { FetcherService, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -83,6 +83,10 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   private subscription: Subscription;
   inRent: SerialisedItemAvailability;
   goodsFilter: SearchFactory;
+  internalOrganisation: Organisation;
+  showIrpf: boolean;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
   
   constructor(
     @Self() public allors: ContextService,
@@ -90,6 +94,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
     public dialogRef: MatDialogRef<SalesOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    private fetcher: FetcherService,
     private saveService: SaveService,
     public snackBar: MatSnackBar
   ) {
@@ -109,8 +114,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
           const isCreate = this.data.id === undefined;
 
           const pulls = [
-            pull.VatRegime({ 
-              sort: new Sort(m.VatRegime.Name) }),
+            this.fetcher.internalOrganisation,
             pull.IrpfRegime({ 
               sort: new Sort(m.IrpfRegime.Name) }),
             pull.SerialisedItemAvailability(),
@@ -149,17 +153,11 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
                   Product: x,
                   SerialisedItem: x,
                   QuoteItem: x,
-                  AssignedVatRegime: {
-                    VatRate: x,
-                  },
-                  AssignedIrpfRegime: {
-                    IrpfRate: x,
-                  },
                   DerivedVatRegime: {
-                    VatRate: x,
+                    VatRates: x,
                   },
                   DerivedIrpfRegime: {
-                    IrpfRate: x,
+                    IrpfRates: x,
                   }
               }
               }),
@@ -168,19 +166,13 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
                 fetch: {
                   SalesOrderWhereSalesOrderItem: {
                     include: {
-                      AssignedVatRegime: {
-                        VatRate: x,
-                      },
-                      AssignedIrpfRegime: {
-                        IrpfRate: x,
-                      },
                       DerivedVatRegime: {
-                        VatRate: x,
+                        VatRates: x,
                       },
                       DerivedIrpfRegime: {
-                        IrpfRate: x,
+                        IrpfRates: x,
                       }
-                      }
+                    }
                   }
                 }
               }),
@@ -192,17 +184,11 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
               pull.SalesOrder({
                 object: this.data.associationId,
                 include: {
-                  AssignedVatRegime: {
-                    VatRate: x,
-                  },
-                  AssignedIrpfRegime: {
-                    IrpfRate: x,
-                  },
                   DerivedVatRegime: {
-                    VatRate: x,
+                    VatRates: x,
                   },
                   DerivedIrpfRegime: {
-                    IrpfRate: x,
+                    IrpfRates: x,
                   }
                 }
               })
@@ -221,8 +207,10 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
 
         this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
@@ -290,7 +278,8 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
           this.order = loaded.objects.SalesOrder as SalesOrder;
           this.orderItem = this.allors.context.create('SalesOrderItem') as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
-
+          this.vatRegimeInitialRole = this.order.DerivedVatRegime;
+          this.irpfRegimeInitialRole = this.order.DerivedIrpfRegime;
         } else {
           this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
           this.order = this.orderItem.SalesOrderWhereSalesOrderItem;

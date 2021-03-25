@@ -60,7 +60,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithProductIdentification(new SkuIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new EanIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new ManufacturerIdentificationBuilder(@this.Session).WithDefaults().Build());
-            @this.WithVatRate(faker.Random.ListItem(@this.Session.Extent<VatRate>()));
+            @this.WithVatRegime(faker.Random.ListItem(@this.Session.Extent<VatRegime>()));
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
             {
@@ -127,7 +127,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithProductIdentification(new EanIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new ManufacturerIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithSerialisedItem(new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build());
-            @this.WithVatRate(faker.Random.ListItem(@this.Session.Extent<VatRate>()));
+            @this.WithVatRegime(faker.Random.ListItem(@this.Session.Extent<VatRegime>()));
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
             {

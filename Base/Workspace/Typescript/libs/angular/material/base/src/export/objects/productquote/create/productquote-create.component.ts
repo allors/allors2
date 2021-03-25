@@ -16,8 +16,8 @@ import {
   ProductQuote,
   RequestForQuote,
   Currency,
-  VatRegime,
   IrpfRegime,
+  VatRegime,
   CustomerRelationship,
 } from '@allors/domain/generated';
 import { Sort } from '@allors/data/system';
@@ -41,8 +41,9 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
   currencies: Currency[];
   contactMechanisms: ContactMechanism[] = [];
   contacts: Person[] = [];
-  vatRegimes: VatRegime[];
   irpfRegimes: IrpfRegime[];
+  vatRegimes: VatRegime[];
+  showIrpf: boolean;
 
   addContactPerson = false;
   addContactMechanism = false;
@@ -54,8 +55,6 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
 
   customersFilter: SearchFactory;
   currencyInitialRole: Currency;
-  vatRegimeInitialRole: VatRegime;
-  irpfRegimeInitialRole: IrpfRegime;
 
   constructor(
     @Self() public allors: ContextService,
@@ -83,7 +82,6 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) })
           ];
 
@@ -99,9 +97,10 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
 
         this.quote = loaded.objects.ProductQuote as ProductQuote;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.currencies = loaded.collections.Currencies as Currency[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
+        this.currencies = loaded.collections.Currencies as Currency[];
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
         this.quote.Issuer = this.internalOrganisation;
@@ -200,8 +199,6 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         include: {
           PreferredCurrency: x,
           Locale: x,
-          VatRegime: x,
-          IrpfRegime: x,
         }
       }),
     ];
@@ -223,8 +220,6 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         
         const selectedParty = loaded.objects.selectedParty as Person;
         this.currencyInitialRole = selectedParty.PreferredCurrency ?? this.quote.Issuer.PreferredCurrency;
-        this.vatRegimeInitialRole = selectedParty.VatRegime;
-        this.irpfRegimeInitialRole = selectedParty.IrpfRegime;
     });
   }
 }

@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, PanelService, ContextService } from '@allors/angular/services/core';
-import { Organisation, PartyContactMechanism, Party, Currency, Person, OrganisationContactRelationship, IrpfRegime, ContactMechanism, SalesOrder, ProductQuote, VatRegime, CustomerRelationship, VatRate, RequestForQuote } from '@allors/domain/generated';
+import { Organisation, PartyContactMechanism, Party, Currency, Person, OrganisationContactRelationship, IrpfRegime, ContactMechanism, SalesOrder, ProductQuote, VatRegime, CustomerRelationship, RequestForQuote } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
@@ -36,11 +36,11 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
 
   private previousReceiver: Party;
   private subscription: Subscription;
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
   irpfRegimes: IrpfRegime[];
 
   customersFilter: SearchFactory;
+  showIrpf: boolean;
 
   get receiverIsPerson(): boolean {
     return !this.productQuote.Receiver || this.productQuote.Receiver.objectType.name === this.m.Person.name;
@@ -132,8 +132,6 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
-            pull.VatRate(),
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.ProductQuote({
               object: id,
@@ -144,12 +142,8 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
                 FullfillContactMechanism: x,
                 QuoteState: x,
                 Request: x,
-                AssignedVatRegime: {
-                  VatRate: x,
-                },
-                DerivedVatRegime: {
-                  VatRate: x,
-                }
+                DerivedVatRegime: x,
+                DerivedIrpfRegime: x,
               }
             })
           ];
@@ -164,8 +158,8 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
         this.allors.context.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.productQuote = loaded.objects.ProductQuote as ProductQuote;
         this.currencies = loaded.collections.Currencies as Currency[];

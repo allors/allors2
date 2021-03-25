@@ -70,6 +70,7 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var quote = this.QuoteWhereQuoteItem;
 
             if (this.InvoiceItemType.IsPartItem
                 || this.InvoiceItemType.IsProductFeatureItem
@@ -88,6 +89,13 @@ namespace Allors.Domain
             {
                 derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);
             }
+
+            this.DerivedVatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : quote?.DerivedVatRegime;
+            this.VatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= quote.IssueDate && (!v.ExistThroughDate || v.ThroughDate >= quote.IssueDate));
+
+            this.DerivedIrpfRegime = this.ExistAssignedIrpfRegime ? this.AssignedIrpfRegime : quote?.DerivedIrpfRegime;
+            this.IrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= quote.IssueDate && (!v.ExistThroughDate || v.ThroughDate >= quote.IssueDate));
+
 
             if (derivation.ChangeSet.IsCreated(this) && !this.ExistDetails)
             {

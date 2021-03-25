@@ -80,6 +80,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   customersFilter: SearchFactory;
   employeeFilter: SearchFactory;
   suppliersFilter: SearchFactory;
+  showIrpf: boolean;
 
   get shipToCustomerIsPerson(): boolean {
     return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;
@@ -128,9 +129,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               InvoiceItemType: x,
             },
             BilledFrom: x,
-            AssignedBilledFromContactMechanism: {
-              PostalAddress_Country: {},
-            },
             DerivedBilledFromContactMechanism: {
               PostalAddress_Country: {},
             },
@@ -143,20 +141,11 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             PurchaseInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            AssignedVatRegime: {
-              VatRate: x,
-            },
             DerivedVatRegime: {
-              VatRate: x,
-            },
-            AssignedBillToEndCustomerContactMechanism: {
-              PostalAddress_Country: {},
+              VatRates: x,
             },
             DerivedBillToEndCustomerContactMechanism: {
               PostalAddress_Country: {},
-            },
-            AssignedShipToEndCustomerAddress: {
-              Country: x,
             },
             DerivedShipToEndCustomerAddress: {
               Country: x,
@@ -193,15 +182,12 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               include: {
                 BilledFrom: x,
                 BilledFromContactPerson: x,
-                AssignedBilledFromContactMechanism: x,
                 DerivedBilledFromContactMechanism: x,
                 ShipToCustomer: x,
                 BillToEndCustomer: x,
-                AssignedBillToEndCustomerContactMechanism: x,
                 DerivedBillToEndCustomerContactMechanism: x,
                 BillToEndCustomerContactPerson: x,
                 ShipToEndCustomer: x,
-                AssignedShipToEndCustomerAddress: x,
                 DerivedShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 PurchaseInvoiceState: x,
@@ -209,7 +195,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
                 DerivedVatRegime: x,
               },
             }),
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
@@ -232,7 +217,8 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
         this.allors.context.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
@@ -468,7 +454,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
         object: party,
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
         },
       }),
     ];

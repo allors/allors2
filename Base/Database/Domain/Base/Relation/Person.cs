@@ -127,8 +127,6 @@ namespace Allors.Domain
 
             this.PartyName = this.DerivePartyName();
 
-            this.VatRegime = new VatRegimes(this.Session()).PrivatePerson;
-
             DeriveRelationships();
 
             if (!this.ExistTimeSheetWhereWorker && (this.BaseIsActiveEmployee(now) || this.CurrentOrganisationContactRelationships.Count > 0))

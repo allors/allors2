@@ -937,9 +937,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenStateIsSetToShipped_ThenInvoiceIsCreated()
         {
-            var assessable = new VatRegimes(this.Session).Assessable21;
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate21;
+            var assessable = new VatRegimes(this.Session).DutchStandardTariff;
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1102,9 +1100,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipmentContainingOrderOnHold_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
-            var assessable = new VatRegimes(this.Session).Assessable21;
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate21;
+            var assessable = new VatRegimes(this.Session).DutchStandardTariff;
 
             this.Session.Derive();
             this.Session.Commit();
@@ -1186,9 +1182,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipmentWithQuantityPackagedDifferentFromShippingQuantity_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
-            var assessable = new VatRegimes(this.Session).Assessable21;
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate21;
+            var assessable = new VatRegimes(this.Session).DutchStandardTariff;
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1413,9 +1407,7 @@ namespace Allors.Domain
             User user = this.Administrator;
             this.Session.SetUser(user);
 
-            var assessable = new VatRegimes(this.Session).Assessable21;
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate21;
+            var assessable = new VatRegimes(this.Session).DutchStandardTariff;
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 

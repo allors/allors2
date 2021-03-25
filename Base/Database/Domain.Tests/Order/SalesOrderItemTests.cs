@@ -34,7 +34,7 @@ namespace Allors.Domain
         private SupplierOffering goodPurchasePrice;
         private SupplierOffering virtualGoodPurchasePrice;
         private SalesOrder order;
-        private VatRate vatRate21;
+        private VatRegime vatRegime;
 
         public SalesOrderItemTests()
         {
@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
-            this.vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            this.vatRegime = new VatRegimes(this.Session).BelgiumStandard;
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             this.kiev = new CityBuilder(this.Session).WithName("Kiev").Build();
@@ -79,7 +79,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("good")
                 .WithPart(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -98,7 +98,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10101")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
@@ -112,7 +112,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10102")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
@@ -126,7 +126,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10103")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("virtual good")
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
@@ -166,7 +166,7 @@ namespace Allors.Domain
                 .Build();
 
             this.feature1 = new ColourBuilder(this.Session)
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("white")
                 .Build();
 
@@ -306,7 +306,7 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).ZeroRated)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)
@@ -329,7 +329,7 @@ namespace Allors.Domain
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).ZeroRated)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(1).Build();
@@ -345,12 +345,12 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var expected = new VatRegimes(this.Session).Export.VatRate;
+            var expected = new VatRates(this.Session).Belgium21;
 
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).BelgiumStandard)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(1).Build();
@@ -371,7 +371,7 @@ namespace Allors.Domain
                 .WithShipToCustomer(this.billToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).ZeroRated)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)
@@ -396,7 +396,7 @@ namespace Allors.Domain
                 .WithShipToCustomer(this.billToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
-                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).ZeroRated)
                 .WithDeliveryDate(this.Session.Now().AddMonths(1))
                 .Build();
 
@@ -1236,7 +1236,7 @@ namespace Allors.Domain
             this.virtualGoodPurchasePrice = (SupplierOffering)session.Instantiate(this.virtualGoodPurchasePrice);
             this.currentGoodBasePrice = (BasePrice)session.Instantiate(this.currentGoodBasePrice);
             this.order = (SalesOrder)session.Instantiate(this.order);
-            this.vatRate21 = (VatRate)session.Instantiate(this.vatRate21);
+            this.vatRegime = (VatRegime)session.Instantiate(this.vatRegime);
         }
     }
 
@@ -1266,7 +1266,7 @@ namespace Allors.Domain
         private SupplierOffering goodPurchasePrice;
         private SupplierOffering virtualGoodPurchasePrice;
         private SalesOrder order;
-        private VatRate vatRate21;
+        private VatRegime vatRegime;
 
         public override Config Config => new Config { SetupSecurity = true };
 
@@ -1276,7 +1276,7 @@ namespace Allors.Domain
 
             this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
-            this.vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            this.vatRegime = new VatRegimes(this.Session).BelgiumStandard;
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             this.kiev = new CityBuilder(this.Session).WithName("Kiev").Build();
@@ -1313,7 +1313,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("good")
                 .WithPart(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -1332,7 +1332,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10101")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
@@ -1346,7 +1346,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10102")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
@@ -1360,7 +1360,7 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10103")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("virtual good")
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
@@ -1400,7 +1400,7 @@ namespace Allors.Domain
                 .Build();
 
             this.feature1 = new ColourBuilder(this.Session)
-                .WithVatRate(this.vatRate21)
+                .WithVatRegime(this.vatRegime)
                 .WithName("white")
                 .Build();
 
@@ -2063,7 +2063,7 @@ namespace Allors.Domain
             this.virtualGoodPurchasePrice = (SupplierOffering)session.Instantiate(this.virtualGoodPurchasePrice);
             this.currentGoodBasePrice = (BasePrice)session.Instantiate(this.currentGoodBasePrice);
             this.order = (SalesOrder)session.Instantiate(this.order);
-            this.vatRate21 = (VatRate)session.Instantiate(this.vatRate21);
+            this.vatRegime = (VatRegime)session.Instantiate(this.vatRegime);
         }
     }
 }

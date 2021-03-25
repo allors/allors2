@@ -168,8 +168,8 @@ namespace Allors.Domain
                 this.ShipToCustomer ??= this.BillToCustomer;
                 this.Customers = new[] { this.BillToCustomer, this.ShipToCustomer, this.PlacingCustomer };
                 this.DerivedLocale = this.Locale ?? this.BillToCustomer?.Locale ?? this.TakenBy?.Locale;
-                this.DerivedVatRegime = this.AssignedVatRegime ?? this.BillToCustomer?.VatRegime;
-                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.BillToCustomer?.IrpfRegime;
+                this.DerivedVatRegime = this.AssignedVatRegime;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime;
                 this.DerivedCurrency = this.AssignedCurrency ?? this.BillToCustomer?.PreferredCurrency ?? this.BillToCustomer?.Locale?.Country?.Currency ?? this.TakenBy?.PreferredCurrency;
                 this.DerivedTakenByContactMechanism = this.AssignedTakenByContactMechanism ?? this.TakenBy?.OrderAddress ?? this.TakenBy?.BillingAddress ?? this.TakenBy?.GeneralCorrespondence;
                 this.DerivedBillToContactMechanism = this.AssignedBillToContactMechanism ?? this.BillToCustomer?.BillingAddress ?? this.BillToCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
@@ -179,6 +179,12 @@ namespace Allors.Domain
                 this.DerivedShipToAddress = this.AssignedShipToAddress ?? this.ShipToCustomer?.ShippingAddress;
                 this.DerivedShipmentMethod = this.AssignedShipmentMethod ?? this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store?.DefaultShipmentMethod;
                 this.DerivedPaymentMethod = this.AssignedPaymentMethod ?? this.TakenBy?.DefaultPaymentMethod ?? this.Store?.DefaultCollectionMethod;
+
+                if (this.ExistOrderDate)
+                {
+                    this.DerivedVatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= this.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= this.OrderDate));
+                    this.DerivedIrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= this.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= this.OrderDate));
+                }
             }
 
             if (!this.ExistOrderNumber && this.ExistStore)
@@ -219,9 +225,9 @@ namespace Allors.Domain
                     salesOrderItemDerivedRoles.DerivedShipToParty = salesOrderItem.AssignedShipToParty ?? this.ShipToCustomer;
                     salesOrderItemDerivedRoles.DerivedDeliveryDate = salesOrderItem.AssignedDeliveryDate ?? this.DeliveryDate;
                     salesOrderItemDerivedRoles.DerivedVatRegime = salesOrderItem.AssignedVatRegime ?? this.DerivedVatRegime;
-                    salesOrderItemDerivedRoles.VatRate = salesOrderItem.DerivedVatRegime?.VatRate;
+                    salesOrderItemDerivedRoles.VatRate = salesOrderItem.DerivedVatRegime?.VatRates.First(v => v.FromDate <= this.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= this.OrderDate));
                     salesOrderItemDerivedRoles.DerivedIrpfRegime = salesOrderItem.AssignedIrpfRegime ?? this.DerivedIrpfRegime;
-                    salesOrderItemDerivedRoles.IrpfRate = salesOrderItem.DerivedIrpfRegime?.IrpfRate;
+                    salesOrderItemDerivedRoles.IrpfRate = salesOrderItem.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= this.OrderDate && (!v.ExistThroughDate || v.ThroughDate >= this.OrderDate));
                 }
 
                 // TODO: Use versioning
@@ -850,6 +856,19 @@ namespace Allors.Domain
         {
             if (!method.Result.HasValue)
             {
+                if (this.ExistAssignedVatClause)
+                {
+                    this.DerivedVatClause = this.AssignedVatClause;
+                }
+                else if (this.ExistDerivedVatRegime && this.DerivedVatRegime.ExistVatClause)
+                {
+                    this.DerivedVatClause = this.DerivedVatRegime.VatClause;
+                }
+                else
+                {
+                    this.RemoveDerivedVatClause();
+                }
+
                 method.Result = true;
             }
         }
@@ -943,12 +962,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        discountVat = Math.Round(discount * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        discountVat = Math.Round(discount * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        discountIrpf = Math.Round(discount * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        discountIrpf = Math.Round(discount * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -962,12 +981,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        surchargeVat = Math.Round(surcharge * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        surchargeVat = Math.Round(surcharge * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -981,12 +1000,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        feeVat = Math.Round(fee * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        feeVat = Math.Round(fee * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        feeIrpf = Math.Round(fee * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        feeIrpf = Math.Round(fee * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -1000,12 +1019,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        shippingVat = Math.Round(shipping * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        shippingVat = Math.Round(shipping * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -1019,12 +1038,12 @@ namespace Allors.Domain
 
                     if (this.ExistDerivedVatRegime)
                     {
-                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRegime.VatRate.Rate / 100, 2);
+                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRate.Rate / 100, 2);
                     }
 
                     if (this.ExistDerivedIrpfRegime)
                     {
-                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
+                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRate.Rate / 100, 2);
                     }
                 }
             }

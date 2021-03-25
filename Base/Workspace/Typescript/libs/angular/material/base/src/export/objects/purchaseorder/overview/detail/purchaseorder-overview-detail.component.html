@@ -232,9 +232,11 @@
             <div class="row">
               <a-mat-select class="col-md-6" [object]="order" [roleType]="m.PurchaseOrder.DerivedCurrency" [assignedRoleType]="m.PurchaseOrder.AssignedCurrency"
                 [options]="currencies" label="Currency" display="IsoCode" class="col-md"></a-mat-select>
-            </div>
+                <a-mat-select *ngIf="!showIrpf" class="col-md" [object]="order" [roleType]="m.PurchaseOrder.DerivedVatRegime" [assignedRoleType]="m.PurchaseOrder.AssignedVatRegime"
+                [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+              </div>
 
-            <div class="row">
+            <div *ngIf="showIrpf" class="row">
               <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.DerivedVatRegime" [assignedRoleType]="m.PurchaseOrder.AssignedVatRegime"
               [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
               <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.DerivedIrpfRegime" [assignedRoleType]="m.PurchaseOrder.AssignedIrpfRegime"

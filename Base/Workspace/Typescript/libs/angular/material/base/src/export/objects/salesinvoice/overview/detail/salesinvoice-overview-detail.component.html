@@ -333,6 +333,14 @@
             </div>
 
             <div class="row">
+              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.DerivedCurrency" 
+                [assignedRoleType]="m.SalesInvoice.AssignedCurrency" [options]="currencies" label="Currency" display="IsoCode"></a-mat-select>
+              <a-mat-select *ngIf="!showIrpf" class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.DerivedVatRegime"
+                [assignedRoleType]="m.SalesInvoice.AssignedVatRegime"
+                [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
+            </div>
+
+            <div *ngIf="showIrpf" class="row">
               <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.DerivedVatRegime"
                 [assignedRoleType]="m.SalesInvoice.AssignedVatRegime"
                 [options]="vatRegimes" label="VAT Regime" display="Name"></a-mat-select>
@@ -343,9 +351,8 @@
 
             <div class="row">
               <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.DerivedVatClause"
-                [options]="vatClauses" display="Name" label="Applied VAT clause"></a-mat-select>
-              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AssignedVatClause"
-                [options]="vatClauses" display="Name" label="Assign VAT clause"></a-mat-select>
+                [assignedRoleType]="m.SalesInvoice.AssignedVatClause"
+                [options]="vatClauses" label="VAT clause" display="Name"></a-mat-select>
             </div>
 
             <div class="row">
@@ -353,11 +360,6 @@
               </a-mat-datepicker>
               <a-mat-datepicker class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.DueDate">
               </a-mat-datepicker>
-            </div>
-
-            <div class="row">
-              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.DerivedCurrency" 
-              [assignedRoleType]="m.SalesInvoice.AssignedCurrency" [options]="currencies" label="Currency" display="IsoCode"></a-mat-select>
             </div>
 
             <div class="row">

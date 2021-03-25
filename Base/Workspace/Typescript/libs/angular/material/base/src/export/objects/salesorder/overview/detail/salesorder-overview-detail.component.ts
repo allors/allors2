@@ -76,6 +76,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
   facilities: Facility[];
 
   customersFilter: SearchFactory;
+  showIrpf: boolean;
 
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
@@ -125,7 +126,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
 
         pulls.push(
 
-          this.fetcher.internalOrganisation,
           pull.SalesOrder({
             name: salesOrderPullName,
             object: this.panel.manager.id,
@@ -141,7 +141,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
               SalesTerms: {
                 TermType: x,
               },
-              AssignedCurrency: x,
               DerivedCurrency: x,
               BillToCustomer: x,
               BillToContactPerson: x,
@@ -158,33 +157,17 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
               CreatedBy: x,
               LastModifiedBy: x,
               Quote: x,
-              AssignedShipFromAddress: {
-                Country: x,
-              },
               DerivedShipFromAddress: {
-                Country: x,
-              },
-              AssignedShipToAddress: {
                 Country: x,
               },
               DerivedShipToAddress: {
                 Country: x,
               },
-              AssignedBillToEndCustomerContactMechanism: {
-                PostalAddress_Country: x
-
-              },
               DerivedBillToEndCustomerContactMechanism: {
                 PostalAddress_Country: x
               },
-              AssignedShipToEndCustomerAddress: {
-                Country: x,
-              },
               DerivedShipToEndCustomerAddress: {
                 Country: x,
-              },
-              AssignedBillToContactMechanism: {
-                PostalAddress_Country: x
               },
               DerivedBillToContactMechanism: {
                 PostalAddress_Country: x
@@ -215,7 +198,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
 
     panel.onPulled = (loaded) => {
       if (this.panel.isCollapsed) {
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.order = loaded.objects[salesOrderPullName] as SalesOrder;
         this.orderItems = loaded.collections[salesOrderPullName] as SalesOrderItem[];
         this.salesInvoice = loaded.objects[salesInvoicePullName] as SalesInvoice;
@@ -243,42 +225,34 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
           const id = this.panel.manager.id;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             this.fetcher.warehouses,
             pull.SalesOrder({
               object: id,
               include: {
-                AssignedCurrency: x,
                 DerivedCurrency: x,
                 Store: x,
                 OriginFacility: x,
                 ShipToCustomer: x,
-                AssignedShipToAddress: x,
                 DerivedShipToAddress: x,
                 ShipToContactPerson: x,
                 SalesOrderState: x,
-                AssignedBillToContactMechanism: x,
                 DerivedBillToContactMechanism: x,
                 BillToContactPerson: x,
-                AssignedBillToEndCustomerContactMechanism: x,
                 DerivedBillToEndCustomerContactMechanism: x,
                 BillToEndCustomerContactPerson: x,
                 ShipToEndCustomer: x,
-                AssignedShipToEndCustomerAddress: x,
                 DerivedShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
-                AssignedVatClause: x,
                 DerivedVatClause: x,
-                AssignedVatRegime: x,
                 DerivedVatRegime: x,
-                AssignedIrpfRegime: x,
                 DerivedIrpfRegime: x,
               }
             }),
             pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
-              pull.Store({
+            pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: this.internalOrganisation }),
               include: { BillingProcess: x },
               sort: new Sort(m.Store.Name)
@@ -309,9 +283,10 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
         this.allors.context.reset();
 
         this.order = loaded.objects.SalesOrder as SalesOrder;
-
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.facilities = loaded.collections.Facilities as Facility[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.vatClauses = loaded.collections.VatClauses as VatClause[];
         this.stores = loaded.collections.Stores as Store[];
@@ -513,7 +488,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
         object: party,
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
         }
       }),
     ];
@@ -570,7 +544,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
         object: party,
         include: {
           PreferredCurrency: x,
-          VatRegime: x,
         }
       }),
     ];

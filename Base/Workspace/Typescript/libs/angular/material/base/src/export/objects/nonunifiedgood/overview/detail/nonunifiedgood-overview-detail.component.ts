@@ -7,7 +7,6 @@ import {
   Organisation,
   ProductType,
   ProductCategory,
-  VatRate,
   Brand,
   Model,
   ProductIdentificationType,
@@ -44,7 +43,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
   selectedBrand: Brand;
   models: Model[];
   selectedModel: Model;
-  vatRates: VatRate[];
   ownerships: Ownership[];
   organisations: Organisation[];
   addBrand = false;
@@ -132,7 +130,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
-            pull.VatRate(),
             pull.ProductIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
             pull.NonUnifiedGood({
@@ -197,7 +194,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
         this.selectedCategories = this.originalCategories;
 
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.productFeatureApplicabilities = loaded.collections.ProductFeatureApplicabilities as ProductFeatureApplicability[];

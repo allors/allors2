@@ -6,7 +6,7 @@
 namespace Allors.Domain
 {
     using System;
-
+    using System.Linq;
     using Allors.Meta;
 
     public partial class PurchaseInvoiceItem
@@ -88,6 +88,8 @@ namespace Allors.Domain
             this.UnitDiscount = 0;
             this.UnitSurcharge = 0;
 
+            var invoice = this.PurchaseInvoiceWherePurchaseInvoiceItem;
+
             if (this.AssignedUnitPrice.HasValue)
             {
                 this.UnitBasePrice = this.AssignedUnitPrice.Value;
@@ -95,7 +97,6 @@ namespace Allors.Domain
             }
             else
             {
-                var invoice = this.PurchaseInvoiceWherePurchaseInvoiceItem;
                 if (this.ExistPart)
                 {
                     this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(invoice.BilledFrom, invoice.InvoiceDate, this.Part);
@@ -105,10 +106,10 @@ namespace Allors.Domain
             if (this.ExistUnitBasePrice)
             {
                 this.DerivedVatRegime = this.AssignedVatRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.DerivedVatRegime;
-                this.VatRate = this.DerivedVatRegime?.VatRate;
+                this.VatRate = this.DerivedVatRegime?.VatRates.First(v => v.FromDate <= invoice.InvoiceDate && (!v.ExistThroughDate || v.ThroughDate >= invoice.InvoiceDate));
 
                 this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.DerivedIrpfRegime;
-                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
+                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRates.First(v => v.FromDate <= invoice.InvoiceDate && (!v.ExistThroughDate || v.ThroughDate >= invoice.InvoiceDate));
 
                 this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
                 this.TotalDiscount = this.UnitDiscount * this.Quantity;

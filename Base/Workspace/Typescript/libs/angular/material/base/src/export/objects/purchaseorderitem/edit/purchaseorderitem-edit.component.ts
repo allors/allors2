@@ -5,11 +5,11 @@ import { switchMap, map } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
-import { InventoryItem, Part, Facility, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItem, PurchaseOrder, PurchaseOrderItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product } from '@allors/domain/generated';
+import { InventoryItem, Part, Facility, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItem, PurchaseOrder, PurchaseOrderItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product, Organisation } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta, TreeFactory } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { Filters } from '@allors/angular/base';
+import { FetcherService, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -46,17 +46,22 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   supplierOffering: SupplierOffering;
   facilities: Facility[];
   selectedFacility: Facility;
+  showIrpf: boolean;
+  vatRegimeInitialRole: VatRegime;
+  irpfRegimeInitialRole: IrpfRegime;
 
   private subscription: Subscription;
   partsFilter: SearchFactory;
   
   unifiedGoodsFilter: SearchFactory;
+  internalOrganisation: Organisation;
 
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<PurchaseOrderItemEditComponent>,
     public metaService: MetaService,
+    private fetcher: FetcherService,
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
@@ -77,12 +82,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           const { id } = this.data;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name)
-            }),
-            pull.VatRegime({
-              sort: new Sort(m.VatRegime.Name)
             }),
             pull.IrpfRegime({
               sort: new Sort(m.IrpfRegime.Name)
@@ -105,17 +108,11 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
                   Part: x,
                   SerialisedItem: x,
                   StoredInFacility: x,
-                  AssignedVatRegime: {
-                    VatRate: x,
-                  },
                   DerivedVatRegime: {
-                    VatRate: x,
-                  },
-                  AssignedIrpfRegime: {
-                    IrpfRate: x,
+                    VatRates: x,
                   },
                   DerivedIrpfRegime: {
-                    IrpfRate: x,
+                    IrpfRates: x,
                   }
                 }
               }),
@@ -124,17 +121,11 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
                 fetch: {
                   PurchaseOrderWherePurchaseOrderItem: {
                     include: {
-                      AssignedVatRegime: {
-                        VatRate: x,
-                      },
                       DerivedVatRegime: {
-                        VatRate: x,
-                      },
-                      AssignedIrpfRegime: {
-                        IrpfRate: x,
+                        VatRates: x,
                       },
                       DerivedIrpfRegime: {
-                        IrpfRate: x,
+                        IrpfRates: x,
                       }
                     }
                   }
@@ -148,9 +139,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
               pull.PurchaseOrder({
                 object: this.data.associationId,
                 include: {
-                  AssignedVatRegime: x,
                   DerivedVatRegime: x,
-                  AssignedIrpfRegime: x,
                   DerivedIrpfRegime: x,
                   TakenViaSupplier: x
                 }
@@ -169,8 +158,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.facilities = loaded.collections.Facilities as Facility[];
 
@@ -207,6 +198,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           this.orderItem = this.allors.context.create('PurchaseOrderItem') as PurchaseOrderItem;
           this.selectedFacility = this.order.StoredInFacility;
           this.order.AddPurchaseOrderItem(this.orderItem);
+          this.vatRegimeInitialRole = this.order.DerivedVatRegime;
+          this.irpfRegimeInitialRole = this.order.DerivedIrpfRegime;
         } else {
           this.order = this.orderItem.PurchaseOrderWherePurchaseOrderItem;
           this.selectedFacility = this.orderItem.StoredInFacility;

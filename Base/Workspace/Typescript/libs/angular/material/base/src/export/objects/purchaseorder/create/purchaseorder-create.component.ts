@@ -19,7 +19,6 @@ import {
   PartyContactMechanism,
   ContactMechanism,
   PurchaseOrder,
-  VatRate,
   IrpfRegime,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
@@ -47,7 +46,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   billToContacts: Person[] = [];
   shipToAddresses: ContactMechanism[] = [];
   shipToContacts: Person[] = [];
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
   internalOrganisation: Organisation;
   facilities: Facility[];
@@ -74,9 +72,8 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   currencyInitialRole: Currency;
   shipToAddressInitialRole: PostalAddress;
   billToContactMechanismInitialRole: ContactMechanism;
-  vatRegimeInitialRole: VatRegime;
   takenViaContactMechanismInitialRole: ContactMechanism;
-  irpfRegimeInitialRole: IrpfRegime;
+  showIrpf: boolean;
 
   constructor(
     @Self() public allors: ContextService,
@@ -102,8 +99,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.VatRate(),
-            pull.VatRegime(),
             pull.IrpfRegime(),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
@@ -125,8 +120,8 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.showIrpf = this.internalOrganisation.Country.IsoCode === "ES";
+        this.vatRegimes = this.internalOrganisation.Country.DerivedVatRegimes;
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.facilities  = loaded.collections.Facilities as Facility[];
@@ -270,8 +265,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         object: supplier,
         name: 'selectedSupplier',
         include: {
-          VatRegime: x,
-          IrpfRegime: x,
           OrderAddress: x,
         }
       }),
@@ -286,8 +279,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         this.takenViaContacts = loaded.collections.CurrentContacts as Person[];
 
         const selectedSupplier = loaded.objects.selectedSupplier as Organisation;
-        this.vatRegimeInitialRole = selectedSupplier.VatRegime;
-        this.irpfRegimeInitialRole = selectedSupplier.IrpfRegime;
         this.takenViaContactMechanismInitialRole = selectedSupplier.OrderAddress;
       });
   }

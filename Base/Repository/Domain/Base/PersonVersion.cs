@@ -93,8 +93,6 @@ namespace Allors.Repository
 
         public Currency PreferredCurrency { get; set; }
 
-        public VatRegime VatRegime { get; set; }
-
         public PartyRate[] PartyRates { get; set; }
         #endregion
 
