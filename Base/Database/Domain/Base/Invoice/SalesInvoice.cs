@@ -584,16 +584,25 @@ namespace Allors.Domain
                 if (this.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.Session()).SalesInvoice)
                     && salesInvoiceItem.ExistSerialisedItem
                     && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
-                    && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend)
-                    && salesInvoiceItem.NextSerialisedItemAvailability?.Equals(new SerialisedItemAvailabilities(this.Session()).Sold) == true)
+                    && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend))
                 {
-                    salesInvoiceItem.SerialisedItemVersionBeforeSale = salesInvoiceItem.SerialisedItem.CurrentVersion;
+                    if (salesInvoiceItem.NextSerialisedItemAvailability?.Equals(new SerialisedItemAvailabilities(this.Session()).Sold) == true)
+                    {
+                        salesInvoiceItem.SerialisedItemVersionBeforeSale = salesInvoiceItem.SerialisedItem.CurrentVersion;
 
-                    salesInvoiceItem.SerialisedItem.Seller = this.BilledFrom;
-                    salesInvoiceItem.SerialisedItem.OwnedBy = this.BillToCustomer;
-                    salesInvoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
-                    salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
-                    salesInvoiceItem.SerialisedItem.AvailableForSale = false;
+                        salesInvoiceItem.SerialisedItem.Seller = this.BilledFrom;
+                        salesInvoiceItem.SerialisedItem.OwnedBy = this.BillToCustomer;
+                        salesInvoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
+                        salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
+                        salesInvoiceItem.SerialisedItem.AvailableForSale = false;
+                    }
+
+                    if (salesInvoiceItem.NextSerialisedItemAvailability?.Equals(new SerialisedItemAvailabilities(this.Session()).InRent) == true)
+                    {
+                        salesInvoiceItem.SerialisedItem.RentedBy = this.BillToCustomer;
+                        salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
+                        salesInvoiceItem.SerialisedItem.AvailableForSale = false;
+                    }
                 }
 
                 if (this.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.Session()).CreditNote)
