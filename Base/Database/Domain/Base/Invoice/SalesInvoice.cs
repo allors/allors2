@@ -601,7 +601,6 @@ namespace Allors.Domain
                     {
                         salesInvoiceItem.SerialisedItem.RentedBy = this.BillToCustomer;
                         salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
-                        salesInvoiceItem.SerialisedItem.AvailableForSale = false;
                     }
                 }
 

@@ -434,6 +434,7 @@ namespace Allors.Domain
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToCustomer;
                             item.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
+                            item.SerialisedItem.AvailableForSale = false;
                         }
 
                         if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).InRent))
@@ -441,8 +442,6 @@ namespace Allors.Domain
                             item.SerialisedItem.RentedBy = this.ShipToCustomer;
                         }
                     }
-
-                    item.SerialisedItem.AvailableForSale = false;
                 }
             }
 
