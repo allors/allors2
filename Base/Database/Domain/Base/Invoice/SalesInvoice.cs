@@ -480,7 +480,7 @@ namespace Allors.Domain
             // this would disable the invoice for editing and adding new items
             if (this.AmountPaid - this.AdvancePayment > 0)
             {
-                if (this.AmountPaid >= this.TotalIncVat)
+                if (this.AmountPaid >= this.GrandTotal)
                 {
                     this.SalesInvoiceState = salesInvoiceStates.Paid;
                 }
@@ -494,7 +494,7 @@ namespace Allors.Domain
 
                 foreach (var invoiceItem in validInvoiceItems)
                 {
-                    if (this.AmountPaid >= this.TotalIncVat)
+                    if (this.AmountPaid >= this.GrandTotal)
                     {
                         invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.Paid;
                     }
