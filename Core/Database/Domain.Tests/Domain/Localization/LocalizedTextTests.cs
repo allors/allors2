@@ -20,7 +20,17 @@ namespace Tests
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
+            this.Session.Rollback();
+
             builder.WithText("description");
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithLocale(new Locales(this.Session).EnglishGreatBritain);
+            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
