@@ -10,7 +10,6 @@ namespace Allors.Meta
         internal override void CoreExtend()
         {
             this.Locale.IsRequiredOverride = true;
-            this.Text.IsRequired = true;
         }
     }
 }
