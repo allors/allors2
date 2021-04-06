@@ -9,11 +9,9 @@ namespace Allors.Domain
     {
         public static void Daily(ISession session)
         {
-            var repeatingPurchaseInvoices = new RepeatingPurchaseInvoices(session).Extent();
-
-            foreach (RepeatingPurchaseInvoice repeatingPurchaseInvoice in repeatingPurchaseInvoices)
+            foreach (RepeatingPurchaseInvoice repeatingPurchaseInvoice in new RepeatingPurchaseInvoices(session).Extent())
             {
-                if (repeatingPurchaseInvoice.NextExecutionDate.Date == session.Now().Date)
+                if (repeatingPurchaseInvoice.NextExecutionDate.Date <= session.Now().Date)
                 {
                     repeatingPurchaseInvoice.Repeat();
                 }
