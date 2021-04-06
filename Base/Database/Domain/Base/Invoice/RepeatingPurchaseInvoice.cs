@@ -74,69 +74,69 @@ namespace Allors.Domain
             if (!this.ExistFinalExecutionDate || nextDate <= this.FinalExecutionDate.Value.Date)
             {
                 this.NextExecutionDate = nextDate.Date;
+            }
 
-                var orderCandidates = this.Supplier.PurchaseOrdersWhereTakenViaSupplier
-                    .Where(v => v.OrderedBy.Equals(this.InternalOrganisation) &&
-                                (v.PurchaseOrderState.IsSent || v.PurchaseOrderState.IsCompleted) &&
-                                (v.PurchaseOrderShipmentState.IsReceived || v.PurchaseOrderShipmentState.IsPartiallyReceived));
+            var orderCandidates = this.Supplier.PurchaseOrdersWhereTakenViaSupplier
+                .Where(v => v.OrderedBy.Equals(this.InternalOrganisation) &&
+                            (v.PurchaseOrderState.IsSent || v.PurchaseOrderState.IsCompleted) &&
+                            (v.PurchaseOrderShipmentState.IsReceived || v.PurchaseOrderShipmentState.IsPartiallyReceived));
 
-                var orderItemsToBill = new List<PurchaseOrderItem>();
-                foreach (var purchaseOrder in orderCandidates)
+            var orderItemsToBill = new List<PurchaseOrderItem>();
+            foreach (var purchaseOrder in orderCandidates)
+            {
+                foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrder.ValidOrderItems)
                 {
-                    foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrder.ValidOrderItems)
+                    if ((!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
+                        purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived) || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
                     {
-                        if ((!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
-                            purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived) || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
-                        {
-                            orderItemsToBill.Add(purchaseOrderItem);
-                        }
+                        orderItemsToBill.Add(purchaseOrderItem);
                     }
                 }
+            }
 
-                if (orderItemsToBill.Any())
+            if (orderItemsToBill.Any())
+            {
+                var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
+                    .WithBilledFrom(this.Supplier)
+                    .WithBilledTo(this.InternalOrganisation)
+                    .WithInvoiceDate(this.Session().Now())
+                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session()).PurchaseInvoice)
+                    .Build();
+
+                foreach (var orderItem in orderItemsToBill)
                 {
-                    var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
-                        .WithBilledFrom(this.Supplier)
-                        .WithBilledTo(this.InternalOrganisation)
-                        .WithInvoiceDate(this.Session().Now())
-                        .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session()).PurchaseInvoice)
+                    var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
+                        .WithAssignedUnitPrice(orderItem.UnitPrice)
+                        .WithPart(orderItem.Part)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithAssignedVatRegime(orderItem.AssignedVatRegime)
+                        .WithAssignedIrpfRegime(orderItem.AssignedIrpfRegime)
+                        .WithDescription(orderItem.Description)
+                        .WithInternalComment(orderItem.InternalComment)
+                        .WithMessage(orderItem.Message)
                         .Build();
 
-                    foreach (var orderItem in orderItemsToBill)
+                    if (invoiceItem.ExistPart)
                     {
-                        var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
-                            .WithAssignedUnitPrice(orderItem.UnitPrice)
-                            .WithPart(orderItem.Part)
-                            .WithQuantity(orderItem.QuantityOrdered)
-                            .WithAssignedVatRegime(orderItem.AssignedVatRegime)
-                            .WithAssignedIrpfRegime(orderItem.AssignedIrpfRegime)
-                            .WithDescription(orderItem.Description)
-                            .WithInternalComment(orderItem.InternalComment)
-                            .WithMessage(orderItem.Message)
-                            .Build();
-
-                        if (invoiceItem.ExistPart)
-                        {
-                            invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
-                        }
-                        else
-                        {
-                            invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).Service;
-                        }
-
-                        purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
-
-                        new OrderItemBillingBuilder(this.Strategy.Session)
-                            .WithQuantity(orderItem.QuantityOrdered)
-                            .WithAmount(orderItem.TotalBasePrice)
-                            .WithOrderItem(orderItem)
-                            .WithInvoiceItem(invoiceItem)
-                            .Build();
+                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
                     }
-                }
+                    else
+                    {
+                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).Service;
+                    }
 
-                this.PreviousExecutionDate = now.Date;
+                    purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
+
+                    new OrderItemBillingBuilder(this.Strategy.Session)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithAmount(orderItem.TotalBasePrice)
+                        .WithOrderItem(orderItem)
+                        .WithInvoiceItem(invoiceItem)
+                        .Build();
+                }
             }
+
+            this.PreviousExecutionDate = now.Date;
         }
     }
 }

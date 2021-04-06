@@ -11,7 +11,8 @@ namespace Allors.Domain
         {
             foreach (RepeatingPurchaseInvoice repeatingPurchaseInvoice in new RepeatingPurchaseInvoices(session).Extent())
             {
-                if (repeatingPurchaseInvoice.NextExecutionDate.Date <= session.Now().Date)
+                if (repeatingPurchaseInvoice.NextExecutionDate.Date <= session.Now().Date
+                    && (!repeatingPurchaseInvoice.ExistFinalExecutionDate || repeatingPurchaseInvoice.FinalExecutionDate >= session.Now().Date))
                 {
                     repeatingPurchaseInvoice.Repeat();
                 }

@@ -78,12 +78,12 @@ namespace Allors.Domain
             if (!this.ExistFinalExecutionDate || nextDate <= this.FinalExecutionDate.Value.Date)
             {
                 this.NextExecutionDate = nextDate.Date;
-
-                var nextInvoice = this.Source.BaseCopy(new SalesInvoiceCopy(this.Source));
-                this.AddSalesInvoice(nextInvoice);
-
-                this.PreviousExecutionDate = now.Date;
             }
+
+            var nextInvoice = this.Source.BaseCopy(new SalesInvoiceCopy(this.Source));
+            this.AddSalesInvoice(nextInvoice);
+
+            this.PreviousExecutionDate = now.Date;
         }
     }
 }
