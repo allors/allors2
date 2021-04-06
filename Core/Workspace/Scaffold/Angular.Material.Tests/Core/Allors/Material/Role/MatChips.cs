@@ -30,7 +30,7 @@ namespace Components
 
             this.Driver.WaitForAngular();
 
-            value = HttpUtility.HtmlAttributeEncode(value);
+            value = this.CssEscape(value);
 
             var optionSelector = By.CssSelector($"mat-option[data-allors-option-display='{selection ?? value}'] span");
             var option = this.Driver.FindElement(optionSelector);
