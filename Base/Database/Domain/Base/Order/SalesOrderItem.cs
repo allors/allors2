@@ -777,12 +777,12 @@ namespace Allors.Domain
 
                 this.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
                     v => v.Percentage.HasValue
-                        ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                        ? this.UnitBasePrice * v.Percentage.Value / 100
                         : v.Price ?? 0);
 
                 this.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
                     v => v.Percentage.HasValue
-                        ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                        ? this.UnitBasePrice * v.Percentage.Value / 100
                         : v.Price ?? 0);
 
                 this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
@@ -790,14 +790,14 @@ namespace Allors.Domain
                 foreach(OrderAdjustment orderAdjustment in this.DiscountAdjustments)
                 {
                     this.UnitDiscount += orderAdjustment.Percentage.HasValue
-                        ? Math.Round(this.UnitPrice * orderAdjustment.Percentage.Value / 100, 2)
+                        ? this.UnitPrice * orderAdjustment.Percentage.Value / 100
                         : orderAdjustment.Amount ?? 0;
                 }
 
                 foreach (OrderAdjustment orderAdjustment in this.SurchargeAdjustments)
                 {
                     this.UnitSurcharge += orderAdjustment.Percentage.HasValue
-                        ? Math.Round(this.UnitPrice * orderAdjustment.Percentage.Value / 100, 2)
+                        ? this.UnitPrice * orderAdjustment.Percentage.Value / 100
                         : orderAdjustment.Amount ?? 0;
                 }
 
@@ -833,9 +833,9 @@ namespace Allors.Domain
             }
 
             this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
-            this.TotalVat = Math.Round(this.UnitVat * this.QuantityOrdered, 2);
+            this.TotalVat = this.UnitVat * this.QuantityOrdered;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
-            this.TotalIrpf = Math.Round(this.UnitIrpf * this.QuantityOrdered, 2);
+            this.TotalIrpf = this.UnitIrpf * this.QuantityOrdered;
             this.GrandTotal = this.TotalIncVat - this.TotalIrpf;
         }
     }

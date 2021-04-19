@@ -326,6 +326,15 @@ namespace Allors.Domain
                 this.GrandTotal += orderItem.GrandTotal;
             }
 
+            this.TotalBasePrice = Math.Round(this.TotalBasePrice, 2);
+            this.TotalDiscount = Math.Round(this.TotalDiscount, 2);
+            this.TotalSurcharge = Math.Round(this.TotalSurcharge, 2);
+            this.TotalVat = Math.Round(this.TotalVat, 2);
+            this.TotalIrpf = Math.Round(this.TotalIrpf, 2);
+            this.TotalExVat = Math.Round(this.TotalExVat, 2);
+            this.TotalIncVat = Math.Round(this.TotalIncVat, 2);
+            this.GrandTotal = Math.Round(this.GrandTotal, 2);
+
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
 
             // Derive Workflow
