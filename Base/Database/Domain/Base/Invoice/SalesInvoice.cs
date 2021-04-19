@@ -406,17 +406,17 @@ namespace Allors.Domain
                 }
             }
 
-            this.TotalBasePrice = Math.Round(this.TotalBasePrice, 2);
-            this.TotalDiscount = Math.Round(this.TotalDiscount, 2);
-            this.TotalSurcharge = Math.Round(this.TotalSurcharge, 2);
-            this.TotalExtraCharge = Math.Round(fee + shipping + miscellaneous, 2);
-            this.TotalFee = Math.Round(this.TotalFee, 2);
-            this.TotalShippingAndHandling = Math.Round(this.TotalShippingAndHandling, 2);
-            this.TotalExVat = Math.Round(this.TotalExVat - discount + surcharge + fee + shipping + miscellaneous, 2);
-            this.TotalVat = Math.Round(this.TotalVat - discountVat + surchargeVat + feeVat + shippingVat + miscellaneousVat, 2);
-            this.TotalIncVat = Math.Round(this.TotalIncVat - discount - discountVat + surcharge + surchargeVat + fee + feeVat + shipping + shippingVat + miscellaneous + miscellaneousVat, 2);
-            this.TotalIrpf = Math.Round(this.TotalIrpf + discountIrpf - surchargeIrpf - feeIrpf - shippingIrpf - miscellaneousIrpf, 2);
-            this.GrandTotal = Math.Round(this.TotalIncVat - this.TotalIrpf, 2);
+            this.TotalBasePrice = Rounder.RoundDecimal(this.TotalBasePrice, 2);
+            this.TotalDiscount = Rounder.RoundDecimal(this.TotalDiscount, 2);
+            this.TotalSurcharge = Rounder.RoundDecimal(this.TotalSurcharge, 2);
+            this.TotalExtraCharge = Rounder.RoundDecimal(fee + shipping + miscellaneous, 2);
+            this.TotalFee = Rounder.RoundDecimal(this.TotalFee, 2);
+            this.TotalShippingAndHandling = Rounder.RoundDecimal(this.TotalShippingAndHandling, 2);
+            this.TotalExVat = Rounder.RoundDecimal(this.TotalExVat - discount + surcharge + fee + shipping + miscellaneous, 2);
+            this.TotalVat = Rounder.RoundDecimal(this.TotalVat - discountVat + surchargeVat + feeVat + shippingVat + miscellaneousVat, 2);
+            this.TotalIncVat = Rounder.RoundDecimal(this.TotalIncVat - discount - discountVat + surcharge + surchargeVat + fee + feeVat + shipping + shippingVat + miscellaneous + miscellaneousVat, 2);
+            this.TotalIrpf = Rounder.RoundDecimal(this.TotalIrpf + discountIrpf - surchargeIrpf - feeIrpf - shippingIrpf - miscellaneousIrpf, 2);
+            this.GrandTotal = Rounder.RoundDecimal(this.TotalIncVat - this.TotalIrpf, 2);
 
             //// Only take into account items for which there is data at the item level.
             //// Skip negative sales.
@@ -432,7 +432,7 @@ namespace Allors.Domain
                 }
             }
 
-            this.TotalListPrice = this.TotalListPrice.HasValue ? Math.Round(this.TotalListPrice.Value, 2) : 0;
+            this.TotalListPrice = this.TotalListPrice.HasValue ? Rounder.RoundDecimal(this.TotalListPrice.Value, 2) : 0;
 
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
             var salesInvoiceStates = new SalesInvoiceStates(derivation.Session);
@@ -1140,8 +1140,8 @@ namespace Allors.Domain
 
             if (salesInvoiceItem.TotalBasePrice > 0)
             {
-                salesInvoiceItemDerivedRoles.TotalDiscountAsPercentage = Math.Round(salesInvoiceItem.TotalDiscount / salesInvoiceItem.TotalBasePrice * 100, 2);
-                salesInvoiceItemDerivedRoles.TotalSurchargeAsPercentage = Math.Round(salesInvoiceItem.TotalSurcharge / salesInvoiceItem.TotalBasePrice * 100, 2);
+                salesInvoiceItemDerivedRoles.TotalDiscountAsPercentage = Rounder.RoundDecimal(salesInvoiceItem.TotalDiscount / salesInvoiceItem.TotalBasePrice * 100, 2);
+                salesInvoiceItemDerivedRoles.TotalSurchargeAsPercentage = Rounder.RoundDecimal(salesInvoiceItem.TotalSurcharge / salesInvoiceItem.TotalBasePrice * 100, 2);
             }
             else
             {

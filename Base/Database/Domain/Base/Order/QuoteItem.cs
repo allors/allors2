@@ -121,8 +121,8 @@ namespace Allors.Domain
 
             if (this.TotalBasePrice > 0)
             {
-                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
-                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
+                this.TotalDiscountAsPercentage = Rounder.RoundDecimal(this.TotalDiscount / this.TotalBasePrice * 100, 2);
+                this.TotalSurchargeAsPercentage = Rounder.RoundDecimal(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
             }
             else
             {

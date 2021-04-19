@@ -466,17 +466,17 @@ namespace Allors.Domain
                 }
             }
 
-            this.TotalBasePrice = Math.Round(this.TotalBasePrice, 2);
-            this.TotalDiscount = Math.Round(this.TotalDiscount, 2);
-            this.TotalSurcharge = Math.Round(this.TotalSurcharge, 2);
+            this.TotalBasePrice = Rounder.RoundDecimal(this.TotalBasePrice, 2);
+            this.TotalDiscount = Rounder.RoundDecimal(this.TotalDiscount, 2);
+            this.TotalSurcharge = Rounder.RoundDecimal(this.TotalSurcharge, 2);
 
-            this.TotalExtraCharge = Math.Round(fee + shipping + miscellaneous, 2);
+            this.TotalExtraCharge = Rounder.RoundDecimal(fee + shipping + miscellaneous, 2);
 
-            this.TotalExVat = Math.Round(this.TotalExVat - discount + surcharge + fee + shipping + miscellaneous, 2);
-            this.TotalVat = Math.Round(this.TotalVat - discountVat + surchargeVat + feeVat + shippingVat + miscellaneousVat, 2);
-            this.TotalIncVat = Math.Round(this.TotalIncVat - discount - discountVat + surcharge + surchargeVat + fee + feeVat + shipping + shippingVat + miscellaneous + miscellaneousVat, 2);
-            this.TotalIrpf = Math.Round(this.TotalIrpf + discountIrpf - surchargeIrpf - feeIrpf - shippingIrpf - miscellaneousIrpf, 2);
-            this.GrandTotal = Math.Round(this.TotalIncVat - this.TotalIrpf, 2);
+            this.TotalExVat = Rounder.RoundDecimal(this.TotalExVat - discount + surcharge + fee + shipping + miscellaneous, 2);
+            this.TotalVat = Rounder.RoundDecimal(this.TotalVat - discountVat + surchargeVat + feeVat + shippingVat + miscellaneousVat, 2);
+            this.TotalIncVat = Rounder.RoundDecimal(this.TotalIncVat - discount - discountVat + surcharge + surchargeVat + fee + feeVat + shipping + shippingVat + miscellaneous + miscellaneousVat, 2);
+            this.TotalIrpf = Rounder.RoundDecimal(this.TotalIrpf + discountIrpf - surchargeIrpf - feeIrpf - shippingIrpf - miscellaneousIrpf, 2);
+            this.GrandTotal = Rounder.RoundDecimal(this.TotalIncVat - this.TotalIrpf, 2);
         }
 
         public void BaseConfirm(PurchaseInvoiceConfirm method) => this.PurchaseInvoiceState = this.NeedsApproval ? new PurchaseInvoiceStates(this.Strategy.Session).AwaitingApproval : new PurchaseInvoiceStates(this.Strategy.Session).NotPaid;

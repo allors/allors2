@@ -19,8 +19,8 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.UnitOfMeasure = purchaseOrderItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
                                  purchaseOrderItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
                                  "EA";
-            this.UnitSellingPrice = Math.Round(assignment.UnitSellingPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
-            this.SellingPrice = Math.Round(assignment.Quantity * assignment.UnitSellingPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.UnitSellingPrice = Rounder.RoundDecimal(assignment.UnitSellingPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.SellingPrice = Rounder.RoundDecimal(assignment.Quantity * assignment.UnitSellingPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
         }
 
         public string Name { get; }

@@ -24,8 +24,8 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
             this.Description = description?.Split('\n');
 
             this.Quantity = item.Quantity;
-            this.Price = Math.Round(item.UnitPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
-            this.Amount = Math.Round(item.TotalExVat, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Price = Rounder.RoundDecimal(item.UnitPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Amount = Rounder.RoundDecimal(item.TotalExVat, 2).ToString("N2", new CultureInfo("nl-BE"));
             this.Comment = item.Comment?.Split('\n');
             this.SupplierProductId = item.Part?.SupplierOfferingsWherePart?.FirstOrDefault(v => v.Supplier.Equals(item.PurchaseInvoiceWherePurchaseInvoiceItem.BilledFrom))?.SupplierProductId;
         }

@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
-        public decimal PriceAdjustmentAsPercentage => Math.Round((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice * 100, 2);
+        public decimal PriceAdjustmentAsPercentage => Rounder.RoundDecimal((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice * 100, 2);
 
         public Part DerivedPart
         {

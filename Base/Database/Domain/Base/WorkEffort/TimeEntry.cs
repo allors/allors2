@@ -21,7 +21,7 @@ namespace Allors.Domain
                 var minutes = (decimal)(through - this.FromDate).Value.TotalMinutes;
                 var hours = (decimal)frequencies.Minute.ConvertToFrequency((decimal)minutes, frequencies.Hour);
 
-                return Math.Round(hours, this.DecimalScale);
+                return Rounder.RoundDecimal(hours, this.DecimalScale);
             }
         }
 
@@ -170,7 +170,7 @@ namespace Allors.Domain
 
             if (useInternalRate && this.WorkEffort.Customer != this.WorkEffort.ExecutedBy)
             {
-                billingRate = Math.Round(billingRate * (1 + this.strategy.Session.GetSingleton().Settings.InternalLabourSurchargePercentage / 100), 2);
+                billingRate = Rounder.RoundDecimal(billingRate * (1 + this.strategy.Session.GetSingleton().Settings.InternalLabourSurchargePercentage / 100), 2);
             }
 
             this.BillingRate = billingRate;
@@ -196,7 +196,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    this.AmountOfTime = Math.Round((decimal)amount, 2);
+                    this.AmountOfTime = Rounder.RoundDecimal((decimal)amount, 2);
                 }
             }
             else if (this.ExistAssignedAmountOfTime)
@@ -220,7 +220,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    this.AmountOfTime = Math.Round((decimal)amount, 2);
+                    this.AmountOfTime = Rounder.RoundDecimal((decimal)amount, 2);
                 }
             }
 
@@ -235,12 +235,12 @@ namespace Allors.Domain
                     this.BillableAmountOfTimeInMinutes = this.AmountOfTimeInMinutes;
                 }
 
-                var billableTimeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(this.BillableAmountOfTimeInMinutes, this.BillingFrequency), 2);
+                var billableTimeInTimeEntryRateFrequency = Rounder.RoundDecimal((decimal)frequencies.Minute.ConvertToFrequency(this.BillableAmountOfTimeInMinutes, this.BillingFrequency), 2);
 
-                this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
+                this.BillingAmount = Rounder.RoundDecimal((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
 
-                var timeSpendInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(this.AmountOfTimeInMinutes, this.BillingFrequency), 2);
-                this.Cost = Math.Round((decimal)(costRate * timeSpendInTimeEntryRateFrequency), 2);
+                var timeSpendInTimeEntryRateFrequency = Rounder.RoundDecimal((decimal)frequencies.Minute.ConvertToFrequency(this.AmountOfTimeInMinutes, this.BillingFrequency), 2);
+                this.Cost = Rounder.RoundDecimal((decimal)(costRate * timeSpendInTimeEntryRateFrequency), 2);
             }
         }
 
