@@ -205,31 +205,6 @@ namespace Allors.Domain
                 }
             }
 
-            if (!this.PurchaseInvoiceState.IsRevising
-                && !this.PurchaseInvoiceState.IsCreated
-                && !this.PurchaseInvoiceState.IsAwaitingApproval)
-            {
-                foreach (var invoiceItem in validInvoiceItems)
-                {
-                    if (invoiceItem.ExistSerialisedItem
-                        && this.BilledTo.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseInvoiceConfirm))
-                    {
-                        if ((this.BilledFrom as InternalOrganisation)?.IsInternalOrganisation == false)
-                        {
-                            invoiceItem.SerialisedItem.Buyer = this.BilledTo;
-                        }
-
-                        // who comes first?
-                        // Item you purchased can be on sold via sales invoice even before purchase invoice is created and confirmed!!
-                        if (!invoiceItem.SerialisedItem.SalesInvoiceItemsWhereSerialisedItem.Any(v => (v.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer as Organisation)?.IsInternalOrganisation == false))
-                        {
-                            invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
-                            invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
-                        }
-                    }
-                }
-            }
-
             // If disbursements are not matched at invoice level
             if (!this.PurchaseInvoiceState.IsRevising
                 && this.AmountPaid != 0)
@@ -252,6 +227,31 @@ namespace Allors.Domain
                     else
                     {
                         invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.PartiallyPaid;
+                    }
+                }
+            }
+
+            if (!this.PurchaseInvoiceState.IsRevising
+                && !this.PurchaseInvoiceState.IsCreated
+                && !this.PurchaseInvoiceState.IsAwaitingApproval)
+            {
+                foreach (var invoiceItem in validInvoiceItems)
+                {
+                    if (invoiceItem.ExistSerialisedItem
+                        && this.BilledTo.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseInvoiceConfirm))
+                    {
+                        if ((this.BilledFrom as InternalOrganisation)?.IsInternalOrganisation == false)
+                        {
+                            invoiceItem.SerialisedItem.Buyer = this.BilledTo;
+                        }
+
+                        // who comes first?
+                        // Item you purchased can be on sold via sales invoice even before purchase invoice is created and confirmed!!
+                        if (!invoiceItem.SerialisedItem.SalesInvoiceItemsWhereSerialisedItem.Any(v => (v.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer as Organisation)?.IsInternalOrganisation == false))
+                        {
+                            invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
+                            invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                        }
                     }
                 }
             }
