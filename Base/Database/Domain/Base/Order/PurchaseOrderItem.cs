@@ -125,7 +125,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.InvoiceItemType.IsPartItem || this.InvoiceItemType.IsProductItem)
+            if (this.ExistInvoiceItemType
+                && (this.InvoiceItemType.IsPartItem || this.InvoiceItemType.IsProductItem))
             {
                 derivation.Validation.AssertExists(this, this.Meta.Part);
                 derivation.Validation.AssertExists(this, this.Meta.StoredInFacility);
