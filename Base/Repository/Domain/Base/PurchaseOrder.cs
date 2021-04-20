@@ -364,7 +364,6 @@ namespace Allors.Repository
         [RoleId("2f7e7d1b-6a61-41a6-a05f-375e8a5feeb2")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Indexed]
         [Workspace]
         public Facility StoredInFacility { get; set; }
