@@ -83,7 +83,7 @@ namespace Allors.Domain
                             else
                             {
                                 var percentage = discountComponent.Percentage ?? 0;
-                                discount = Math.Round(productBasePrice * percentage / 100, 2);
+                                discount = Rounder.RoundDecimal(productBasePrice * percentage / 100, 2);
                                 productDiscount += discount;
                             }
                         }
@@ -101,7 +101,7 @@ namespace Allors.Domain
                             else
                             {
                                 var percentage = surchargeComponent.Percentage ?? 0;
-                                surcharge = Math.Round(productBasePrice * percentage / 100, 2);
+                                surcharge = Rounder.RoundDecimal(productBasePrice * percentage / 100, 2);
                                 productSurcharge += surcharge;
                             }
                         }

@@ -19,7 +19,7 @@ namespace Allors.Domain.Print.WorkTaskModel
                                  assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
                                  "EA";
             this.UnitSellingPrice = assignment.UnitSellingPrice.ToString("N2", new CultureInfo("nl-BE"));
-            this.SellingPrice = Math.Round(this.Quantity * assignment.UnitSellingPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.SellingPrice = Rounder.RoundDecimal(this.Quantity * assignment.UnitSellingPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
         }
 
         public string PartId { get; }

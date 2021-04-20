@@ -21,10 +21,10 @@ namespace Allors.Domain.Print.WorkTaskModel
             var cost = timeEntries.Sum(v => v.Cost);
 
             // Round
-            this.BillingRate = Math.Round(billingRate, 2).ToString("N2", new CultureInfo("nl-BE"));
-            this.AmountOfTime = Math.Round(amountOfTime, 2).ToString("N2", new CultureInfo("nl-BE"));
-            this.BillingAmount = Math.Round(billingAmount, 2).ToString("N2", new CultureInfo("nl-BE"));
-            this.Cost = Math.Round(cost, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.BillingRate = Rounder.RoundDecimal(billingRate, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.AmountOfTime = Rounder.RoundDecimal(amountOfTime, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.BillingAmount = Rounder.RoundDecimal(billingAmount, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Cost = Rounder.RoundDecimal(cost, 2).ToString("N2", new CultureInfo("nl-BE"));
         }
 
         public string AmountOfTime { get; }

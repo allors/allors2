@@ -395,10 +395,10 @@ namespace Allors.Domain
         {
             if (!method.Result.HasValue)
             {
-                ((WorkEffortDerivedRoles)@this).TotalLabourRevenue = Math.Round(@this.BillableTimeEntries().Sum(v => v.BillingAmount), 2);
-                ((WorkEffortDerivedRoles)@this).TotalMaterialRevenue = Math.Round(@this.WorkEffortInventoryAssignmentsWhereAssignment.Where(v => v.DerivedBillableQuantity > 0).Sum(v => v.DerivedBillableQuantity * v.UnitSellingPrice), 2);
-                ((WorkEffortDerivedRoles)@this).TotalSubContractedRevenue = Math.Round(@this.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
-                var totalRevenue = Math.Round(@this.TotalLabourRevenue + @this.TotalMaterialRevenue + @this.TotalSubContractedRevenue, 2);
+                ((WorkEffortDerivedRoles)@this).TotalLabourRevenue = Rounder.RoundDecimal(@this.BillableTimeEntries().Sum(v => v.BillingAmount), 2);
+                ((WorkEffortDerivedRoles)@this).TotalMaterialRevenue = Rounder.RoundDecimal(@this.WorkEffortInventoryAssignmentsWhereAssignment.Where(v => v.DerivedBillableQuantity > 0).Sum(v => v.DerivedBillableQuantity * v.UnitSellingPrice), 2);
+                ((WorkEffortDerivedRoles)@this).TotalSubContractedRevenue = Rounder.RoundDecimal(@this.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+                var totalRevenue = Rounder.RoundDecimal(@this.TotalLabourRevenue + @this.TotalMaterialRevenue + @this.TotalSubContractedRevenue, 2);
 
                 method.Result = true;
 

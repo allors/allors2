@@ -5,6 +5,7 @@
 
 namespace Allors.Domain.Print.PurchaseOrderModel
 {
+    using System;
     using System.Globalization;
     using System.Linq;
 
@@ -23,8 +24,8 @@ namespace Allors.Domain.Print.PurchaseOrderModel
             this.Description = description?.Split('\n');
 
             this.Quantity = item.QuantityOrdered;
-            this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE"));
-            this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.Price = Rounder.RoundDecimal(item.UnitPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Amount = Rounder.RoundDecimal(item.TotalExVat, 2).ToString("N2", new CultureInfo("nl-BE"));
             this.Comment = item.Comment?.Split('\n');
             this.SupplierProductId = item.Part?.SupplierOfferingsWherePart?.FirstOrDefault(v => v.Supplier.Equals(item.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier))?.SupplierProductId;
         }

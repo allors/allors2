@@ -5,6 +5,7 @@
 
 namespace Allors.Domain.Print.SalesInvoiceModel
 {
+    using System;
     using System.Globalization;
     using Markdig;
 
@@ -28,8 +29,8 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
-            this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE"));
-            this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.Price = Rounder.RoundDecimal(item.UnitPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Amount = Rounder.RoundDecimal(item.TotalExVat, 2).ToString("N2", new CultureInfo("nl-BE"));
             this.Comment = item.Comment?.Split('\n');
         }
 

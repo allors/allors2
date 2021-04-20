@@ -121,8 +121,8 @@ namespace Allors.Domain
 
             if (this.TotalBasePrice > 0)
             {
-                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
-                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
+                this.TotalDiscountAsPercentage = Rounder.RoundDecimal(this.TotalDiscount / this.TotalBasePrice * 100, 2);
+                this.TotalSurchargeAsPercentage = Rounder.RoundDecimal(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
             }
             else
             {
@@ -131,7 +131,7 @@ namespace Allors.Domain
             }
 
             this.TotalExVat = this.UnitPrice * this.Quantity;
-            this.TotalVat = Math.Round(this.UnitVat * this.Quantity, 2);
+            this.TotalVat = this.UnitVat * this.Quantity;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
 
             // CurrentVersion is Previous Version until PostDerive

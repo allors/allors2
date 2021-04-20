@@ -17,7 +17,7 @@ namespace Allors.Domain
                 {
                     if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(toCurrency))
                     {
-                        return Math.Round(amount * unitOfMeasureConversion.ConversionFactor, 2);
+                        return Rounder.RoundDecimal(amount * unitOfMeasureConversion.ConversionFactor, 2);
                     }
                 }
             }

@@ -14,10 +14,10 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             var frequency = timeEntry.TimeFrequency?.Abbreviation ?? timeEntry.TimeFrequency?.Name;
 
-            this.AmountOfTime = Math.Round(timeEntry.BillableAmountOfTime ?? timeEntry.AmountOfTime ?? 0.0m, 2);
-            this.BillingRate = Math.Round(timeEntry.BillingRate ?? 0.0m, 2).ToString("N2", new CultureInfo("nl-BE"));
-            this.BillingAmount = Math.Round(timeEntry.BillingAmount, 2).ToString("N2", new CultureInfo("nl-BE"));
-            this.Cost = Math.Round(timeEntry.Cost, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.AmountOfTime = Rounder.RoundDecimal(timeEntry.BillableAmountOfTime ?? timeEntry.AmountOfTime ?? 0.0m, 2);
+            this.BillingRate = Rounder.RoundDecimal(timeEntry.BillingRate ?? 0.0m, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.BillingAmount = Rounder.RoundDecimal(timeEntry.BillingAmount, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Cost = Rounder.RoundDecimal(timeEntry.Cost, 2).ToString("N2", new CultureInfo("nl-BE"));
             this.TimeFrequency = frequency?.ToUpperInvariant();
             this.WorkerName = timeEntry.TimeSheetWhereTimeEntry?.Worker?.PartyName;
             this.WorkerId = timeEntry.TimeSheetWhereTimeEntry?.Worker?.FirstName;

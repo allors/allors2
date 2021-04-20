@@ -326,6 +326,15 @@ namespace Allors.Domain
                 this.GrandTotal += orderItem.GrandTotal;
             }
 
+            this.TotalBasePrice = Rounder.RoundDecimal(this.TotalBasePrice, 2);
+            this.TotalDiscount = Rounder.RoundDecimal(this.TotalDiscount, 2);
+            this.TotalSurcharge = Rounder.RoundDecimal(this.TotalSurcharge, 2);
+            this.TotalVat = Rounder.RoundDecimal(this.TotalVat, 2);
+            this.TotalIrpf = Rounder.RoundDecimal(this.TotalIrpf, 2);
+            this.TotalExVat = Rounder.RoundDecimal(this.TotalExVat, 2);
+            this.TotalIncVat = Rounder.RoundDecimal(this.TotalIncVat, 2);
+            this.GrandTotal = Rounder.RoundDecimal(this.GrandTotal, 2);
+
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
 
             // Derive Workflow
