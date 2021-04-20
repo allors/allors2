@@ -96,6 +96,17 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            if (!this.ExistStoredInFacility
+                && this.ExistInvoiceItemType
+                && (this.InvoiceItemType.IsPartItem || this.InvoiceItemType.IsProductItem)
+                && this.PurchaseOrderWherePurchaseOrderItem?.OrderedBy?.StoresWhereInternalOrganisation.Count == 1)
+            {
+                this.StoredInFacility = this.PurchaseOrderWherePurchaseOrderItem.OrderedBy.StoresWhereInternalOrganisation.Single().DefaultFacility;
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var (iteration, changeSet, derivedObjects) = method;
@@ -114,14 +125,15 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (this.InvoiceItemType.IsPartItem || this.InvoiceItemType.IsProductItem)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.Part);
+                derivation.Validation.AssertExists(this, this.Meta.StoredInFacility);
+            }
+
             if (!this.ExistDerivationTrigger)
             {
                 this.DerivationTrigger = Guid.NewGuid();
-            }
-
-            if (!this.ExistStoredInFacility && this.PurchaseOrderWherePurchaseOrderItem.ExistStoredInFacility)
-            {
-                this.StoredInFacility = this.PurchaseOrderWherePurchaseOrderItem.StoredInFacility;
             }
 
             this.DeriveIsReceivable();

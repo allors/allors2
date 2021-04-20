@@ -68,7 +68,7 @@
         <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.TotalIncVat"> </a-mat-static>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="orderItem.InvoiceItemType === partItemType || orderItem.InvoiceItemType === productItemType">
         <div class="col">
           <div class="row">
             <mat-form-field class="col">

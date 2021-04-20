@@ -146,11 +146,6 @@ namespace Allors.Domain
             }
 
             this.DerivedCurrency = this.OrderedBy?.PreferredCurrency;
-
-            if (!this.ExistStoredInFacility && this.OrderedBy?.StoresWhereInternalOrganisation.Count == 1)
-            {
-                this.StoredInFacility = this.OrderedBy.StoresWhereInternalOrganisation.Single().DefaultFacility;
-            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
