@@ -1,0 +1,19 @@
+<form *ngIf="positionType" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="positionType" [roleType]="m.PositionType.Title"></a-mat-input>
+      <a-mat-input class="col-md" [object]="positionType" [roleType]="m.PositionType.Description"></a-mat-input>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

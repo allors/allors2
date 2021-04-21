@@ -937,4 +937,15 @@ export function configure(metaPopulation: MetaPopulation, internalOrganisationId
   });
 
   m.TaskAssignment.list = '/workflow/taskassignments';
+
+  m.ExchangeRate.list = '/accounting/exchangerates';
+  m.ExchangeRate.filterDefinition = new FilterDefinition(
+    new And([
+      new Like({ roleType: m.ExchangeRate.FromCurrency, parameter: 'fromCurrency' }),
+      new Like({ roleType: m.ExchangeRate.ToCurrency, parameter: 'toCurrency' }),
+    ])
+  );
+  m.ExchangeRate.sorter = new Sorter({
+    title: m.ExchangeRate.ValidFrom,
+  });
 }

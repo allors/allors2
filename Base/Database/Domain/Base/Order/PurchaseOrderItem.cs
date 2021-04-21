@@ -102,7 +102,7 @@ namespace Allors.Domain
                 && this.ExistInvoiceItemType
                 && (this.InvoiceItemType.IsPartItem || this.InvoiceItemType.IsProductItem))
             {
-                this.StoredInFacility = this.PurchaseOrderWherePurchaseOrderItem.StoredInFacility;
+                this.StoredInFacility = this.PurchaseOrderWherePurchaseOrderItem?.StoredInFacility;
 
                 if (!this.ExistStoredInFacility && this.PurchaseOrderWherePurchaseOrderItem?.OrderedBy?.StoresWhereInternalOrganisation.Count == 1)
                 {
@@ -333,7 +333,7 @@ namespace Allors.Domain
                 if (this.ExistPart)
                 {
                     var inventoryItems = this.Part.InventoryItemsWherePart;
-                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.StoredInFacility);
+                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.StoredInFacility);
                     inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                 }
 

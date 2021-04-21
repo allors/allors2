@@ -37,6 +37,9 @@ export { EmailCommunicationEditComponent } from './export/objects/emailcommunica
 
 export { EmploymentEditComponent } from './export/objects/employment/edit/employment-edit.component';
 
+export { ExchangeRateEditComponent } from './export/objects/exchangerate/edit/exchangerate-edit.component';
+export { ExchangeRateListComponent } from './export/objects/exchangerate/list/exchangerate-list.component';
+
 export { FaceToFaceCommunicationEditComponent } from './export/objects/facetofacecommunication/edit/facetofacecommunication-edit.component';
 
 export { FacilityInlineComponent } from './export/objects/facility/inline/facility-inline.component';

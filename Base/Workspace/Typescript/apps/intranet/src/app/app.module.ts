@@ -157,6 +157,8 @@ import {
   PartyContactMechanismEmailAddressInlineComponent,
   EmailCommunicationEditComponent,
   EmploymentEditComponent,
+  ExchangeRateEditComponent,
+  ExchangeRateListComponent,
   FaceToFaceCommunicationEditComponent,
   FacilityInlineComponent,
   GoodListComponent,
@@ -357,6 +359,7 @@ export const create = {
   [ids.EmailAddress]: EmailAddressCreateComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.Employment]: EmploymentEditComponent,
+  [ids.ExchangeRate]: ExchangeRateEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
   [ids.Fee]: OrderAdjustmentEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
@@ -434,6 +437,7 @@ export const edit = {
   [ids.EmailAddress]: EmailAddressEditComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.Employment]: EmploymentEditComponent,
+  [ids.ExchangeRate]: ExchangeRateEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
   [ids.Fee]: OrderAdjustmentEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
@@ -586,8 +590,14 @@ export const routes: Routes = [
         path: 'workflow',
         children: [{ path: 'taskassignments', component: TaskAssignmentListComponent }],
       },
+      {
+        path: 'accounting',
+        children: [
+          { path: 'exchangerates', component: ExchangeRateListComponent },
+        ],
+      },
     ],
-  },
+},
 ];
 
 export function appInitFactory(workspaceService: WorkspaceService, internalOrganisationId: InternalOrganisationId) {
@@ -669,6 +679,8 @@ export function appInitFactory(workspaceService: WorkspaceService, internalOrgan
     DisbursementEditComponent,
     EmailAddressCreateComponent,
     EmailAddressEditComponent,
+    ExchangeRateEditComponent,
+    ExchangeRateListComponent,
     PartyContactMechanismEmailAddressInlineComponent,
     EmailCommunicationEditComponent,
     EmploymentEditComponent,

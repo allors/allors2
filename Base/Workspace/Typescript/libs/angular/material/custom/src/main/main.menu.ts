@@ -54,4 +54,9 @@ export const menu: MenuItem[] = [
     icon: 'group',
     children: [{ id: ids.PositionType }, { id: ids.PositionTypeRate }],
   },
+  // {
+  //   title: 'Accounting',
+  //   icon: 'money',
+  //   children: [{ id: ids.ExchangeRate }],
+  // },
 ];
