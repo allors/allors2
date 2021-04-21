@@ -49,7 +49,7 @@ namespace Tests.PurchaseOrderItemTests
         {
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.nonSerializedPartItem.Part).Build();
+            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.nonSerializedPartItem.Part, this.internalOrganisation).Build();
             this.purchaseOrder.AddPurchaseOrderItem(expected);
 
             this.Session.Derive();
@@ -117,7 +117,7 @@ namespace Tests.PurchaseOrderItemTests
         {
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new PurchaseOrderItemBuilder(this.Session).WithSerializedPartDefaults(this.serializedPartItem.Part, this.serializedPartItem.SerialisedItem).Build();
+            var expected = new PurchaseOrderItemBuilder(this.Session).WithSerializedPartDefaults(this.serializedPartItem.Part, this.serializedPartItem.SerialisedItem, this.internalOrganisation).Build();
             this.purchaseOrder.AddPurchaseOrderItem(expected);
 
             this.Session.Derive();

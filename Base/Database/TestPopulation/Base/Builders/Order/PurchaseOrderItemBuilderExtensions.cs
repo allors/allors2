@@ -8,7 +8,7 @@ namespace Allors.Domain.TestPopulation
 {
     public static partial class PurchaseOrderItemBuilderExtensions
     {
-        public static PurchaseOrderItemBuilder WithSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Part unifiedGood, SerialisedItem serialisedItem)
+        public static PurchaseOrderItemBuilder WithSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Part unifiedGood, SerialisedItem serialisedItem, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -17,6 +17,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
             @this.WithPart(unifiedGood);
+            @this.WithStoredInFacility(faker.Random.ListItem(internalOrganisation.FacilitiesWhereOwner));
             @this.WithAssignedUnitPrice(faker.Random.UInt(5, 10));
             @this.WithSerialisedItem(serialisedItem);
             @this.WithQuantityOrdered(1);
@@ -27,13 +28,14 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Part nonUnifiedPart)
+        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Part nonUnifiedPart, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).PartItem);
             @this.WithPart(nonUnifiedPart);
+            @this.WithStoredInFacility(faker.Random.ListItem(internalOrganisation.FacilitiesWhereOwner));
             @this.WithAssignedUnitPrice(faker.Random.UInt(5, 10));
             @this.WithQuantityOrdered(faker.Random.UInt(5, 15));
             @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));

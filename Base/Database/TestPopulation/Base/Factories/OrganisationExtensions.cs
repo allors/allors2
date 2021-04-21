@@ -215,8 +215,8 @@ namespace Allors.Domain.TestPopulation
                 .WithPrice(faker.Random.Decimal(0, 10))
                 .Build();
 
-            var nonSerializedPartItem = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(nonSerializedPart).Build();
-            var serializedPartItem = new PurchaseOrderItemBuilder(@this.Session()).WithSerializedPartDefaults(serializedPart, serializedItem).Build();
+            var nonSerializedPartItem = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(nonSerializedPart, @this).Build();
+            var serializedPartItem = new PurchaseOrderItemBuilder(@this.Session()).WithSerializedPartDefaults(serializedPart, serializedItem, @this).Build();
 
             purchaseOrder.AddPurchaseOrderItem(nonSerializedPartItem);
             purchaseOrder.AddPurchaseOrderItem(serializedPartItem);
@@ -235,7 +235,7 @@ namespace Allors.Domain.TestPopulation
 
             var purchaseOrder = new PurchaseOrderBuilder(@this.Session()).WithDefaults(@this).Build();
 
-            var item = new PurchaseOrderItemBuilder(@this.Session()).WithSerializedPartDefaults(serializedPart, serializedItem).Build();
+            var item = new PurchaseOrderItemBuilder(@this.Session()).WithSerializedPartDefaults(serializedPart, serializedItem, @this).Build();
 
             purchaseOrder.AddPurchaseOrderItem(item);
 
@@ -259,7 +259,7 @@ namespace Allors.Domain.TestPopulation
                 .WithPrice(faker.Random.Decimal(0, 10))
                 .Build();
 
-            var item = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(nonSerializedPart).Build();
+            var item = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(nonSerializedPart, @this).Build();
 
             purchaseOrder.AddPurchaseOrderItem(item);
 
