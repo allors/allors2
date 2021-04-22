@@ -8,6 +8,7 @@ import { Sorter } from '@allors/angular/material/core';
 import {
   Organisation,
   Country,
+  Currency,
   ProductCategory,
   ProductIdentification,
   Brand,
@@ -44,6 +45,11 @@ import { InternalOrganisationId, Filters } from '@allors/angular/base';
 
 export function configure(metaPopulation: MetaPopulation, internalOrganisationId: InternalOrganisationId) {
   const m = metaPopulation as Meta;
+
+  const currencySearch = new SearchFactory({
+    objectType: m.Currency,
+    roleTypes: [m.Currency.IsoCode],
+  });
 
   const inventoryItemKindSearch = new SearchFactory({
     objectType: m.InventoryItemKind,
@@ -941,11 +947,17 @@ export function configure(metaPopulation: MetaPopulation, internalOrganisationId
   m.ExchangeRate.list = '/accounting/exchangerates';
   m.ExchangeRate.filterDefinition = new FilterDefinition(
     new And([
-      new Like({ roleType: m.ExchangeRate.FromCurrency, parameter: 'fromCurrency' }),
-      new Like({ roleType: m.ExchangeRate.ToCurrency, parameter: 'toCurrency' }),
-    ])
+      new Equals({ propertyType: m.ExchangeRate.FromCurrency, parameter: 'fromCurrency' }),
+      new Equals({ propertyType: m.ExchangeRate.ToCurrency, parameter: 'toCurrency' }),
+    ]),
+    {
+      fromCurrency: { search: () => currencySearch, display: (v: Currency) => v && v.IsoCode },
+      toCurrency: { search: () => currencySearch, display: (v: Currency) => v && v.IsoCode },
+    }
   );
   m.ExchangeRate.sorter = new Sorter({
-    title: m.ExchangeRate.ValidFrom,
+    validFrom: m.ExchangeRate.ValidFrom,
+    from: m.ExchangeRate.FromCurrency,
+    to: m.ExchangeRate.ToCurrency,
   });
 }

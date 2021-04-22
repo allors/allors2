@@ -33,6 +33,9 @@ namespace Tests
             singleton.AddAdditionalLocale(dutchLocale);
 
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
+            var usd = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "USD");
+
+            new ExchangeRateBuilder(this.Session).WithValidFrom(new DateTime(2021, 04, 19, 12, 0, 0, DateTimeKind.Utc)).WithFromCurrency(euro).WithToCurrency(usd).WithFactor(1).WithRate(1.2027861M).Build();
 
             var be = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
             var us = new Countries(this.Session).FindBy(M.Country.IsoCode, "US");
