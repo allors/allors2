@@ -13,12 +13,15 @@ namespace Allors.Domain
 
     public partial class NonUnifiedPart
     {
-        private bool IsDeletable =>
-                               !this.ExistWorkEffortInventoryProducedsWherePart &&
-                               !this.ExistWorkEffortPartStandardsWherePart &&
-                               !this.ExistPartBillOfMaterialsWherePart &&
-                               !this.ExistPartBillOfMaterialsWhereComponentPart &&
-                               !this.ExistInventoryItemTransactionsWherePart;
+        private bool IsDeletable => !this.ExistNonUnifiedGoodsWherePart
+            && !this.ExistWorkEffortInventoryProducedsWherePart
+            && !this.ExistWorkEffortPartStandardsWherePart
+            && !this.ExistPartBillOfMaterialsWherePart
+            && !this.ExistPartBillOfMaterialsWhereComponentPart
+            && !this.ExistPurchaseInvoiceItemsWherePart
+            && !this.ExistPurchaseOrderItemsWherePart
+            && !this.ExistSalesInvoiceItemsWherePart
+            && !this.ExistShipmentItemsWherePart;
 
         public void BaseOnBuild(ObjectOnBuild method)
         {

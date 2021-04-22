@@ -278,6 +278,11 @@ namespace Allors.Domain
             {
                 version.Delete();
             }
+
+            foreach (InventoryItemTransaction transaction in this.InventoryItemTransactionsWhereInventoryItem)
+            {
+                transaction.Delete();
+            }
         }
     }
 }
