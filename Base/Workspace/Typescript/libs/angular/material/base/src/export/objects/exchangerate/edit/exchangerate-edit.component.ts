@@ -4,12 +4,14 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, Saved } from '@allors/angular/services/core';
-import { ExchangeRate } from '@allors/domain/generated';
+import { Currency, ExchangeRate, Organisation } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import { IObject } from '@allors/domain/system';
 import { TestScope } from '@allors/angular/core';
+import { Equals, Sort } from '@allors/data/system';
+import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 
 @Component({
   templateUrl: './exchangerate-edit.component.html',
@@ -23,6 +25,8 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
   public m: Meta;
 
   public exchangeRate: ExchangeRate;
+  internalOrganisation: Organisation;
+  currencies: Currency[];
 
   private subscription: Subscription;
 
@@ -33,6 +37,8 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
   ) {
     super();
 
@@ -41,11 +47,11 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
 
   public ngOnInit(): void {
 
-    const { pull } = this.metaService;
+    const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
-        switchMap(() => {
+        switchMap(([, internalOrganisationId]) => {
 
           const isCreate = this.data.id === undefined;
 
@@ -54,8 +60,13 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
 
           if (!isCreate) {
             pulls.push(
+              this.fetcher.internalOrganisation,
               pull.ExchangeRate({
                 object: this.data.id,
+              }),
+              pull.Currency({
+                predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+                sort: new Sort(m.Currency.IsoCode),
               }),
             );
           }
@@ -70,10 +81,14 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
       .subscribe(({ loaded, isCreate }) => {
 
         this.allors.context.reset();
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.currencies = loaded.collections.Currencies as Currency[];
 
         if (isCreate) {
           this.title = 'Add Position Type';
           this.exchangeRate = this.allors.context.create('ExchangeRate') as ExchangeRate;
+          this.exchangeRate.Factor = 1;
+          this.exchangeRate.FromCurrency = this.internalOrganisation.PreferredCurrency;
         } else {
           this.exchangeRate = loaded.objects.PositionType as ExchangeRate;
 

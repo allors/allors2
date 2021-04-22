@@ -5,8 +5,19 @@
   <mat-dialog-content>
 
     <div class="row">
-      <!-- <a-mat-input class="col-md" [object]="positionType" [roleType]="m.PositionType.Title"></a-mat-input>
-      <a-mat-input class="col-md" [object]="positionType" [roleType]="m.PositionType.Description"></a-mat-input> -->
+      <a-mat-datepicker class="col-md" [object]="exchangeRate" [roleType]="m.ExchangeRate.ValidFrom"></a-mat-datepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-select class="col-md" [object]="exchangeRate" [roleType]="m.ExchangeRate.FromCurrency" 
+      [options]="currencies" label="From" display="IsoCode"></a-mat-select>
+      <a-mat-input class="col-md" [object]="exchangeRate" [roleType]="m.ExchangeRate.Factor"></a-mat-input>
+      <a-mat-select class="col-md" [object]="exchangeRate" [roleType]="m.ExchangeRate.ToCurrency" 
+      [options]="currencies" label="To" display="IsoCode"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md-6" [object]="exchangeRate" [roleType]="m.ExchangeRate.Rate"></a-mat-input>
     </div>
 
   </mat-dialog-content>
