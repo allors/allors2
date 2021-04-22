@@ -7,11 +7,19 @@ namespace Allors.Domain
 {
     public partial class ExchangeRate
     {
+        public void BaseOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistFactor)
+            {
+                this.Factor = 1;
+            }
+        }
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            if (this.FromCurrency.Equals(this.ToCurrency))
+            if (this.ExistFromCurrency && this.ExistToCurrency && this.FromCurrency.Equals(this.ToCurrency))
             {
                 derivation.Validation.AddError(this, this.Meta.Factor, "Currencies can not be same");
             }
