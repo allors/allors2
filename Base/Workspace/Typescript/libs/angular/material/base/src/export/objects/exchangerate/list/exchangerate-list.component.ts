@@ -62,10 +62,18 @@ export class ExchangeRateListComponent extends TestScope implements OnInit, OnDe
 
     this.table = new Table({
       selection: true,
-      columns: [{ name: 'title', sort: true }, { name: 'description' }],
+      columns: [
+        { name: 'validFrom', sort: true }, 
+        { name: 'from', sort: true }, 
+        { name: 'factor' }, 
+        { name: 'to', sort: true }, 
+        { name: 'rate' }, 
+      ],
       actions: [this.edit, this.delete],
       defaultAction: this.edit,
       pageSize: 50,
+      initialSort: 'validFrom',
+      initialSortDirection: 'desc',
     });
   }
 
@@ -95,7 +103,7 @@ export class ExchangeRateListComponent extends TestScope implements OnInit, OnDe
           const pulls = [
             pull.ExchangeRate({
               predicate: this.filter.definition.predicate,
-              sort: sort ? m.PositionType.sorter.create(sort) : null,
+              sort: sort ? m.ExchangeRate.sorter.create(sort) : null,
               include: {
                 FromCurrency: x,
                 ToCurrency: x,
@@ -118,8 +126,8 @@ export class ExchangeRateListComponent extends TestScope implements OnInit, OnDe
           return {
             object: v,
             validFrom: format(new Date(v.ValidFrom), 'dd-MM-yyyy'),
-            from: v.FromCurrency.Abbreviation,
-            to: v.ToCurrency.Abbreviation,
+            from: v.FromCurrency.Name,
+            to: v.ToCurrency.Name,
             factor: v.Factor,
             rate: v.Rate,
           } as Row;

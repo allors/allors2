@@ -56,17 +56,17 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
           const isCreate = this.data.id === undefined;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode),
+            }),
           ];
 
           if (!isCreate) {
             pulls.push(
-              this.fetcher.internalOrganisation,
               pull.ExchangeRate({
                 object: this.data.id,
-              }),
-              pull.Currency({
-                predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
-                sort: new Sort(m.Currency.IsoCode),
               }),
             );
           }
@@ -90,7 +90,7 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
           this.exchangeRate.Factor = 1;
           this.exchangeRate.FromCurrency = this.internalOrganisation.PreferredCurrency;
         } else {
-          this.exchangeRate = loaded.objects.PositionType as ExchangeRate;
+          this.exchangeRate = loaded.objects.ExchangeRate as ExchangeRate;
 
           if (this.exchangeRate.CanWriteRate) {
             this.title = 'Edit Exchange Rate';
