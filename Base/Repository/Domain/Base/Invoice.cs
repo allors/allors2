@@ -379,6 +379,150 @@ namespace Allors.Repository
         public Guid DerivationTrigger { get; set; }
 
         #region Allors
+        [Id("3d3bc83a-dc13-44ab-b10e-cad3602316b2")]
+        [AssociationId("6e98fd50-3325-486b-8b16-5b77fb5745fd")]
+        [RoleId("72452148-9460-4333-8f4c-4acb67d8bad3")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalIrpfInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("5c22850a-6f1c-4140-9600-aa6632a1d8fa")]
+        [AssociationId("2e9adcc3-041d-41ed-b1aa-155aa855b5fd")]
+        [RoleId("69ab1a81-6308-4dd0-a9b0-2eb0ed16da5a")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalExVatInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("82ee09e6-c606-48e0-bcf8-732638b9aff9")]
+        [AssociationId("9ec8271d-2237-4c20-95c2-0630f4f03c37")]
+        [RoleId("cdc5536e-edc5-4e9e-886f-1a2dc0ff628c")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalVatInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("9549673f-334d-4d8c-b426-c9a008edec97")]
+        [AssociationId("62d9c769-bea7-4c1c-83b5-b656abff6ffc")]
+        [RoleId("b25d04c9-d6df-4b48-ae18-2048f6e9a54d")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalIncVatInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("541097a6-1d7a-4a2b-b628-a860b795a462")]
+        [AssociationId("57e04875-b185-4519-8542-49f030c1e412")]
+        [RoleId("61a96741-25b5-4eca-a2c6-70b94f52a68a")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalSurchargeInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("1f1739bd-fa2b-4b3f-bace-63e627a0161b")]
+        [AssociationId("6d77a8cd-3095-4611-9ab2-6556e69f480b")]
+        [RoleId("1100e4aa-28d3-4a8c-803d-bc953a2ec96e")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalDiscountInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("14725742-647b-414d-88b9-1ddf19cf0007")]
+        [AssociationId("9bfeeb10-d9ab-499d-b35d-c4f33f28075c")]
+        [RoleId("1346bc4b-dc61-4d31-8f7e-67fca75aa04c")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalShippingAndHandlingInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("5731f3a4-35b0-43c6-a74a-6b7ea2abdd6e")]
+        [AssociationId("9eed8126-d43c-40d5-ba0d-129586c8690a")]
+        [RoleId("0bbeeedc-739e-49d3-af22-28ed3fa7ca72")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalFeeInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("0658f560-7ce5-498e-b470-b9ef24f228e5")]
+        [AssociationId("c9c0d5fb-99f6-415e-a2e4-96ecdb52b586")]
+        [RoleId("2c1863eb-d2f2-4482-b56c-3d8da7f8dbda")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalExtraChargeInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("49b5d6bc-abde-45fc-b49d-c4ed8e71e13e")]
+        [AssociationId("35375be7-7f31-4588-b1df-59554d20664a")]
+        [RoleId("6b9bc3a6-f62e-4eb9-b01f-1e4c91733cef")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        decimal TotalBasePriceInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("f58dfcea-aaf3-4b6a-a29e-0a7132d18611")]
+        [AssociationId("f47bf6cb-7516-4c86-b91c-75384b72b3c1")]
+        [RoleId("3310a54d-98bf-4c1d-ab18-66c7cf516369")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalListPriceInPreferredCurrency { get; set; }
+
+        #region Allors
+        [Id("85448a6b-1a4f-4634-9352-8dbd5c011f20")]
+        [AssociationId("88924191-b16f-4be4-a7db-ff9f879ddb61")]
+        [RoleId("5a0835c0-0d50-4b3a-b47a-6086e649f04c")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal GrandTotalInPreferredCurrency { get; set; }
+
+        #region Allors
 
         [Id("B9226E72-AD90-4195-9DC7-64A26D12E6A3")]
 

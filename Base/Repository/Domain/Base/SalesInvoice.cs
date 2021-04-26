@@ -110,6 +110,30 @@ namespace Allors.Repository
 
         public Guid DerivationTrigger { get; set; }
 
+        public decimal TotalIrpfInPreferredCurrency { get; set; }
+
+        public decimal TotalExVatInPreferredCurrency { get; set; }
+
+        public decimal TotalVatInPreferredCurrency { get; set; }
+
+        public decimal TotalIncVatInPreferredCurrency { get; set; }
+
+        public decimal GrandTotalInPreferredCurrency { get; set; }
+
+        public decimal TotalSurchargeInPreferredCurrency { get; set; }
+
+        public decimal TotalDiscountInPreferredCurrency { get; set; }
+
+        public decimal TotalShippingAndHandlingInPreferredCurrency { get; set; }
+
+        public decimal TotalFeeInPreferredCurrency { get; set; }
+
+        public decimal TotalExtraChargeInPreferredCurrency { get; set; }
+
+        public decimal TotalBasePriceInPreferredCurrency { get; set; }
+
+        public decimal TotalListPriceInPreferredCurrency { get; set; }
+
         #endregion
 
         #region ObjectStates
