@@ -222,6 +222,23 @@ namespace Allors.Domain
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
 
+            if (this.ExistOrderDate
+                && this.ExistOrderedBy
+                && this.DerivedCurrency != this.OrderedBy.PreferredCurrency)
+            {
+                var exchangeRate = this.DerivedCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.OrderDate && v.ToCurrency.Equals(this.OrderedBy.PreferredCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+
+                if (exchangeRate == null)
+                {
+                    exchangeRate = this.OrderedBy.PreferredCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.OrderDate && v.ToCurrency.Equals(this.DerivedCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                }
+
+                if (exchangeRate == null)
+                {
+                    derivation.Validation.AddError(this, M.Quote.AssignedCurrency, ErrorMessages.CurrencyNotAllowed);
+                }
+            }
+
             var validOrderItems = this.PurchaseOrderItems.Where(v => v.IsValid).ToArray();
             this.ValidOrderItems = validOrderItems;
 
@@ -321,14 +338,17 @@ namespace Allors.Domain
                 this.GrandTotal += orderItem.GrandTotal;
             }
 
-            this.TotalBasePriceInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalBasePrice, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
-            this.TotalDiscountInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalDiscount, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
-            this.TotalSurchargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalSurcharge, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
-            this.TotalExVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalExVat, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
-            this.TotalVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalVat, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
-            this.TotalIncVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalIncVat, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
-            this.TotalIrpfInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalIrpf, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
-            this.GrandTotalInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.GrandTotal, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+            if (this.ExistOrderDate && this.ExistDerivedCurrency && this.ExistOrderedBy)
+            {
+                this.TotalBasePriceInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalBasePrice, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+                this.TotalDiscountInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalDiscount, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+                this.TotalSurchargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalSurcharge, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+                this.TotalExVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalExVat, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+                this.TotalVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalVat, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+                this.TotalIncVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalIncVat, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+                this.TotalIrpfInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalIrpf, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+                this.GrandTotalInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.GrandTotal, this.OrderDate, this.DerivedCurrency, this.OrderedBy.PreferredCurrency), 2);
+            }
 
             this.TotalBasePrice = Rounder.RoundDecimal(this.TotalBasePrice, 2);
             this.TotalDiscount = Rounder.RoundDecimal(this.TotalDiscount, 2);

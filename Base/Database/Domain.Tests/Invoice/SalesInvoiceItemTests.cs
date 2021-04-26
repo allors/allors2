@@ -1850,17 +1850,15 @@ namespace Allors.Domain
         [Fact]
         public void GivenBillToCustomerWithDifferentCurrency_WhenDerivingPrices_ThenCalculatePricesInPreferredCurrency()
         {
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var poundSterling = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "GBP");
 
-            const decimal conversionfactor = 0.8553M;
-            var euroToPoundStirling = new UnitOfMeasureConversionBuilder(this.Session)
-                .WithConversionFactor(conversionfactor)
-                .WithToUnitOfMeasure(poundSterling)
-                .WithStartDate(this.Session.Now())
+            new ExchangeRateBuilder(this.Session)
+                .WithValidFrom(this.Session.Now())
+                .WithFromCurrency(euro)
+                .WithToCurrency(poundSterling)
+                .WithRate(0.8553M)
                 .Build();
-
-            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            euro.AddUnitOfMeasureConversion(euroToPoundStirling);
 
             this.Session.Derive();
             this.Session.Commit();

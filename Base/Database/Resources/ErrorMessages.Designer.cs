@@ -133,6 +133,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currency is missing exchange rate.
+        /// </summary>
+        public static string CurrencyNotAllowed {
+            get {
+                return ResourceManager.GetString("CurrencyNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected date does not match weekday.
         /// </summary>
         public static string DateDayOfWeek {

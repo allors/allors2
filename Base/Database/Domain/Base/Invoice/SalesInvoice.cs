@@ -174,6 +174,23 @@ namespace Allors.Domain
                 }
             }
 
+            if (this.ExistInvoiceDate
+                && this.ExistBilledFrom
+                && this.DerivedCurrency != this.BilledFrom.PreferredCurrency)
+            {
+                var exchangeRate = this.DerivedCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.InvoiceDate && v.ToCurrency.Equals(this.BilledFrom.PreferredCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+
+                if (exchangeRate == null)
+                {
+                    exchangeRate = this.BilledFrom.PreferredCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.InvoiceDate && v.ToCurrency.Equals(this.DerivedCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                }
+
+                if (exchangeRate == null)
+                {
+                    derivation.Validation.AddError(this, M.Quote.AssignedCurrency, ErrorMessages.CurrencyNotAllowed);
+                }
+            }
+
             this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.Strategy.Session.Now().Date);
 
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
@@ -413,17 +430,20 @@ namespace Allors.Domain
             var totalIrpf = this.TotalIrpf + discountIrpf - surchargeIrpf - feeIrpf - shippingIrpf - miscellaneousIrpf;
             var grandTotal = totalIncVat - totalIrpf;
 
-            this.TotalBasePriceInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalBasePrice, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalDiscountInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalDiscount, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalSurchargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalSurcharge, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalExtraChargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalExtraCharge, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalFeeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalFee, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalShippingAndHandlingInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalShippingAndHandling, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalExVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalExVat, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalVat, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalIncVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalIncVat, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.TotalIrpfInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalIrpf, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
-            this.GrandTotalInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(grandTotal, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+            if (this.ExistInvoiceDate && this.ExistDerivedCurrency && this.ExistBilledFrom)
+            {
+                this.TotalBasePriceInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalBasePrice, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalDiscountInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalDiscount, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalSurchargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalSurcharge, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalExtraChargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalExtraCharge, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalFeeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalFee, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalShippingAndHandlingInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalShippingAndHandling, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalExVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalExVat, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalVat, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalIncVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalIncVat, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.TotalIrpfInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalIrpf, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+                this.GrandTotalInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(grandTotal, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+            }
 
             this.TotalBasePrice = Rounder.RoundDecimal(this.TotalBasePrice, 2);
             this.TotalDiscount = Rounder.RoundDecimal(this.TotalDiscount, 2);
@@ -451,7 +471,11 @@ namespace Allors.Domain
                 }
             }
 
-            this.TotalListPriceInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalListPrice.Value, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+            if (this.ExistInvoiceDate && this.ExistDerivedCurrency && this.ExistBilledFrom)
+            {
+                this.TotalListPriceInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalListPrice.Value, this.InvoiceDate, this.DerivedCurrency, this.BilledFrom.PreferredCurrency), 2);
+            }
+
             this.TotalListPrice = this.TotalListPrice.HasValue ? Rounder.RoundDecimal(this.TotalListPrice.Value, 2) : 0;
 
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);

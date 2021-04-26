@@ -8,6 +8,7 @@ namespace Allors.Domain
     using System;
     using System.Linq;
     using Allors.Meta;
+    using Resources;
 
     public static partial class QuoteExtensions
     {
@@ -52,6 +53,23 @@ namespace Allors.Domain
                 quoteDerivedRoles.DerivedCurrency = @this.AssignedCurrency ?? @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
                 quoteDerivedRoles.DerivedVatRegime = @this.AssignedVatRegime;
                 quoteDerivedRoles.DerivedIrpfRegime = @this.AssignedIrpfRegime;
+            }
+
+            if (@this.ExistIssueDate
+                && @this.ExistIssuer
+                && @this.DerivedCurrency != @this.Issuer.PreferredCurrency)
+            {
+                var exchangeRate = @this.DerivedCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= @this.IssueDate && v.ToCurrency.Equals(@this.Issuer.PreferredCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+
+                if (exchangeRate == null)
+                {
+                    exchangeRate = @this.Issuer.PreferredCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= @this.IssueDate && v.ToCurrency.Equals(@this.DerivedCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                }
+
+                if (exchangeRate == null)
+                {
+                    derivation.Validation.AddError(@this, M.Quote.AssignedCurrency, ErrorMessages.CurrencyNotAllowed);
+                }
             }
 
             foreach (QuoteItem quoteItem in @this.QuoteItems)

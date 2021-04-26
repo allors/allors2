@@ -96,6 +96,8 @@ namespace Allors.Domain
                 .WithBilledFrom(supplier)
                 .Build();
 
+            this.Session.Derive();
+
             invoice.Confirm();
             this.Session.Derive();
 
@@ -117,6 +119,8 @@ namespace Allors.Domain
                 .WithBilledFrom(supplier)
                 .Build();
 
+            this.Session.Derive();
+
             invoice.Confirm();
             this.Session.Derive();
 
@@ -137,6 +141,8 @@ namespace Allors.Domain
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                 .WithBilledFrom(supplier)
                 .Build();
+
+            this.Session.Derive();
 
             invoice.Confirm();
             this.Session.Derive();

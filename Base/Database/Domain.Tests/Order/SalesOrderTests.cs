@@ -1465,7 +1465,16 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var englischLocale = new Locales(this.Session).EnglishGreatBritain;
+
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var poundSterling = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "GBP");
+
+            new ExchangeRateBuilder(this.Session)
+                .WithValidFrom(this.Session.Now())
+                .WithFromCurrency(euro)
+                .WithToCurrency(poundSterling)
+                .WithRate(0.8553M)
+                .Build();
 
             var customer = new OrganisationBuilder(this.Session).WithName("customer").WithLocale(englischLocale).WithPreferredCurrency(poundSterling).Build();
 
@@ -1483,7 +1492,6 @@ namespace Allors.Domain
 
             Assert.Equal(poundSterling, order.DerivedCurrency);
 
-            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             customer.PreferredCurrency = euro;
 
             this.Session.Derive();

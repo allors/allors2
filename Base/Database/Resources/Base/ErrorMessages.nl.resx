@@ -258,4 +258,7 @@
   <data name="InvalidQuantity" xml:space="preserve">
     <value>Aantal is niet toegestaan</value>
   </data>
+  <data name="CurrencyNotAllowed" xml:space="preserve">
+    <value>Valuta heeft geen wisselkoers</value>
+  </data>
 </root>

@@ -264,4 +264,7 @@
   <data name="InvalidQuantity" xml:space="preserve">
     <value>Quantity is not valid</value>
   </data>
+  <data name="CurrencyNotAllowed" xml:space="preserve">
+    <value>Currency is missing exchange rate</value>
+  </data>
 </root>
