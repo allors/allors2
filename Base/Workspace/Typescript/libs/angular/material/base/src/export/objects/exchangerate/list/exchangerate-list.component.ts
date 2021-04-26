@@ -15,7 +15,6 @@ interface Row extends TableRow {
   validFrom: string;
   from: string;
   to: string;
-  factor: number;
   rate: string;
 }
 
@@ -65,7 +64,6 @@ export class ExchangeRateListComponent extends TestScope implements OnInit, OnDe
       columns: [
         { name: 'validFrom', sort: true }, 
         { name: 'from', sort: true }, 
-        { name: 'factor' }, 
         { name: 'to', sort: true }, 
         { name: 'rate' }, 
       ],
@@ -128,7 +126,6 @@ export class ExchangeRateListComponent extends TestScope implements OnInit, OnDe
             validFrom: format(new Date(v.ValidFrom), 'dd-MM-yyyy'),
             from: v.FromCurrency.Name,
             to: v.ToCurrency.Name,
-            factor: v.Factor,
             rate: v.Rate,
           } as Row;
         });

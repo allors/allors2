@@ -87,7 +87,6 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
         if (isCreate) {
           this.title = 'Add Position Type';
           this.exchangeRate = this.allors.context.create('ExchangeRate') as ExchangeRate;
-          this.exchangeRate.Factor = 1;
           this.exchangeRate.FromCurrency = this.internalOrganisation.PreferredCurrency;
         } else {
           this.exchangeRate = loaded.objects.ExchangeRate as ExchangeRate;

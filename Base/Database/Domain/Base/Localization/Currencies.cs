@@ -6,20 +6,30 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
 
     public partial class Currencies
     {
-        public static decimal ConvertCurrency(decimal amount, Currency fromCurrency, Currency toCurrency)
+        public static decimal ConvertCurrency(decimal amount, DateTime validFrom, Currency fromCurrency, Currency toCurrency)
         {
-            if (!fromCurrency.Equals(toCurrency))
+            if (!fromCurrency.Equals(toCurrency) )
             {
-                foreach (UnitOfMeasureConversion unitOfMeasureConversion in fromCurrency.UnitOfMeasureConversions)
+                var exchangeRate = fromCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= validFrom && v.ToCurrency.Equals(toCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+
+                if (exchangeRate != null)
                 {
-                    if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(toCurrency))
+                    return Rounder.RoundDecimal(amount * exchangeRate.Rate, 2);
+                }
+                else
+                {
+                    var invertedExchangeRate = toCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= validFrom && v.ToCurrency.Equals(fromCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                    if (invertedExchangeRate != null)
                     {
-                        return Rounder.RoundDecimal(amount * unitOfMeasureConversion.ConversionFactor, 2);
+                        return Rounder.RoundDecimal(amount * (1 / invertedExchangeRate.Rate), 2);
                     }
                 }
+
+                return 0;
             }
 
             return amount;
