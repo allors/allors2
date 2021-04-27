@@ -31,6 +31,7 @@ interface Row extends TableRow {
   state: string;
   reference: string;
   dueDate: string;
+  currency: string;
   totalExVat: string;
   totalInvoice: string;
   lastModifiedDate: string;
@@ -168,6 +169,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         { name: 'state' },
         { name: 'reference', sort: true },
         { name: 'dueDate', sort: true },
+        { name: 'currency' },
         { name: 'totalExVat', sort: true },
         { name: 'totalInvoice', sort: true },
         { name: 'lastModifiedDate', sort: true },
@@ -231,6 +233,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                 BilledTo: x,
                 PurchaseInvoiceState: x,
                 PurchaseInvoiceType: x,
+                DerivedCurrency: x,
                 PrintDocument: {
                   Media: x,
                 },
@@ -265,6 +268,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
               state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
               reference: `${v.CustomerReference}`,
               dueDate: v.DueDate && format(new Date(v.DueDate), 'dd-MM-yyyy'),
+              currency: `${v.DerivedCurrency && v.DerivedCurrency.IsoCode}`,
               totalExVat: v.TotalExVat,
               totalInvoice: v.GrandTotal,
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),

@@ -35,9 +35,9 @@ interface Row extends TableRow {
   billedTo: string;
   state: string;
   invoiceDate: string;
-
   dueDate: string;
   description: string;
+  currency: string
   totalExVat: string;
   grandTotal: string;
   lastModifiedDate: string;
@@ -180,6 +180,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         { name: 'dueDate', sort: true },
         { name: 'state' },
         { name: 'description', sort: true },
+        { name: 'currency' },
         { name: 'totalExVat', sort: true },
         { name: 'grandTotal', sort: true },
         { name: 'lastModifiedDate', sort: true },
@@ -253,6 +254,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                 BillToCustomer: x,
                 SalesInvoiceState: x,
                 SalesInvoiceType: x,
+                DerivedCurrency: x,
               },
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -285,6 +287,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
               invoiceDate: format(new Date(v.InvoiceDate), 'dd-MM-yyyy'),
               dueDate: `${v.DueDate && format(new Date(v.DueDate), 'dd-MM-yyyy')}`,
               description: v.Description,
+              currency: `${v.DerivedCurrency && v.DerivedCurrency.IsoCode}`,
               totalExVat: v.TotalExVat,
               grandTotal: v.GrandTotal,
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),

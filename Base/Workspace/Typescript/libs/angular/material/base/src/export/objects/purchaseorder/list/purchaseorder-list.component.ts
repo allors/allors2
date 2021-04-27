@@ -22,6 +22,7 @@ interface Row extends TableRow {
   shipmentState: string;
   customerReference: string;
   invoice: string;
+  currency: string;
   totalExVat: string;
   totalIncVat: string;
   lastModifiedDate: string;
@@ -87,6 +88,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
         { name: 'shipmentState' },
         { name: 'customerReference', sort: true },
         { name: 'invoice' },
+        { name: 'currency' },
         { name: 'totalExVat', sort: true },
         { name: 'totalIncVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
@@ -149,6 +151,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
                 PurchaseOrderState: x,
                 PurchaseOrderShipmentState: x,
                 PurchaseInvoicesWherePurchaseOrder: x,
+                DerivedCurrency: x,
               },
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -180,6 +183,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
               shipmentState: `${v.PurchaseOrderShipmentState && v.PurchaseOrderShipmentState.Name}`,
               customerReference: `${v.Description || ''}`,
               invoice: v.PurchaseInvoicesWherePurchaseOrder.map((w) => w.InvoiceNumber).join(', '),
+              currency: `${v.DerivedCurrency && v.DerivedCurrency.IsoCode}`,
               totalExVat: v.TotalExVat,
               totalIncVat: v.TotalIncVat,
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
