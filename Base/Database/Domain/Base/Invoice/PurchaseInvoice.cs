@@ -144,11 +144,11 @@ namespace Allors.Domain
                 && this.ExistBilledTo
                 && this.DerivedCurrency != this.BilledTo.PreferredCurrency)
             {
-                var exchangeRate = this.DerivedCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.InvoiceDate && v.ToCurrency.Equals(this.BilledTo.PreferredCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                var exchangeRate = this.DerivedCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom.Date <= this.InvoiceDate.Date && v.ToCurrency.Equals(this.BilledTo.PreferredCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
 
                 if (exchangeRate == null)
                 {
-                    exchangeRate = this.BilledTo.PreferredCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.InvoiceDate && v.ToCurrency.Equals(this.DerivedCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                    exchangeRate = this.BilledTo.PreferredCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom.Date <= this.InvoiceDate.Date && v.ToCurrency.Equals(this.DerivedCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
                 }
 
                 if (exchangeRate == null)

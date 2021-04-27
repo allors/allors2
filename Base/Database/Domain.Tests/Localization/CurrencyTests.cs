@@ -42,6 +42,26 @@ namespace Tests
         }
 
         [Fact]
+        public void GivenRateForExactDate_ConvertFromCurrencyUsingInvertedRate()
+        {
+            var today = this.Session.Now().Date;
+            var fromTry = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "TRY");
+            var toGbp = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "GBP");
+
+            new ExchangeRateBuilder(this.Session)
+                .WithValidFrom(today)
+                .WithFromCurrency(toGbp)
+                .WithToCurrency(fromTry)
+                .WithRate(11.635230272M)
+                .Build();
+
+            this.Session.Derive();
+
+            var amount = Currencies.ConvertCurrency(270000M, today, fromTry, toGbp);
+            Assert.Equal(23205.39M, amount);
+        }
+
+        [Fact]
         public void GivenHistoricRate_ConvertFromCurrency_UsingMostRecent()
         {
             var today = this.Session.Now().Date;
@@ -86,26 +106,6 @@ namespace Tests
 
             var amount = Currencies.ConvertCurrency(270000M, today, fromCurrency, toCurrency);
             Assert.Equal(0M, amount);
-        }
-
-        [Fact]
-        public void GivenRateForExactDate_ConvertFromCurrencyUsingInvertedRate()
-        {
-            var today = this.Session.Now().Date;
-            var fromCurrency = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "TRY");
-            var toCurrency = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "GBP");
-
-            new ExchangeRateBuilder(this.Session)
-                .WithValidFrom(today)
-                .WithFromCurrency(toCurrency)
-                .WithToCurrency(fromCurrency)
-                .WithRate(11.635230272M)
-                .Build();
-
-            this.Session.Derive();
-
-            var amount = Currencies.ConvertCurrency(270000M, today, fromCurrency, toCurrency);
-            Assert.Equal(23205.39M, amount);
         }
     }
 }

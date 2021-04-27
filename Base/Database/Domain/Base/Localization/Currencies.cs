@@ -14,7 +14,7 @@ namespace Allors.Domain
         {
             if (!fromCurrency.Equals(toCurrency) )
             {
-                var exchangeRate = fromCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= validFrom && v.ToCurrency.Equals(toCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                var exchangeRate = fromCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom.Date <= validFrom.Date && v.ToCurrency.Equals(toCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
 
                 if (exchangeRate != null)
                 {
@@ -22,7 +22,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    var invertedExchangeRate = toCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= validFrom && v.ToCurrency.Equals(fromCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                    var invertedExchangeRate = toCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom.Date <= validFrom.Date && v.ToCurrency.Equals(fromCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
                     if (invertedExchangeRate != null)
                     {
                         return Rounder.RoundDecimal(amount * (1 / invertedExchangeRate.Rate), 2);

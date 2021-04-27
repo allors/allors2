@@ -217,11 +217,11 @@ namespace Allors.Domain
                 && this.ExistTakenBy
                 && this.DerivedCurrency != this.TakenBy.PreferredCurrency)
             {
-                var exchangeRate = this.DerivedCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.OrderDate && v.ToCurrency.Equals(this.TakenBy.PreferredCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                var exchangeRate = this.DerivedCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom.Date <= this.OrderDate.Date && v.ToCurrency.Equals(this.TakenBy.PreferredCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
 
                 if (exchangeRate == null)
                 {
-                    exchangeRate = this.TakenBy.PreferredCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom <= this.OrderDate && v.ToCurrency.Equals(this.DerivedCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
+                    exchangeRate = this.TakenBy.PreferredCurrency.ExchangeRatesWhereFromCurrency.Where(v => v.ValidFrom.Date <= this.OrderDate.Date && v.ToCurrency.Equals(this.DerivedCurrency)).OrderByDescending(v => v.ValidFrom).FirstOrDefault();
                 }
 
                 if (exchangeRate == null)
