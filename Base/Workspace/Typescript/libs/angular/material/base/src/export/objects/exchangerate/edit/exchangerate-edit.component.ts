@@ -59,7 +59,7 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
             this.fetcher.internalOrganisation,
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
-              sort: new Sort(m.Currency.IsoCode),
+              sort: new Sort(m.Currency.Name),
             }),
           ];
 
@@ -87,7 +87,7 @@ export class ExchangeRateEditComponent extends TestScope implements OnInit, OnDe
         if (isCreate) {
           this.title = 'Add Position Type';
           this.exchangeRate = this.allors.context.create('ExchangeRate') as ExchangeRate;
-          this.exchangeRate.FromCurrency = this.internalOrganisation.PreferredCurrency;
+          this.exchangeRate.ToCurrency = this.internalOrganisation.PreferredCurrency;
         } else {
           this.exchangeRate = loaded.objects.ExchangeRate as ExchangeRate;
 
