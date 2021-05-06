@@ -20,7 +20,7 @@ import {
   CompilerConfig,
   ParseError,
   ProviderMeta,
-  CompileDirectiveSummary
+  CompileDirectiveSummary,
 } from '@angular/compiler';
 
 import { ProjectSymbols } from './project-symbols';
@@ -148,15 +148,14 @@ export class DirectiveSymbol extends Symbol {
    * @memberOf DirectiveSymbol
    */
   getNonResolvedMetadata(): CompileDirectiveMetadata | null {
-    // console.log(this.symbol.name, this.symbol.filePath);
-    try{
+    try {
       const data = this.metadataResolver.getNonNormalizedDirectiveMetadata(this.symbol);
       if (data) {
         return data.metadata;
       }
       return null;
-    } catch (e){
-      console.log("Could not resolve " + this.symbol.name);
+    } catch (e) {
+      console.debug('Could not resolve metadata: ' + this.symbol.name + ', ' + this.symbol.filePath);
       return null;
     }
   }
@@ -174,7 +173,7 @@ export class DirectiveSymbol extends Symbol {
    */
   getResolvedMetadata(): CompileTemplateMetadata | null {
     const directiveInfo = this.getDirectiveMetadata();
-    if(!directiveInfo) {
+    if (!directiveInfo) {
       return null;
     }
     this.templateDataVoid(directiveInfo);
@@ -188,7 +187,7 @@ export class DirectiveSymbol extends Symbol {
       moduleUrl: directiveInfo.componentUrl,
       templateUrl: null,
       styleUrls: null,
-      componentType: directiveInfo.componentType
+      componentType: directiveInfo.componentType,
     });
     const currentMetadata = this.directiveNormalizer.normalizeTemplate(config) as CompileTemplateMetadata;
     currentMetadata.template = directiveInfo.templateMetadata.template;
@@ -219,7 +218,7 @@ export class DirectiveSymbol extends Symbol {
   getStyleAsts(): CssAst[] | null {
     const metadata = this.getResolvedMetadata();
     if (metadata) {
-      return metadata.styles.map(s => parseCss(s));
+      return metadata.styles.map((s) => parseCss(s));
     }
     return null;
   }
@@ -238,12 +237,12 @@ export class DirectiveSymbol extends Symbol {
     if (!ngModule) {
       throw new Error('Cannot find module associated with the directive ' + this.symbol.name);
     }
-    const resolvedDirectives = ngModule.transitiveModule.directives.map(d =>
+    const resolvedDirectives = ngModule.transitiveModule.directives.map((d) =>
       this.metadataResolver.getNonNormalizedDirectiveMetadata(d.reference)
     );
 
     // TypeScript doesn't handle well filtering & strictNull
-    const tempDirectives: (CompileDirectiveSummary | null)[] = resolvedDirectives.map(d => {
+    const tempDirectives: (CompileDirectiveSummary | null)[] = resolvedDirectives.map((d) => {
       if (d) {
         return d.metadata.toSummary();
       } else {
@@ -257,14 +256,12 @@ export class DirectiveSymbol extends Symbol {
         directives.push(dir);
       }
     }
-    const pipes = ngModule.transitiveModule.pipes.map(p =>
-      this.metadataResolver.getOrLoadPipeMetadata(p.reference).toSummary()
-    );
+    const pipes = ngModule.transitiveModule.pipes.map((p) => this.metadataResolver.getOrLoadPipeMetadata(p.reference).toSummary());
     const schemas = ngModule.schemas;
     return {
       pipes,
       directives,
-      schemas
+      schemas,
     };
   }
 
@@ -304,7 +301,7 @@ export class DirectiveSymbol extends Symbol {
                 },
                 warn() {
                   return null;
-                }
+                },
               },
               []
             );
@@ -314,7 +311,7 @@ export class DirectiveSymbol extends Symbol {
             result = {
               templateAst: parseResult.templateAst,
               parseErrors: parseResult.errors,
-              errors: []
+              errors: [],
             };
           } else {
             result = { errors: [{ message: 'Cannot find metadata for the directive' }] };
@@ -334,7 +331,7 @@ export class DirectiveSymbol extends Symbol {
     if (!summary) {
       return [];
     } else {
-      return (summary.type.diDeps || []).map(d => {
+      return (summary.type.diDeps || []).map((d) => {
         let token = d.token;
         if (d.token) {
           if (d.token.identifier) {
@@ -342,11 +339,7 @@ export class DirectiveSymbol extends Symbol {
           }
         }
         const meta = new ProviderMeta(token, { useClass: d.value });
-        return new ProviderSymbol(
-          this._program,
-          this.metadataResolver.getProviderMetadata(meta),
-          this.metadataResolver
-        );
+        return new ProviderSymbol(this._program, this.metadataResolver.getProviderMetadata(meta), this.metadataResolver);
       });
     }
   }
@@ -354,7 +347,7 @@ export class DirectiveSymbol extends Symbol {
   getProviders() {
     const meta = this.getNonResolvedMetadata();
     if (meta) {
-      return (meta.providers || []).map(d => {
+      return (meta.providers || []).map((d) => {
         return new ProviderSymbol(this._program, d, this.metadataResolver);
       });
     }
@@ -364,7 +357,7 @@ export class DirectiveSymbol extends Symbol {
   getViewProviders() {
     const meta = this.getNonResolvedMetadata();
     if (meta) {
-      return (meta.viewProviders || []).map(d => {
+      return (meta.viewProviders || []).map((d) => {
         return new ProviderSymbol(this._program, d, this.metadataResolver);
       });
     } else {
@@ -389,23 +382,25 @@ export class DirectiveSymbol extends Symbol {
   }
   private templateDataVoid(directiveInfo) {
     if (!directiveInfo.templateMetadata.template && directiveInfo.templateMetadata.templateUrl) {
-      directiveInfo.templateMetadata.templateUrl = this.urlResolver.resolve(directiveInfo.componentUrl,
-        directiveInfo.templateMetadata.templateUrl);
+      directiveInfo.templateMetadata.templateUrl = this.urlResolver.resolve(
+        directiveInfo.componentUrl,
+        directiveInfo.templateMetadata.templateUrl
+      );
       directiveInfo.templateMetadata.template = this.resourceResolver.getSync(directiveInfo.templateMetadata.templateUrl);
     }
   }
   private stylesDataVoid(directiveInfo) {
     if (directiveInfo.templateMetadata.styleUrls.length) {
-      directiveInfo.templateMetadata.styleUrls = directiveInfo.templateMetadata.styleUrls.map(s =>
+      directiveInfo.templateMetadata.styleUrls = directiveInfo.templateMetadata.styleUrls.map((s) =>
         this.urlResolver.resolve(directiveInfo.componentUrl, s)
       );
       directiveInfo.templateMetadata.styles = directiveInfo.templateMetadata.styles.concat(
-        directiveInfo.templateMetadata.styleUrls.map(s => this.resourceResolver.getSync(s))
+        directiveInfo.templateMetadata.styleUrls.map((s) => this.resourceResolver.getSync(s))
       );
     }
   }
   private getDirectiveMetadata() {
-    try{
+    try {
       const metadata = this.metadataResolver.getNonNormalizedDirectiveMetadata(this.symbol);
       const componentType = resolveForwardRef(this.symbol);
       if (!metadata) {
@@ -421,11 +416,10 @@ export class DirectiveSymbol extends Symbol {
         metadata,
         componentType,
         componentUrl,
-        templateMetadata
+        templateMetadata,
       };
-    }
-    catch(e){
-      console.log(this.symbol.name);
+    } catch (e) {
+      console.debug('Could not get directive metadata: ' + e);
       return null;
     }
   }
