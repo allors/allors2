@@ -5,9 +5,26 @@ cd allors
 npm install -D @nrwl/angular
 npm install -D @nrwl/react
 npm install -D @nrwl/gatsby
+npm install -D lnk
+npm install -D rimraf
+npm install -D cross-env
 
-npx nx g @nrwl/angular:application angular/app --e2eTestRunner=none
-npx nx g @nrwl/angular:application angular/material/app --e2eTestRunner=none
+npm install @angular/cdk
+npm install @angular/flex-layout
+npm install @angular/material
+npm install axios
+npm install bootstrap
+npm install date-fns
+npm install easymde
+npm install gatsby-plugin-graphql-codegen
+npm install gatsby-plugin-sass sass
+
+npm install -D jest-extended
+npm install -D jest-trx-results-processor
+npm install -D module-alias
+
+npx nx g @nrwl/angular:application angular/app --e2eTestRunner=none --style=scss
+npx nx g @nrwl/angular:application angular/material/app --e2eTestRunner=none --style=scss
 npx nx g @nrwl/gatsby:app gatsby --e2eTestRunner=none
 
 npx nx g @nrwl/workspace:library meta/system

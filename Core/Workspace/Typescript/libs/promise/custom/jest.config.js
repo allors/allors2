@@ -1,24 +1,26 @@
 module.exports = {
+  displayName: 'promise-custom',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
-      tsConfig: '<rootDir>/tsconfig.spec.json',
+      tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
-  testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/promise/custom',
   reporters: [
     'default',
     [
       'jest-trx-results-processor',
       {
-        outputFile: '../../../artifacts/tests/promise.trx',
+        outputFile: '../../../artifacts/tests/core.promise.trx',
       },
     ],
   ],
-  displayName: 'promise-custom',
+  // Allors: sequential with extra time
+  maxWorkers: 1,
+  testTimeout: 60000,
 };

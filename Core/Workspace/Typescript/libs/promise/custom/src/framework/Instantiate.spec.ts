@@ -4,6 +4,8 @@ import { Person } from '@allors/domain/generated';
 
 import { Fixture } from '../Fixture';
 
+import 'jest-extended';
+
 describe('Instantiate',
   () => {
     let fixture: Fixture;

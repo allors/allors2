@@ -104,13 +104,22 @@ partial class Build
 
     Target CoreScaffold => _ => _
         .DependsOn(CoreGenerate)
+        .ProceedAfterFailure()
         .Executes(() =>
         {
-            NpmRun(s => s
-                .SetEnvironmentVariable("npm_config_loglevel", "error")
-                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
-                .SetCommand("scaffold"));
-            
+            try
+            {
+                NpmRun(s => s
+                    .SetEnvironmentVariable("npm_config_loglevel", "error")
+                    .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                    .SetCommand("scaffold"));
+            }
+            catch
+            {
+                // TODO:
+            }
+
+
             DotNetRun(s => s
                 .SetWorkingDirectory(Paths.Core)
                 .SetProjectFile(Paths.CoreWorkspaceScaffoldGenerate));

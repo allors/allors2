@@ -1,23 +1,26 @@
 module.exports = {
+  displayName: 'angular-custom',
   preset: '../../../jest.preset.js',
-  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
-      tsConfig: '<rootDir>/tsconfig.spec.json',
-      stringifyContentPathRegex: '\\.(html|svg)$',
-      astTransformers: { before: ['jest-preset-angular/build/InlineFilesTransformer', 'jest-preset-angular/build/StripStylesTransformer'] },
+      tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
+  transform: {
+    '^.+\\.[tj]sx?$': 'ts-jest',
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/angular/custom',
-  snapshotSerializers: ['jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js', 'jest-preset-angular/build/AngularSnapshotSerializer.js', 'jest-preset-angular/build/HTMLCommentSerializer.js'],
   reporters: [
     'default',
     [
       'jest-trx-results-processor',
       {
-        outputFile: '../../../artifacts/tests/angular.trx',
+        outputFile: '../../../artifacts/tests/core.angular.trx',
       },
     ],
   ],
-  displayName: 'angular-custom',
+  // Allors: sequential with extra time
+  maxWorkers: 1,
+  testTimeout: 60000,
 };

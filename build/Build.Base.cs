@@ -88,12 +88,20 @@ partial class Build
 
     private Target BaseScaffold => _ => _
          .DependsOn(BaseGenerate)
+         .ProceedAfterFailure()
          .Executes(() =>
          {
-             NpmRun(s => s
-                 .SetEnvironmentVariable("npm_config_loglevel", "error")
-                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
-                 .SetCommand("scaffold"));
+             try
+             {
+                 NpmRun(s => s
+                     .SetEnvironmentVariable("npm_config_loglevel", "error")
+                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
+                     .SetCommand("scaffold"));
+             }
+             catch
+             {
+                 // TODO:
+             }
 
              DotNetRun(s => s
                  .SetWorkingDirectory(Paths.Base)
