@@ -496,6 +496,8 @@ namespace Allors.Domain
                 this.TotalDiscountInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalDiscount, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
                 this.TotalSurchargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalSurcharge, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
                 this.TotalExtraChargeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalExtraCharge, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
+                this.TotalFeeInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalFee, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
+                this.TotalShippingAndHandlingInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(this.TotalShippingAndHandling, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
                 this.TotalExVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalExVat, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
                 this.TotalVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalVat, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
                 this.TotalIncVatInPreferredCurrency = Rounder.RoundDecimal(Currencies.ConvertCurrency(totalIncVat, this.InvoiceDate, this.DerivedCurrency, this.BilledTo.PreferredCurrency), 2);
@@ -507,6 +509,8 @@ namespace Allors.Domain
             this.TotalDiscount = Rounder.RoundDecimal(this.TotalDiscount, 2);
             this.TotalSurcharge = Rounder.RoundDecimal(this.TotalSurcharge, 2);
             this.TotalExtraCharge = Rounder.RoundDecimal(totalExtraCharge, 2);
+            this.TotalFee = Rounder.RoundDecimal(this.TotalFee, 2);
+            this.TotalShippingAndHandling = Rounder.RoundDecimal(this.TotalShippingAndHandling, 2);
             this.TotalExVat = Rounder.RoundDecimal(totalExVat, 2);
             this.TotalVat = Rounder.RoundDecimal(totalVat, 2);
             this.TotalIncVat = Rounder.RoundDecimal(totalIncVat, 2);
