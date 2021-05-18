@@ -26,10 +26,10 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, created, reject);
             config.Deny(this.ObjectType, awaitingApproval, delete);
 
-            if (revising != null)
-            {
-                config.Deny(this.ObjectType, revising, delete);
-            }
+            //if (revising != null)
+            //{
+            //    config.Deny(this.ObjectType, revising, delete);
+            //}
 
             config.Deny(this.ObjectType, cancelledByinvoice, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);

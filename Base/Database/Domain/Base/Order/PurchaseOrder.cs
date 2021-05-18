@@ -328,6 +328,7 @@ namespace Allors.Domain
             this.TotalShippingAndHandlingInPreferredCurrency = 0;
             this.TotalFeeInPreferredCurrency = 0;
             this.TotalExtraChargeInPreferredCurrency = 0;
+            this.TotalListPriceInPreferredCurrency = 0;
 
             foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
             {
