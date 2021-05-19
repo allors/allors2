@@ -185,7 +185,7 @@ namespace Allors.Workspace
                 {
                     var id = long.Parse(syncResponseAccessControl.I);
                     var version = long.Parse(syncResponseAccessControl.V);
-                    var permissionsIds = syncResponseAccessControl.P
+                    var permissionsIds = !string.IsNullOrWhiteSpace(syncResponseAccessControl.P) ? syncResponseAccessControl.P
                         ?.Split(',')
                         .Select(v =>
                         {
@@ -197,7 +197,7 @@ namespace Allors.Workspace
                             }
 
                             return permissionId;
-                        }) ?? Array.Empty<long>();
+                        }) ?? Array.Empty<long>() : Array.Empty<long>();
 
                     var accessControl = new AccessControl(id, version, new HashSet<long>(permissionsIds));
                     this.AccessControlById[id] = accessControl;
