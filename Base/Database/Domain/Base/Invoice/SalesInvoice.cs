@@ -489,7 +489,7 @@ namespace Allors.Domain
                     {
                         invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.NotPaid;
                     }
-                    else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid > 0 && invoiceItem.AmountPaid >= invoiceItem.TotalIncVat)
+                    else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid > 0 && invoiceItem.AmountPaid >= invoiceItem.GrandTotal)
                     {
                         invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.Paid;
                     }

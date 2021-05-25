@@ -191,7 +191,7 @@ namespace Allors.Domain
                 {
                     invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.NotPaid;
                 }
-                else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid >= invoiceItem.TotalIncVat)
+                else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid >= invoiceItem.GrandTotal)
                 {
                     invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
                 }
@@ -226,7 +226,7 @@ namespace Allors.Domain
             if (!this.PurchaseInvoiceState.IsRevising
                 && this.AmountPaid != 0)
             {
-                if (this.AmountPaid >= decimal.Round(this.TotalIncVat, 2))
+                if (this.AmountPaid >= decimal.Round(this.GrandTotal, 2))
                 {
                     this.PurchaseInvoiceState = purchaseInvoiceStates.Paid;
                 }
@@ -237,7 +237,7 @@ namespace Allors.Domain
 
                 foreach (var invoiceItem in validInvoiceItems)
                 {
-                    if (this.AmountPaid >= decimal.Round(this.TotalIncVat, 2))
+                    if (this.AmountPaid >= decimal.Round(this.GrandTotal, 2))
                     {
                         invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
                     }
