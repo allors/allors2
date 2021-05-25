@@ -9,12 +9,12 @@ namespace Allors.Workspace.Remote
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Allors.Protocol.Remote.Invoke;
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
-    using Newtonsoft.Json;
     using Polly;
     using Protocol.Remote.Security;
 
@@ -112,7 +112,7 @@ namespace Allors.Workspace.Remote
             await this.Policy.ExecuteAsync(
                 async () =>
                 {
-                    var json = JsonConvert.SerializeObject(args);
+                    var json = JsonSerializer.Serialize(args);
                     return await this.HttpClient.PostAsync(
                         uri,
                         new StringContent(json, Encoding.UTF8, "application/json"));
@@ -120,8 +120,13 @@ namespace Allors.Workspace.Remote
 
         public async Task<T> ReadAsAsync<T>(HttpResponseMessage response)
         {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
             var json = await response.Content.ReadAsStringAsync();
-            var deserializedObject = JsonConvert.DeserializeObject<T>(json);
+            var deserializedObject = JsonSerializer.Deserialize<T>(json, options);
             return deserializedObject;
         }
 
