@@ -1,7 +1,6 @@
 namespace ExcelAddIn
 {
     using System;
-    using System.Configuration;
     using System.Net.Http;
     using System.Threading;
     using System.Windows.Forms;
@@ -12,7 +11,6 @@ namespace ExcelAddIn
     using Allors.Workspace.Meta;
     using Allors.Workspace.Remote;
     using Application;
-    using Microsoft.Extensions.DependencyInjection;
     using ObjectFactory = Allors.Workspace.ObjectFactory;
 
     public partial class ThisAddIn
@@ -21,7 +19,7 @@ namespace ExcelAddIn
 
         private async void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            var configuration = new Configuration();
+            var configuration = new AppConfig();
 
             var httpClientHandler = new HttpClientHandler { UseDefaultCredentials = true };
             var httpClient = new HttpClient(httpClientHandler)
@@ -29,12 +27,7 @@ namespace ExcelAddIn
                 BaseAddress = new Uri(configuration.AllorsDatabaseAddress),
             };
 
-            var serviceProvider = new ServiceCollection()
-                // TODO: use DI logging
-                //.AddLogging()
-                .AddSingleton<IMessageService, MessageService>()
-                .AddSingleton<IErrorService, ErrorService>()
-                .BuildServiceProvider();
+            var serviceProvider = new ServiceLocator();
 
             this.database = new RemoteDatabase(httpClient);
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));

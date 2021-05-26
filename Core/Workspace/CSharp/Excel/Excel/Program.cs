@@ -5,18 +5,16 @@ namespace Application
     using System.Threading.Tasks;
     using Allors.Excel;
     using Application.Sheets;
-    using Allors.Excel;
-    using Microsoft.Extensions.DependencyInjection;
 
     public class Program :  IProgram
     {
-        public Program(ServiceProvider serviceProvider, Client client)
+        public Program(IServiceLocator serviceLocator, Client client)
         {
-            this.ServiceProvider = serviceProvider;
+            this.ServiceLocator = serviceLocator;
             this.Client = client;
         }
 
-        public ServiceProvider ServiceProvider { get; }
+        public IServiceLocator ServiceLocator { get; }
 
         public Client Client { get; }
 

@@ -1,12 +1,12 @@
 // =====COPYRIGHT=====
 // Code originally retrieved from http://www.vbforums.com/showthread.php?t=547778 - no license information supplied
 // =====COPYRIGHT=====
-using System;
-using System.ComponentModel;
-using System.Windows.Forms;
-
 namespace ToastNotifications
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows.Forms;
+
     /// <summary>
     /// Animates a form when it is shown, hidden or closed
     /// </summary>

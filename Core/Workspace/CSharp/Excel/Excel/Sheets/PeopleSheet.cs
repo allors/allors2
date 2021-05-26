@@ -7,8 +7,6 @@ namespace Application.Sheets
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
-    using Allors.Excel;
-    using Microsoft.Extensions.DependencyInjection;
     using Task = System.Threading.Tasks.Task;
 
     public class PeopleSheet
@@ -20,8 +18,8 @@ namespace Application.Sheets
             this.Binder = new Binder(this.Sheet);
             this.Binder.ToDomained += this.BinderOnToDomained;
 
-            this.MessageService = program.ServiceProvider.GetRequiredService<IMessageService>();
-            this.ErrorService = program.ServiceProvider.GetRequiredService<IErrorService>();
+            this.MessageService = program.ServiceLocator.GetMessageService();
+            this.ErrorService = program.ServiceLocator.GetErrorService();
         }
 
         public Context Context { get; }

@@ -1,8 +1,8 @@
-using System.Configuration;
-
 namespace ExcelAddIn
 {
-    public class Configuration
+    using System.Configuration;
+
+    public class AppConfig
     {
         public string AllorsDatabaseAddress => ConfigurationManager.AppSettings["allors.database.address"];
 

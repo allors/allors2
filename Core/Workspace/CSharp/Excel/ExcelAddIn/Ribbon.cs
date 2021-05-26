@@ -4,8 +4,6 @@ namespace ExcelAddIn
     using System.IO;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using Office = Microsoft.Office.Core;
-    using Allors.Excel;
     using Allors.Excel.Interop;
     using Microsoft.Office.Core;
 

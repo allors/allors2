@@ -1,4 +1,4 @@
-namespace WindowsForms.ToastNotifications
+namespace ToastNotifications
 {
     using System.Drawing;
     using System.Text;

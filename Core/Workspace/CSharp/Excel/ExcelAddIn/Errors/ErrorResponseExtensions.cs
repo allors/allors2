@@ -1,15 +1,12 @@
-using System.Runtime.CompilerServices;
-using WindowsForms.ToastNotifications;
 
-namespace Allors.Excel
+namespace ExcelAddIn
 {
     using System.Text;
     using System.Windows.Forms;
-
+    using Allors.Protocol.Remote;
     using Allors.Workspace;
-
+    using ToastNotifications;
     using NLog;
-    using Protocol.Remote;
 
     public static class ErrorResponseExtensions
     {

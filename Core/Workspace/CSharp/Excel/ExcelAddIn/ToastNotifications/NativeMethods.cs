@@ -1,8 +1,8 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace ToastNotifications
+﻿namespace ToastNotifications
 {
+    using System;
+    using System.Runtime.InteropServices;
+
     internal static class NativeMethods
     {
         /// <summary>

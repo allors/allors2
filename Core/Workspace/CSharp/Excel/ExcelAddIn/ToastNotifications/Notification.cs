@@ -1,13 +1,13 @@
 // =====COPYRIGHT=====
 // Code originally retrieved from http://www.vbforums.com/showthread.php?t=547778 - no license information supplied
 // =====COPYRIGHT=====
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-
 namespace ToastNotifications
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     public partial class Notification : Form
     {
         private static readonly List<Notification> OpenNotifications = new List<Notification>();

@@ -1,4 +1,4 @@
-namespace Allors.Excel
+namespace ExcelAddIn
 {
     using System;
     using System.Windows.Forms;

@@ -1,12 +1,11 @@
-using Allors.Excel.Interop;
-using Microsoft.Office.Core;
-using System;
-using System.Runtime.InteropServices;
-using System.Xml;
-
 namespace ExcelAddIn
 {
-    public class InteropOffice : IOffice
+    using Microsoft.Office.Core;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Xml;
+
+    public class InteropOffice : Allors.Excel.Interop.IOffice
     {
         public object MsoPropertyTypeString => MsoDocProperties.msoPropertyTypeString;
 
@@ -18,10 +17,7 @@ namespace ExcelAddIn
 
         public object MsoPropertyTypeNumber => MsoDocProperties.msoPropertyTypeNumber;
 
-        public void AddPicture(Microsoft.Office.Interop.Excel.Worksheet worksheet, string fileName, System.Drawing.Rectangle rectangle)
-        {
-            worksheet.Shapes.AddPicture(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-        }
+        public void AddPicture(Microsoft.Office.Interop.Excel.Worksheet worksheet, string fileName, System.Drawing.Rectangle rectangle) => worksheet.Shapes.AddPicture(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 
         public XmlDocument GetCustomXMLById(Microsoft.Office.Interop.Excel.Workbook interopWorkbook, string id)
         {
@@ -38,10 +34,7 @@ namespace ExcelAddIn
             return null;
         }
 
-        public string SetCustomXmlPart(Microsoft.Office.Interop.Excel.Workbook interopWorkbook, XmlDocument xmlDocument)
-        {
-            return interopWorkbook.CustomXMLParts.Add(xmlDocument.OuterXml, Type.Missing).Id;
-        }
+        public string SetCustomXmlPart(Microsoft.Office.Interop.Excel.Workbook interopWorkbook, XmlDocument xmlDocument) => interopWorkbook.CustomXMLParts.Add(xmlDocument.OuterXml, Type.Missing).Id;
 
         public bool TryDeleteCustomXMLById(Microsoft.Office.Interop.Excel.Workbook interopWorkbook, string id)
         {

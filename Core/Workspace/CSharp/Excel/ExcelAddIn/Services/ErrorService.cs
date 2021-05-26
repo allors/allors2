@@ -1,7 +1,8 @@
-namespace Allors.Excel
+namespace ExcelAddIn
 {
-    using Protocol.Remote;
-    using Workspace;
+    using Allors.Excel;
+    using Allors.Protocol.Remote;
+    using Allors.Workspace;
 
     public class ErrorService : IErrorService
     {

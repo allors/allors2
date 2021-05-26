@@ -1,19 +1,19 @@
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Allors.Excel;
-using Allors.Workspace.Remote;
-using NLog;
-
 namespace ExcelAddIn
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using Allors.Excel;
+    using Allors.Workspace.Remote;
+    using NLog;
+
     public class Authentication
     {
         private static readonly Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public Authentication(Ribbon ribbon, RemoteDatabase database, Client client, Configuration configuration)
+        public Authentication(Ribbon ribbon, RemoteDatabase database, Client client, AppConfig configuration)
         {
             this.Ribbon = ribbon;
             this.Database = database;
@@ -27,7 +27,7 @@ namespace ExcelAddIn
 
         public Client Client { get; }
 
-        public Configuration Configuration { get; }
+        public AppConfig Configuration { get; }
 
         public async Task Switch()
         {

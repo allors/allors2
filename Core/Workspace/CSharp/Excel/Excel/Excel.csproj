@@ -1,19 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Allors\Core\Workspace\CSharp\Excel\Excel\Allors\Core*\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Allors.Excel" Version="1.0.30" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.15" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.15" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.15" />
+
   </ItemGroup>
 
   <ItemGroup>
