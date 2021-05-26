@@ -4,7 +4,6 @@ namespace ExcelAddIn
     using System.IO;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using Nito.AsyncEx;
     using Office = Microsoft.Office.Core;
     using Allors.Excel;
     using Allors.Excel.Interop;
@@ -68,11 +67,11 @@ namespace ExcelAddIn
 
         #region Ribbon Callbacks
 
-        public void OnAuthenticate(IRibbonControl control)
+        public async void OnAuthenticate(IRibbonControl control)
         {
             try
             {
-                AsyncContext.Run(async () => await this.Authentication.Switch());
+                await this.Authentication.Switch();
             }
             catch (Exception e)
             {
@@ -80,18 +79,20 @@ namespace ExcelAddIn
             }
         }
 
-        public void OnClick(IRibbonControl control)
+        public async void OnClick(IRibbonControl control)
         {
-            if (this.AddIn != null)
+            if (this.AddIn == null)
             {
-                try
-                {
-                    AsyncContext.Run(async () => await this.AddIn.Program.OnHandle(control.Id));
-                }
-                catch (Exception e)
-                {
-                    e.Handle();
-                }
+                return;
+            }
+
+            try
+            {
+                await this.AddIn.Program.OnHandle(control.Id);
+            }
+            catch (Exception e)
+            {
+                e.Handle();
             }
         }
 

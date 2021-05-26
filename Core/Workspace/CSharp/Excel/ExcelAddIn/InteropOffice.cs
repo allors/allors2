@@ -1,4 +1,4 @@
-﻿using Allors.Excel.Interop;
+using Allors.Excel.Interop;
 using Microsoft.Office.Core;
 using System;
 using System.Runtime.InteropServices;
@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace ExcelAddIn
 {
-    public class Office : IOffice
+    public class InteropOffice : IOffice
     {
         public object MsoPropertyTypeString => MsoDocProperties.msoPropertyTypeString;
 

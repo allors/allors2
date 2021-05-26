@@ -1,4 +1,4 @@
-﻿// <copyright file="Controls.cs" company="Allors bvba">
+// <copyright file="Controls.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -177,26 +177,27 @@ namespace Application.Excel
             }
         }
 
-        internal void Select(int row, int column, Range options, ISessionObject sessionObject, RoleType roleType, RoleType relationType = null,
-            RoleType displayRoleType = null,
-            Func<object, dynamic> getRelation = null,
-            string numberFormat = null,
-            bool hideInCellDropDown = false)
+        internal ICell Select(int row, int column, Range options, ISessionObject sessionObject, RoleType roleType, RoleType relationType = null,
+    RoleType displayRoleType = null,
+    Func<object, dynamic> getRelation = null,
+    string numberFormat = null,
+    bool hideInCellDropDown = false)
         {
+            ICell cell = null;
             if (sessionObject != null)
             {
-                var cell = this.Worksheet[row, column];
+                cell = this.Worksheet[row, column];
                 cell.Options = options ?? throw new ArgumentNullException(nameof(options));
                 cell.NumberFormat = numberFormat;
-                cell.IsRequired = roleType.IsRequired;
                 cell.HideInCellDropdown = hideInCellDropDown;
+                cell.IsRequired = roleType.IsRequired;
 
                 if (!this.ControlByCell.TryGetValue(cell, out var control))
                 {
                     control = new ComboBox(cell);
                     this.ControlByCell.TryAdd(cell, control);
                 }
-                
+
                 var comboBox = (ComboBox)control;
 
                 comboBox.SessionObject = sessionObject;
@@ -204,9 +205,26 @@ namespace Application.Excel
                 comboBox.RelationType = relationType;
                 comboBox.DisplayRoleType = displayRoleType;
                 comboBox.ToDomain = getRelation;
-               
+
                 this.ActiveControls.Add(control);
             }
+
+            return cell;
+        }
+
+        internal ICell Select(int row, int column, Range options, bool isRequired = false,
+            RoleType displayRoleType = null,
+            Func<object, dynamic> getRelation = null,
+            string numberFormat = null,
+            bool hideInCellDropDown = false)
+        {
+            var cell = this.Worksheet[row, column];
+            cell.Options = options ?? throw new ArgumentNullException(nameof(options));
+            cell.NumberFormat = numberFormat;
+            cell.HideInCellDropdown = hideInCellDropDown;
+            cell.IsRequired = isRequired;
+
+            return cell;
         }
 
         internal CompositeControl Composite(int row, int column)

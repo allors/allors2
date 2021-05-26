@@ -1,25 +1,25 @@
 namespace ExcelAddIn
 {
     using System;
+    using System.Configuration;
     using System.Net.Http;
     using System.Threading;
     using System.Windows.Forms;
     using Allors.Excel;
+    using Allors.Excel.Interop;
     using Allors.Workspace;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
     using Allors.Workspace.Remote;
     using Application;
-    using Allors.Excel.Interop;
     using Microsoft.Extensions.DependencyInjection;
-    using Nito.AsyncEx;
     using ObjectFactory = Allors.Workspace.ObjectFactory;
 
     public partial class ThisAddIn
     {
         private RemoteDatabase database;
 
-        private void ThisAddIn_Startup(object sender, System.EventArgs e) => AsyncContext.Run(async () =>
+        private async void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             var configuration = new Configuration();
 
@@ -41,13 +41,13 @@ namespace ExcelAddIn
             var workspace = new Workspace(objectFactory);
             this.Client = new Client(this.database, workspace);
             var program = new Program(serviceProvider, this.Client);
-            var office = new Office();
+            var office = new InteropOffice();
 
             this.AddIn = new AddIn(this.Application, program, office);
             this.Ribbon.AddIn = this.AddIn;
             this.Ribbon.Authentication = new Authentication(this.Ribbon, database, this.Client, configuration);
             await program.OnStart(this.AddIn);
-        });
+        }
 
         public Ribbon Ribbon { get; set; }
 
@@ -64,10 +64,11 @@ namespace ExcelAddIn
             return this.Ribbon;
         }
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e) => AsyncContext.Run(async () =>
+        private async void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
             await this.AddIn.Program.OnStop();
-        });
+        }
+
 
         #region VSTO generated code
 
