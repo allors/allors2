@@ -30,19 +30,19 @@ namespace Application.Sheets
             this.ErrorService = program.ServiceLocator.GetErrorService();
         }
 
-        public Client Client { get; }
-
         public IWorksheet Sheet { get; }
 
-        public Binder Binder { get; }
+        private Client Client { get; }
 
-        public Controls Controls { get; }
+        private Binder Binder { get; }
 
-        public IMessageService MessageService { get; }
+        private Controls Controls { get; }
 
-        public IErrorService ErrorService { get; }
+        private IMessageService MessageService { get; }
 
-        public Context Context { get; private set; }
+        private IErrorService ErrorService { get; }
+
+        private Context Context { get; set; }
 
         private int StartRowNewItems { get; set; }
 
@@ -117,9 +117,11 @@ namespace Application.Sheets
 
             this.Controls.Bind();
             await this.Sheet.Flush().ConfigureAwait(false);
+
+            this.Sheet.AutoFit();
         }
-        
-        public async Task Update()
+
+        private async Task Update()
         {
             // TODO: Pulls for lookups
             // var pulls = new List<Pull>();
@@ -133,7 +135,7 @@ namespace Application.Sheets
 
             await this.Sheet.Flush().ConfigureAwait(false);
         }
-        
+
         public async Task Save()
         {
             var response = await this.Context.Save();
