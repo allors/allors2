@@ -6,10 +6,12 @@
         <group id="generalGroup" label="General">
           <labelControl id="userLabel" getLabel="GetUserLabel" />
           <button id="authentication" getLabel="GetAuthenticateLabel" onAction="OnAuthenticate"/>
-          <button id="refresh" onAction="OnRefresh" label="Refresh" />
+          <separator/>
+          <button id="save" onAction="OnClick" label="Save" imageMso="FileSave" size="large" getEnabled="GetEnabled"/>
+          <button id="refresh" onAction="OnClick" label="Refresh" imageMso="Refresh" size="large" getEnabled="GetEnabled"/>
         </group>
         <group id="salesGroup" label="Sales">
-          <button id="people" onAction="OnClick" label="People" />
+          <button id="customers" onAction="OnClick" label="Customers" getEnabled="GetEnabled"/>
         </group>
       </tab>
     </tabs>

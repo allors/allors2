@@ -61,6 +61,15 @@ namespace Allors.Repository
         public Media[] Images { get; set; }
 
         #region Allors
+        [Id("1E8A7E5E-EA78-4303-A241-394B334E54CF")]
+        [AssociationId("6C37A40F-A9C2-4F29-BD2A-BF5F44AD2792")]
+        [RoleId("A91934FC-BF52-4C49-BEF7-32C31002BB92")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IsCustomer { get; set; }
+        
+        #region Allors
         [Id("5fa25b53-e2a7-44c8-b6ff-f9575abb911d")]
         [AssociationId("6a382c73-c6a2-4d8b-bc85-4623ede54298")]
         [RoleId("1c3dec18-978c-470a-8857-5210b9267185")]

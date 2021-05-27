@@ -33,20 +33,20 @@ namespace ExcelAddIn
 
         public string UserLabel
         {
-            get => userLabel;
+            get => this.userLabel;
             set
             {
-                userLabel = value;
+                this.userLabel = value;
                 this.ribbon.Invalidate();
             }
         }
 
         public string AuthenticationLabel
         {
-            get => authenticationLabel;
+            get => this.authenticationLabel;
             set
             {
-                authenticationLabel = value;
+                this.authenticationLabel = value;
                 this.ribbon.Invalidate();
             }
         }
@@ -93,6 +93,8 @@ namespace ExcelAddIn
                 e.Handle();
             }
         }
+
+        public bool GetEnabled(IRibbonControl control) => this.AddIn.Program.IsEnabled(control.Id, control.Tag);
 
         public void Ribbon_Load(IRibbonUI ribbonUI) => this.ribbon = ribbonUI;
 

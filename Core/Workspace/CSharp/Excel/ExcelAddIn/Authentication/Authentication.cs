@@ -7,21 +7,22 @@ namespace ExcelAddIn
     using System.Windows.Forms;
     using Allors.Excel;
     using Allors.Workspace.Remote;
-    using NLog;
+    using Application;
 
     public class Authentication
     {
-        private static readonly Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-
-        public Authentication(Ribbon ribbon, RemoteDatabase database, Client client, AppConfig configuration)
+        public Authentication(Ribbon ribbon, Program program, RemoteDatabase database, Client client, AppConfig configuration)
         {
             this.Ribbon = ribbon;
+            this.Program = program;
             this.Database = database;
             this.Client = client;
             this.Configuration = configuration;
         }
 
         public Ribbon Ribbon { get; }
+
+        public IProgram Program { get; }
 
         public RemoteDatabase Database { get; }
 
@@ -33,29 +34,41 @@ namespace ExcelAddIn
         {
             if (this.Client != null)
             {
+                var wasLoggedIn = this.Client.IsLoggedIn;
+
                 if (this.Client.IsLoggedIn)
                 {
-                    await this.Logoff();
+                    this.Logoff();
                 }
                 else
                 {
-                    await this.Login();
+                    await this.Login(this.Database);
                 }
 
-                var loggedIn = this.Client.IsLoggedIn;
+                var isLoggedIn = this.Client.IsLoggedIn;
 
-                this.Ribbon.UserLabel = loggedIn ? this.Client.UserName : "Not logged in";
-                this.Ribbon.AuthenticationLabel = loggedIn ? "Logoff" : "Login";
+                if (wasLoggedIn != isLoggedIn)
+                {
+                    if (this.Client.IsLoggedIn)
+                    {
+                        await this.Program.OnLogin();
+                    }
+                    else
+                    {
+                        await this.Program.OnLogout();
+                    }
+                }
+
+                this.Ribbon.UserLabel = isLoggedIn ? this.Client.UserName : "Not logged in";
+                this.Ribbon.AuthenticationLabel = isLoggedIn ? "Logoff" : "Login";
             }
         }
 
-        public async Task Logoff()
+        private void Logoff()
         {
             this.Client.IsLoggedIn = false;
             this.Database.HttpClient.DefaultRequestHeaders.Authorization = null;
         }
-
-        public async Task Login() => await this.Login(this.Database);
 
         private async Task Login(RemoteDatabase database)
         {
@@ -63,9 +76,9 @@ namespace ExcelAddIn
             {
                 if (!this.Client.IsLoggedIn)
                 {
-                    var autologin = this.Configuration.AutoLogin;
- 
-                    if (!string.IsNullOrWhiteSpace(autologin))
+                    var autoLogin = this.Configuration.AutoLogin;
+
+                    if (!string.IsNullOrWhiteSpace(autoLogin))
                     {
                         var user = this.Configuration.AutoLogin;
                         var uri = new Uri("TestAuthentication/Token", UriKind.Relative);
@@ -100,16 +113,18 @@ namespace ExcelAddIn
 
                         if (!this.Client.IsLoggedIn)
                         {
-                            using (var loginForm = new LoginForm())
+                            using var loginForm = new LoginForm
                             {
-                                loginForm.Database = database;
-                                loginForm.Uri = new Uri("TestAuthentication/Token", UriKind.Relative);
-                                var result = loginForm.ShowDialog();
-                                if (result == DialogResult.OK)
-                                {
-                                    this.Client.UserName = loginForm.UserName;
-                                    this.Client.IsLoggedIn = true;
-                                }
+                                Database = database,
+                                Uri = new Uri("TestAuthentication/Token", UriKind.Relative)
+                            };
+
+                            var result = loginForm.ShowDialog();
+
+                            if (result == DialogResult.OK)
+                            {
+                                this.Client.UserName = loginForm.UserName;
+                                this.Client.IsLoggedIn = true;
                             }
                         }
                     }

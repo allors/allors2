@@ -14,16 +14,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Xunit;
-
 namespace Allors.Database.Adapters
 {
+    using Xunit;
     using System;
     using System.Collections;
     using System.Globalization;
     using System.Linq;
     using Allors;
-    using Adapters;
+    using Allors.Database.Adapters;
     using Allors.Meta;
     using Xunit;
 

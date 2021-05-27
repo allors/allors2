@@ -1,11 +1,9 @@
-﻿namespace Application.Excel
+namespace Application.Excel
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using Allors.Excel;
     using Allors.Workspace;
     using Allors.Workspace.Meta;
-    using Allors.Excel;
 
     public class CompositeControl : IControl
     {

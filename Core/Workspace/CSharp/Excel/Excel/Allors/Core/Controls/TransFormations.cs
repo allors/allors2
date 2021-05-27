@@ -1,9 +1,9 @@
-﻿using System;
-using Allors.Workspace;
-using Allors.Workspace.Meta;
-
 namespace Application
 {
+    using System;
+    using Allors.Workspace;
+    using Allors.Workspace.Meta;
+
     /// <summary>
     /// Translates true -> YES and vice versa.
     /// </summary>
@@ -13,7 +13,7 @@ namespace Application
         {
             var bl = (bool?)sessionObject.Get(roleType);
 
-            return (bl == true) ? "YES" : "NO";
+            return bl == true ? "YES" : "NO";
         }
 
         public object ToDomain(dynamic value)

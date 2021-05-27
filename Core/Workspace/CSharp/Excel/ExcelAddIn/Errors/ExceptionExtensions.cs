@@ -10,7 +10,7 @@ namespace ExcelAddIn
         public static void Handle(this Exception @this)
         {
             LogManager.GetCurrentClassLogger().Error(@this);
-            MessageBox.Show(@"System error occured. Please restart.");
+            MessageBox.Show(@"System error occurred. Please restart.");
         }
 
         public static void Show(this Exception @this)

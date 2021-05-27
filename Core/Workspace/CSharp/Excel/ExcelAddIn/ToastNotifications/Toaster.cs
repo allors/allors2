@@ -2,7 +2,7 @@ namespace ToastNotifications
 {
     using System.Drawing;
     using System.Text;
-    using global::ToastNotifications;
+    using ToastNotifications;
     using Allors.Protocol.Remote;
 
     public static class Toaster

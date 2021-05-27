@@ -17,7 +17,7 @@ namespace ExcelAddIn
     {
         private RemoteDatabase database;
 
-        private async void ThisAddIn_Startup(object sender, System.EventArgs e)
+        private async void ThisAddIn_Startup(object sender, EventArgs e)
         {
             var configuration = new AppConfig();
 
@@ -38,7 +38,7 @@ namespace ExcelAddIn
 
             this.AddIn = new AddIn(this.Application, program, office);
             this.Ribbon.AddIn = this.AddIn;
-            this.Ribbon.Authentication = new Authentication(this.Ribbon, database, this.Client, configuration);
+            this.Ribbon.Authentication = new Authentication(this.Ribbon, program, this.database, this.Client, configuration);
             await program.OnStart(this.AddIn);
         }
 
@@ -57,10 +57,7 @@ namespace ExcelAddIn
             return this.Ribbon;
         }
 
-        private async void ThisAddIn_Shutdown(object sender, System.EventArgs e)
-        {
-            await this.AddIn.Program.OnStop();
-        }
+        private async void ThisAddIn_Shutdown(object sender, EventArgs e) => await this.AddIn.Program.OnStop();
 
 
         #region VSTO generated code
@@ -71,8 +68,8 @@ namespace ExcelAddIn
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
+            this.Startup += new EventHandler(this.ThisAddIn_Startup);
+            this.Shutdown += new EventHandler(this.ThisAddIn_Shutdown);
         }
 
         #endregion

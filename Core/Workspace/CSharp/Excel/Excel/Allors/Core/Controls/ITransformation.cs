@@ -1,8 +1,8 @@
-﻿using Allors.Workspace;
-using Allors.Workspace.Meta;
-
-namespace Application
+﻿namespace Application
 {
+    using Allors.Workspace;
+    using Allors.Workspace.Meta;
+
     public interface ITransformation
     {
         object ToExcel(ISessionObject sessionObject, RoleType roleType);

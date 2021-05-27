@@ -1,8 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-
 namespace Excel.Allors
 {
     public static class NumberFormats

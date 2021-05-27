@@ -1,10 +1,10 @@
-﻿namespace Application.Excel
+namespace Application.Excel
 {
     using System;
+    using System.Globalization;
+    using Allors.Excel;
     using Allors.Workspace;
     using Allors.Workspace.Meta;
-    using Allors.Excel;
-    using System.Globalization;
 
     public class TextBox<T> : IControl where T : ISessionObject
     {
@@ -125,10 +125,6 @@
                 }
 
                 this.Cell.Style = Constants.ChangedStyle;
-            }
-            else
-            {
-
             }
         }
 

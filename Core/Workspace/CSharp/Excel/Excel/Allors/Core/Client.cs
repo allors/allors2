@@ -5,9 +5,9 @@
 
 namespace Allors.Excel
 {
-    using Allors.Workspace;
+    using Workspace;
 
-    public partial class Client
+    public class Client
     {
         public Client(IDatabase database, IWorkspace workspace)
         {

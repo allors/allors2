@@ -5,9 +5,9 @@
 
 namespace Allors.Excel
 {
-    using Allors.Workspace;
-    using Allors.Workspace.Meta;
-    using Allors.Excel;
+    using System;
+    using Workspace;
+    using Workspace.Meta;
 
     public class RoleTypeBinding : IBinding
     {
@@ -43,12 +43,12 @@ namespace Allors.Excel
         /// <summary>
         /// Gets a functions that maps the value in the cell to a reference to a relation. eg Lookup WheelDiameter by its inch value.
         /// </summary>
-        public System.Func<object, dynamic> GetRelation { get; internal set; }
+        public Func<object, dynamic> GetRelation { get; internal set; }
 
         /// <summary>
         /// Gets the function that transforms the value in the cell to something else. eg true => Yes.
         /// </summary>
-        public System.Func<object, dynamic> Transform { get; internal set; }
+        public Func<object, dynamic> Transform { get; internal set; }
 
         public void ToCell(ICell cell)
         {
@@ -58,9 +58,9 @@ namespace Allors.Excel
 
                 if (this.Transform == null)
                 {
-                    if (this.RelationType.ObjectType.ClrType == typeof(System.DateTime))
+                    if (this.RelationType.ObjectType.ClrType == typeof(DateTime))
                     {
-                        var dt = (System.DateTime?)relation?.Get(this.RelationType);
+                        var dt = (DateTime?)relation?.Get(this.RelationType);
                         cell.Value = dt?.ToOADate();
                     }
                     else
@@ -84,9 +84,9 @@ namespace Allors.Excel
             {
                 if (this.Transform == null)
                 {
-                    if (this.RoleType.ObjectType.ClrType == typeof(System.DateTime))
+                    if (this.RoleType.ObjectType.ClrType == typeof(DateTime))
                     {
-                        var dt = (System.DateTime?)this.Object.Get(this.DisplayRoleType ?? this.RoleType);
+                        var dt = (DateTime?)this.Object.Get(this.DisplayRoleType ?? this.RoleType);
                         cell.Value = dt?.ToOADate();
                     }
                     else
