@@ -12,10 +12,7 @@ namespace Application.Excel
         /// TextBox is a two-way binding object for excel cell value.
         /// </summary>
         /// <param name="cell"></param>
-        public TextBox(ICell cell)
-        {
-            this.Cell = cell;
-        }
+        public TextBox(ICell cell) => this.Cell = cell;
 
         public T SessionObject { get; internal set; }
 

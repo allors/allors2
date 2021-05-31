@@ -34,7 +34,7 @@ namespace ExcelAddIn
             var workspace = new Workspace(objectFactory);
             this.Client = new Client(this.database, workspace);
             var program = new Program(serviceProvider, this.Client);
-            var office = new InteropOffice();
+            var office = new OfficeCore();
 
             this.AddIn = new AddIn(this.Application, program, office);
             this.Ribbon.AddIn = this.AddIn;
