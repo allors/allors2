@@ -52,7 +52,7 @@ namespace Application.Excel
 
         public int ExcelColumnIndexFromName(string name)
         {
-            if(!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrWhiteSpace(name))
             {
                 name = name.ToUpper(CultureInfo.CurrentCulture);
                 int number = 0;
@@ -86,12 +86,39 @@ namespace Application.Excel
                 this.ControlByCell.TryAdd(cell, control);
             }
 
+            //TODO: Koen, remove cast
             var staticContent = (StaticContent<T>)control;
             staticContent.Value = value;
 
             this.ActiveControls.Add(staticContent);
         }
-              
+
+        internal void Static<T>(Range range, T[] values)
+        {
+            // TODO: support vertical orientation
+            for (var i = 0; i < values.Length; i++)
+            {
+                var value = values[i];
+                var row = range.Row;
+                var column = range.Column + i;
+                this.Static(row, column, value);
+            }
+        }
+
+        internal void Static<T>(Range range, T[][] values)
+        {
+            for (var i = 0; i < values.Length; i++)
+            {
+                var rowValues = values[i];
+                for (var j = 0; j < rowValues.Length; j++)
+                {
+                    var value = rowValues[j];
+                    var row = range.Row + i;
+                    var column = range.Column + j;
+                    this.Static(row, column, value);
+                }
+            }
+        }
 
         /// <summary>
         /// Sets a Formula in the row, column. Formula is a string, starting with '='
@@ -113,7 +140,7 @@ namespace Application.Excel
 
             this.ActiveControls.Add(formulaControl);
         }
-               
+
 
         /// <summary>
         /// Sets a readonly value in the cell. Changes are not handled.
@@ -146,9 +173,9 @@ namespace Application.Excel
         /// <inheritdoc cref="Application.Excel.TextBox"/>
         internal void TextBox(
             int row, int column, ISessionObject sessionObject, RoleType roleType, RoleType relationType = null,
-            RoleType displayRoleType = null, 
+            RoleType displayRoleType = null,
             string numberFormat = null,
-            Func<object, dynamic> toDomain = null, 
+            Func<object, dynamic> toDomain = null,
             Func<ISessionObject, dynamic> toCell = null,
             Func<ICell, ISessionObject> factory = null)
         {
@@ -269,7 +296,7 @@ namespace Application.Excel
                     control.OnCellChanged();
 
                     if (control is Label || IsGenericStaticContent(control))
-                    {                        
+                    {
                         changesReverted = true;
                     }
                 }
