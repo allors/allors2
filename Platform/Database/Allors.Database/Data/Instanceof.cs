@@ -25,7 +25,7 @@ namespace Allors.Data
         public Predicate Save() =>
             new Predicate
             {
-                Kind = PredicateKind.Instanceof,
+                Kind = PredicateKind.InstanceOf,
                 ObjectType = this.ObjectType?.Id,
                 PropertyType = this.PropertyType?.Id,
             };

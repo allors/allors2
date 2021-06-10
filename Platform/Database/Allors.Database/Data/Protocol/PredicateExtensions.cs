@@ -44,7 +44,7 @@ namespace Allors.Protocol.Data
 
                     switch (@this.Kind)
                     {
-                        case PredicateKind.Instanceof:
+                        case PredicateKind.InstanceOf:
 
                             return new Instanceof(@this.ObjectType != null ? (IComposite)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null)
                             {

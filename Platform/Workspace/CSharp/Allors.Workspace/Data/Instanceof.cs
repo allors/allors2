@@ -24,7 +24,7 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate
             {
-                Kind = PredicateKind.Instanceof,
+                Kind = PredicateKind.InstanceOf,
                 Dependencies = this.Dependencies,
                 ObjectType = this.ObjectType?.Id,
                 PropertyType = this.PropertyType?.Id,
