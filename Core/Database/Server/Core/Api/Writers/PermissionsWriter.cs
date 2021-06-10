@@ -7,7 +7,6 @@ namespace Allors.Server
 {
     using System.Linq;
     using Domain;
-    using Protocol;
     using Protocol.Remote;
 
     internal class PermissionsWriter

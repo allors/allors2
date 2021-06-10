@@ -120,34 +120,54 @@ $meta.WorkspaceComposites:{composite|$inheritance(composite)$}; separator="\n"$
 
 		internal void BuildOperandTypes()
 		{
-			// Exclusive Roles
-$meta.WorkspaceComposites:{composite|$relations(composite)$}; separator="\n"$
-
-			// Inherited Roles
-$meta.WorkspaceInterfaces:{interface|$inheritedRoles(interface)$}; separator="\n"$
-
-			// Implemented Roles
-$meta.WorkspaceClasses:{class|$implementedRoles(class)$}; separator="\n"$
-
-			// Associations
-$meta.WorkspaceComposites:{composite|$associations(composite)$}; separator="\n"$
-
-			// InheritedAssociations
-$meta.WorkspaceComposites:{composite|$inheritedassociations(composite)$}; separator="\n"$
-
-			// Defined Methods
-$meta.WorkspaceComposites:{composite|$exclusiveMethods(composite)$}; separator="\n"$
-
-			// Inherited Methods
-$meta.WorkspaceComposites:{composite|$inheritedMethods(composite)$}; separator="\n"$
-
-
+			this.BuildExclusiveRoles();
+            this.BuildInheritedRoles();
+            this.BuildImplementedRoles();
+            this.BuildAssociations();
+            this.BuildInheritedAssociations();
+            this.BuildDefinedMethods();
+            this.BuildInheritedMethods();
 
 			// Extend
             $meta.WorkspaceInterfaces:{interface|Meta$interface.SingularName$.Instance.Extend();}; separator="\n"$
 
             $meta.WorkspaceClasses:{class|Meta$class.SingularName$.Instance.Extend();}; separator="\n"$
 		}
+
+        private void BuildExclusiveRoles()
+        {
+$meta.WorkspaceComposites:{composite|$relations(composite)$}; separator="\n"$
+        }
+
+        private void BuildInheritedRoles()
+        {
+$meta.WorkspaceInterfaces:{interface|$inheritedRoles(interface)$}; separator="\n"$
+        }
+
+        private void BuildImplementedRoles()
+        {
+$meta.WorkspaceClasses:{class|$implementedRoles(class)$}; separator="\n"$
+        }
+
+        private void BuildAssociations()
+        {
+$meta.WorkspaceComposites:{composite|$associations(composite)$}; separator="\n"$
+        }
+
+        private void BuildInheritedAssociations()
+        {
+$meta.WorkspaceComposites:{composite|$inheritedassociations(composite)$}; separator="\n"$
+        }
+
+        private void BuildDefinedMethods()
+        {
+$meta.WorkspaceComposites:{composite|$exclusiveMethods(composite)$}; separator="\n"$
+        }
+
+        private void BuildInheritedMethods()
+        {
+$meta.WorkspaceComposites:{composite|$inheritedMethods(composite)$}; separator="\n"$
+        }
 	}
 }
 >>

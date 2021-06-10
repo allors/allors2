@@ -7,8 +7,6 @@ namespace Allors.Server
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Allors.Domain;
     using Allors.Protocol.Remote;
     using Domain.Derivations;
 

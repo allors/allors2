@@ -9,7 +9,6 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Sync;
-    using Protocol;
     using Protocol.Data;
     using Protocol.Remote;
 

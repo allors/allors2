@@ -11,7 +11,6 @@ namespace Allors.Server
     using Allors.Data;
     using Allors.Domain;
     using Allors.Protocol.Remote.Pull;
-    using Protocol;
     using Allors.Services;
 
     public class PullResponseBuilder

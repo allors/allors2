@@ -6,8 +6,6 @@
 namespace Allors.Server
 {
     using System;
-
-    using Allors.Domain;
     using Allors.Protocol.Remote.Security;
     using Allors.Services;
 

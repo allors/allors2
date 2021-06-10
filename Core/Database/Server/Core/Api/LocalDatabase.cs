@@ -6,7 +6,6 @@
 namespace Allors.Workspace.Local
 {
     using System;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Allors.Domain;
     using Allors.Protocol.Data;
@@ -15,7 +14,6 @@ namespace Allors.Workspace.Local
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Services;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Protocol.Remote.Security;
     using Server;
