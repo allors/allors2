@@ -1,4 +1,4 @@
-﻿namespace ExcelAddIn
+namespace ExcelDNA
 {
     partial class LoginForm
     {

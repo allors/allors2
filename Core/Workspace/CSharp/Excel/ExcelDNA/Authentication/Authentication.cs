@@ -1,4 +1,4 @@
-namespace ExcelAddIn
+namespace ExcelDNA
 {
     using System;
     using System.Net;
@@ -11,16 +11,13 @@ namespace ExcelAddIn
 
     public class Authentication
     {
-        public Authentication(Ribbon ribbon, Program program, RemoteDatabase database, Client client, AppConfig configuration)
+        public Authentication(Program program, RemoteDatabase database, Client client, AppConfig configuration)
         {
-            this.Ribbon = ribbon;
             this.Program = program;
             this.Database = database;
             this.Client = client;
             this.Configuration = configuration;
         }
-
-        public Ribbon Ribbon { get; }
 
         public IProgram Program { get; }
 
@@ -58,16 +55,13 @@ namespace ExcelAddIn
                         await this.Program.OnLogout();
                     }
                 }
-
-                this.Ribbon.UserLabel = isLoggedIn ? this.Client.UserName : "Not logged in";
-                this.Ribbon.AuthenticationLabel = isLoggedIn ? "Logoff" : "Login";
             }
         }
 
         private void Logoff()
         {
             this.Client.IsLoggedIn = false;
-            this.Database.HttpClient.DefaultRequestHeaders.Authorization = null;
+            this.Database.Logoff();
         }
 
         private async Task Login(RemoteDatabase database)
@@ -77,11 +71,12 @@ namespace ExcelAddIn
                 if (!this.Client.IsLoggedIn)
                 {
                     var autoLogin = this.Configuration.AutoLogin;
+                    var authenticationTokenUrl = this.Configuration.AllorsAuthenticationTokenUrl;
 
                     if (!string.IsNullOrWhiteSpace(autoLogin))
                     {
                         var user = this.Configuration.AutoLogin;
-                        var uri = new Uri("TestAuthentication/Token", UriKind.Relative);
+                        var uri = new Uri(authenticationTokenUrl, UriKind.Relative);
                         this.Client.IsLoggedIn = await database.Login(uri, user, null);
                         if (this.Client.IsLoggedIn)
                         {
@@ -90,33 +85,12 @@ namespace ExcelAddIn
                     }
                     else
                     {
-                        // Check if there is some sort of automated login
-                        var uri = new Uri("/Ping/Token", UriKind.Relative);
-
-                        HttpResponseMessage response = null;
-                        try
-                        {
-                            response = await database.PostAsJsonAsync(uri, null);
-                            if (response.IsSuccessStatusCode)
-                            {
-                                this.Client.IsLoggedIn = true;
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            // Catch the Unauthorized exception only
-                            if (response?.StatusCode != HttpStatusCode.Unauthorized)
-                            {
-                                throw;
-                            }
-                        }
-
                         if (!this.Client.IsLoggedIn)
                         {
                             using var loginForm = new LoginForm
                             {
                                 Database = database,
-                                Uri = new Uri("TestAuthentication/Token", UriKind.Relative)
+                                Uri = new Uri(authenticationTokenUrl, UriKind.Relative)
                             };
 
                             var result = loginForm.ShowDialog();

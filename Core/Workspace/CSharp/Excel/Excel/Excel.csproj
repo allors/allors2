@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allors.Excel" Version="1.0.34" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\excel\src\Allors.Excel\Allors.Excel.csproj" />
     <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
   </ItemGroup>
 

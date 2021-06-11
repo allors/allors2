@@ -1,11 +1,10 @@
 
-namespace ExcelAddIn
+namespace ExcelDNA
 {
     using System.Text;
     using System.Windows.Forms;
     using Allors.Protocol.Remote;
     using Allors.Workspace;
-    using ToastNotifications;
     using NLog;
 
     public static class ErrorResponseExtensions
@@ -42,26 +41,6 @@ namespace ExcelAddIn
             else
             {
                 MessageBox.Show($@"{error.errorMessage}", @"General Error");
-            }
-        }
-
-        public static void ShowToaster(this Response @this, Form form)
-        {
-            if (@this.accessErrors?.Length > 0)
-            {
-                form.Invoke(new MethodInvoker(() => Toaster.NotAuthorizedToast()));
-            }
-            else if (@this.derivationErrors?.Length > 0)
-            {
-                form.Invoke(new MethodInvoker(() => Toaster.DerivationErrors(@this.derivationErrors)));
-            }
-            else if (@this.versionErrors?.Length > 0 || @this.missingErrors?.Length > 0)
-            {
-                form.Invoke(new MethodInvoker(() => Toaster.ConcurrencyDetectedToast()));
-            }
-            else
-            {
-                form.Invoke(new MethodInvoker(() => Toaster.GeneralError(@this)));
             }
         }
 

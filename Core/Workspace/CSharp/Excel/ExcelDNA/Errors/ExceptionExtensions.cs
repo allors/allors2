@@ -1,4 +1,4 @@
-namespace ExcelAddIn
+namespace ExcelDNA
 {
     using System;
     using System.Windows.Forms;

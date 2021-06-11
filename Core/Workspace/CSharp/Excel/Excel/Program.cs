@@ -46,6 +46,12 @@ namespace Application
 
         public async Task OnHandle(string handle, params object[] arguments)
         {
+            if (this.ActiveWorkbook == null)
+            {
+                this.ServiceLocator.GetMessageService().Show("Please open a workbook", "Missing workbook");
+                return;
+            }
+
             switch (handle)
             {
                 case Actions.Save:

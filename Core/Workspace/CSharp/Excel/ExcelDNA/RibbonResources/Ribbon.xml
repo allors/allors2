@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+<?xml version="1.0" encoding="utf-8" ?>
+<customUI xmlns='http://schemas.microsoft.com/office/2009/07/customui' loadImage='LoadImage' onLoad='OnLoad'>
   <ribbon>
     <tabs>
       <tab id="coreTab" label="Core">
@@ -17,4 +17,3 @@
     </tabs>
   </ribbon>
 </customUI>
-

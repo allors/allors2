@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace ExcelAddIn
+namespace ExcelDNA
 {
     using System;
     using System.Windows.Forms;
