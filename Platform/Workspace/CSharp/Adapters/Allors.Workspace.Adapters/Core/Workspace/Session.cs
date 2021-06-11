@@ -86,18 +86,18 @@ namespace Allors.Workspace
         public PushRequest PushRequest() =>
             new PushRequest
             {
-                NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
-                Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray(),
+                newObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
+                objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray(),
             };
 
         public void PushResponse(PushResponse pushResponse)
         {
-            if (pushResponse.NewObjects != null && pushResponse.NewObjects.Length > 0)
+            if (pushResponse.newObjects != null && pushResponse.newObjects.Length > 0)
             {
-                foreach (var pushResponseNewObject in pushResponse.NewObjects)
+                foreach (var pushResponseNewObject in pushResponse.newObjects)
                 {
-                    var newId = long.Parse(pushResponseNewObject.NI);
-                    var id = long.Parse(pushResponseNewObject.I);
+                    var newId = long.Parse(pushResponseNewObject.ni);
+                    var id = long.Parse(pushResponseNewObject.i);
 
                     var sessionObject = this.newSessionObjectById[newId];
                     sessionObject.NewId = null;

@@ -7,17 +7,17 @@ namespace Allors.Protocol.Remote.Sync
 {
     using System.Diagnostics;
 
-    [DebuggerDisplay("{V} [{T}]")]
+    [DebuggerDisplay("{v} [{t}]")]
     public class SyncResponseRole
     {
         /// <summary>
-        /// Gets or sets the role type.
+        /// Role Type
         /// </summary>
-        public string T { get; set; }
+        public string t { get; set; }
 
         /// <summary>
-        /// Gets or sets the value.
+        /// Value
         /// </summary>
-        public string V { get; set; }
+        public string v { get; set; }
     }
 }

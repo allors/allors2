@@ -32,21 +32,21 @@ namespace Allors.Server
         {
             var pushResponse = new PushResponse();
             Dictionary<string, IObject> objectByNewId = null;
-            if (this.pushRequest.NewObjects != null && this.pushRequest.NewObjects.Length > 0)
+            if (this.pushRequest.newObjects != null && this.pushRequest.newObjects.Length > 0)
             {
-                objectByNewId = this.pushRequest.NewObjects.ToDictionary(
-                    x => x.NI,
+                objectByNewId = this.pushRequest.newObjects.ToDictionary(
+                    x => x.ni,
                     x =>
                         {
-                            var cls = (IClass)this.metaPopulation.Find(Guid.Parse(x.T));
+                            var cls = (IClass)this.metaPopulation.Find(Guid.Parse(x.t));
                             return (IObject)Allors.ObjectBuilder.Build(this.session, cls);
                         });
             }
 
-            if (this.pushRequest.Objects != null && this.pushRequest.Objects.Length > 0)
+            if (this.pushRequest.objects != null && this.pushRequest.objects.Length > 0)
             {
                 // bulk load all objects
-                var objectIds = this.pushRequest.Objects.Select(v => v.I).ToArray();
+                var objectIds = this.pushRequest.objects.Select(v => v.i).ToArray();
                 var objects = this.session.Instantiate(objectIds);
 
                 if (objectIds.Length != objects.Length)
@@ -61,17 +61,17 @@ namespace Allors.Server
 
                 if (!pushResponse.HasErrors)
                 {
-                    foreach (var pushRequestObject in this.pushRequest.Objects)
+                    foreach (var pushRequestObject in this.pushRequest.objects)
                     {
-                        var obj = this.session.Instantiate(pushRequestObject.I);
+                        var obj = this.session.Instantiate(pushRequestObject.i);
 
-                        if (!pushRequestObject.V.Equals(obj.Strategy.ObjectVersion.ToString()))
+                        if (!pushRequestObject.v.Equals(obj.Strategy.ObjectVersion.ToString()))
                         {
                             pushResponse.AddVersionError(obj);
                         }
                         else
                         {
-                            var pushRequestRoles = pushRequestObject.Roles;
+                            var pushRequestRoles = pushRequestObject.roles;
                             this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId);
                         }
                     }
@@ -87,10 +87,10 @@ namespace Allors.Server
                     previousCountOutstandingRoles = countOutstandingRoles;
                     countOutstandingRoles = 0;
 
-                    foreach (var pushRequestNewObject in this.pushRequest.NewObjects.OrderByDescending(v => int.Parse(v.NI)))
+                    foreach (var pushRequestNewObject in this.pushRequest.newObjects.OrderByDescending(v => int.Parse(v.ni)))
                     {
-                        var obj = objectByNewId[pushRequestNewObject.NI];
-                        var pushRequestRoles = pushRequestNewObject.Roles;
+                        var obj = objectByNewId[pushRequestNewObject.ni];
+                        var pushRequestRoles = pushRequestNewObject.roles;
                         if (pushRequestRoles != null)
                         {
                             countOutstandingRoles += this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId, true);
@@ -101,10 +101,10 @@ namespace Allors.Server
 
                 if (countOutstandingRoles > 0)
                 {
-                    foreach (var pushRequestNewObject in this.pushRequest.NewObjects)
+                    foreach (var pushRequestNewObject in this.pushRequest.newObjects)
                     {
-                        var obj = objectByNewId[pushRequestNewObject.NI];
-                        var pushRequestRoles = pushRequestNewObject.Roles;
+                        var obj = objectByNewId[pushRequestNewObject.ni];
+                        var pushRequestRoles = pushRequestNewObject.roles;
                         if (pushRequestRoles != null)
                         {
                             this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId);
@@ -134,10 +134,10 @@ namespace Allors.Server
             {
                 if (objectByNewId != null)
                 {
-                    pushResponse.NewObjects = objectByNewId.Select(dictionaryEntry => new PushResponseNewObject
+                    pushResponse.newObjects = objectByNewId.Select(dictionaryEntry => new PushResponseNewObject
                     {
-                        I = dictionaryEntry.Value.Id.ToString(),
-                        NI = dictionaryEntry.Key,
+                        i = dictionaryEntry.Value.Id.ToString(),
+                        ni = dictionaryEntry.Key,
                     }).ToArray();
                 }
 
@@ -166,7 +166,7 @@ namespace Allors.Server
                 var roleTypes = composite.WorkspaceRoleTypes;
                 var acl = this.acls[obj];
 
-                var roleType = (IRoleType)this.metaPopulation.Find(Guid.Parse(pushRequestRole.T));
+                var roleType = (IRoleType)this.metaPopulation.Find(Guid.Parse(pushRequestRole.t));
                 if (roleType != null)
                 {
                     if (acl.CanWrite(roleType))
@@ -174,14 +174,14 @@ namespace Allors.Server
                         if (roleType.ObjectType.IsUnit)
                         {
                             var unitType = (IUnit)roleType.ObjectType;
-                            var role = UnitConvert.Parse(unitType.Id, pushRequestRole.S);
+                            var role = UnitConvert.Parse(unitType.Id, pushRequestRole.s);
                             obj.Strategy.SetUnitRole(roleType.RelationType, role);
                         }
                         else
                         {
                             if (roleType.IsOne)
                             {
-                                var roleId = (string)pushRequestRole.S;
+                                var roleId = (string)pushRequestRole.s;
                                 if (string.IsNullOrEmpty(roleId))
                                 {
                                     obj.Strategy.RemoveCompositeRole(roleType.RelationType);
@@ -202,9 +202,9 @@ namespace Allors.Server
                             else
                             {
                                 // Add
-                                if (pushRequestRole.A != null)
+                                if (pushRequestRole.a != null)
                                 {
-                                    var roleIds = pushRequestRole.A;
+                                    var roleIds = pushRequestRole.a;
                                     if (roleIds.Length != 0)
                                     {
                                         var roles = this.GetRoles(roleIds, objectByNewId);
@@ -223,9 +223,9 @@ namespace Allors.Server
                                 }
 
                                 // Remove
-                                if (pushRequestRole.R != null)
+                                if (pushRequestRole.r != null)
                                 {
-                                    var roleIds = pushRequestRole.R;
+                                    var roleIds = pushRequestRole.r;
                                     if (roleIds.Length != 0)
                                     {
                                         var roles = this.GetRoles(roleIds, objectByNewId);

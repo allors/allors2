@@ -17,15 +17,15 @@ namespace Allors.Workspace
         {
             this.Workspace = session.Workspace;
 
-            this.Objects = response.NamedObjects.ToDictionary(
+            this.Objects = response.namedObjects.ToDictionary(
                 pair => pair.Key,
                 pair => session.Get(long.Parse(pair.Value)),
                 StringComparer.OrdinalIgnoreCase);
-            this.Collections = response.NamedCollections.ToDictionary(
+            this.Collections = response.namedCollections.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value.Select(v => session.Get(long.Parse(v))).ToArray(),
                 StringComparer.OrdinalIgnoreCase);
-            this.Values = response.NamedValues.ToDictionary(
+            this.Values = response.namedValues.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value,
                 StringComparer.OrdinalIgnoreCase);

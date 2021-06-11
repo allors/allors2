@@ -7,8 +7,14 @@ namespace Allors.Protocol.Data
 {
     public class Fetch
     {
-        public Step Step { get; set; }
+        /// <summary>
+        /// Step
+        /// </summary>
+        public Step step { get; set; }
 
-        public Node[] Include { get; set; }
+        /// <summary>
+        /// Include
+        /// </summary>
+        public Node[] include { get; set; }
     }
 }

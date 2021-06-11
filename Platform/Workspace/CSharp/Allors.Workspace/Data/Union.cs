@@ -23,9 +23,9 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Extent ToJson() =>
             new Protocol.Data.Extent
             {
-                Kind = ExtentKind.Union,
-                Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
-                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),
+                kind = ExtentKind.Union,
+                operands = this.Operands.Select(v => v.ToJson()).ToArray(),
+                sorting = this.Sorting.Select(v => new Protocol.Data.Sort { @descending = v.Descending, roleType = v.RoleType?.Id }).ToArray(),
             };
     }
 }

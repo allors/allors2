@@ -132,13 +132,13 @@ namespace Allors.Database.Adapters
 
                 var schemaExtent = new Protocol.Data.Extent
                 {
-                    Kind = Protocol.Data.ExtentKind.Extent,
-                    ObjectType = M.C1.ObjectType.Id,
-                    Predicate = new Predicate
+                    kind = Protocol.Data.ExtentKind.Extent,
+                    objectType = M.C1.ObjectType.Id,
+                    predicate = new Predicate
                     {
-                        Kind = Protocol.Data.PredicateKind.Equals,
-                        PropertyType = M.C1.C1AllorsString.Id,
-                        Value = "ᴀbra",
+                        kind = Protocol.Data.PredicateKind.Equals,
+                        propertyType = M.C1.C1AllorsString.Id,
+                        value = "ᴀbra",
                     },
                 };
 
@@ -167,13 +167,13 @@ namespace Allors.Database.Adapters
 
                 Assert.NotNull(schemaExtent);
 
-                Assert.Equal(ExtentKind.Extent, schemaExtent.Kind);
+                Assert.Equal(ExtentKind.Extent, schemaExtent.kind);
 
-                var predicate = schemaExtent.Predicate;
+                var predicate = schemaExtent.predicate;
 
                 Assert.NotNull(predicate);
-                Assert.Equal(PredicateKind.Equals, predicate.Kind);
-                Assert.Equal("pString", predicate.Parameter);
+                Assert.Equal(PredicateKind.Equals, predicate.kind);
+                Assert.Equal("pString", predicate.parameter);
             }
         }
 

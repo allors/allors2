@@ -13,82 +13,82 @@ namespace Tests.Mock
         public static SyncResponse LoadData =>
             new SyncResponse
             {
-                Objects = new[]
+                objects = new[]
                 {
                     new SyncResponseObject
                     {
-                        I = "1",
-                        V = "1001",
-                        T = M.Person.ObjectType.IdAsString,
-                        R = new[]
+                        i = "1",
+                        v = "1001",
+                        t = M.Person.ObjectType.IdAsString,
+                        r = new[]
                         {
-                            new SyncResponseRole { T = M.Person.FirstName.IdAsString, V = "Koen"},
-                            new SyncResponseRole { T = M.Person.LastName.IdAsString, V = "Van Exem"},
-                            new SyncResponseRole { T = M.Person.BirthDate.IdAsString, V = "1973-03-27T18:00:00Z"},
-                            new SyncResponseRole { T = M.Person.IsStudent.IdAsString, V = "1"},
+                            new SyncResponseRole { t = M.Person.FirstName.IdAsString, v = "Koen"},
+                            new SyncResponseRole { t = M.Person.LastName.IdAsString, v = "Van Exem"},
+                            new SyncResponseRole { t = M.Person.BirthDate.IdAsString, v = "1973-03-27T18:00:00Z"},
+                            new SyncResponseRole { t = M.Person.IsStudent.IdAsString, v = "1"},
                         },
-                        A = "101",
+                        a = "101",
                     },
                     new SyncResponseObject
                     {
-                        I = "2",
-                        V = "1002",
-                        T = M.Person.ObjectType.IdAsString,
-                        R = new[]
+                        i = "2",
+                        v = "1002",
+                        t = M.Person.ObjectType.IdAsString,
+                        r = new[]
                         {
-                            new SyncResponseRole { T = M.Person.FirstName.IdAsString, V = "Patrick"},
-                            new SyncResponseRole { T = M.Person.LastName.IdAsString, V = "De Boeck"},
-                            new SyncResponseRole { T = M.Person.IsStudent.IdAsString, V = "0"},
+                            new SyncResponseRole { t = M.Person.FirstName.IdAsString, v = "Patrick"},
+                            new SyncResponseRole { t = M.Person.LastName.IdAsString, v = "De Boeck"},
+                            new SyncResponseRole { t = M.Person.IsStudent.IdAsString, v = "0"},
                         },
-                        A = "102",
-                        D = "103",
+                        a = "102",
+                        d = "103",
                     },
                     new SyncResponseObject
                     {
-                        I = "3",
-                        V = "1003",
-                        T = M.Person.ObjectType.IdAsString,
-                        R = new[]
+                        i = "3",
+                        v = "1003",
+                        t = M.Person.ObjectType.IdAsString,
+                        r = new[]
                         {
-                            new SyncResponseRole { T = M.Person.FirstName.IdAsString, V = "Martien"},
-                            new SyncResponseRole { T = M.Person.MiddleName.IdAsString, V = "van"},
-                            new SyncResponseRole { T = M.Person.LastName.IdAsString, V = "Knippenberg"},
-                        },
-                    },
-                    new SyncResponseObject
-                    {
-                        I = "101",
-                        V = "1101",
-                        T = M.Organisation.ObjectType.IdAsString,
-                        R = new[]
-                        {
-                            new SyncResponseRole { T = M.Organisation.Name.IdAsString, V = "Acme" },
-                            new SyncResponseRole { T = M.Organisation.Owner.IdAsString, V = "1" },
-                            new SyncResponseRole { T = M.Organisation.Employees.IdAsString, V = "1|2|3" },
-                            new SyncResponseRole { T = M.Organisation.Manager.IdAsString},
+                            new SyncResponseRole { t = M.Person.FirstName.IdAsString, v = "Martien"},
+                            new SyncResponseRole { t = M.Person.MiddleName.IdAsString, v = "van"},
+                            new SyncResponseRole { t = M.Person.LastName.IdAsString, v = "Knippenberg"},
                         },
                     },
                     new SyncResponseObject
                     {
-                        I = "102",
-                        V = "1102",
-                        T = M.Organisation.ObjectType.IdAsString,
-                        R = new[]
+                        i = "101",
+                        v = "1101",
+                        t = M.Organisation.ObjectType.IdAsString,
+                        r = new[]
                         {
-                            new SyncResponseRole { T = M.Organisation.Name.IdAsString, V = "Ocme" },
-                            new SyncResponseRole { T = M.Organisation.Owner.IdAsString, V = "2" },
-                            new SyncResponseRole { T = M.Organisation.Employees.IdAsString, V = "1" },
+                            new SyncResponseRole { t = M.Organisation.Name.IdAsString, v = "Acme" },
+                            new SyncResponseRole { t = M.Organisation.Owner.IdAsString, v = "1" },
+                            new SyncResponseRole { t = M.Organisation.Employees.IdAsString, v = "1|2|3" },
+                            new SyncResponseRole { t = M.Organisation.Manager.IdAsString},
                         },
                     },
                     new SyncResponseObject
                     {
-                        I = "103",
-                        V = "1103",
-                        T = M.Organisation.ObjectType.IdAsString,
-                        R = new[]
+                        i = "102",
+                        v = "1102",
+                        t = M.Organisation.ObjectType.IdAsString,
+                        r = new[]
                         {
-                            new SyncResponseRole { T = M.Organisation.Name.IdAsString, V = "icme" },
-                            new SyncResponseRole { T = M.Organisation.Owner.IdAsString, V = "3" },
+                            new SyncResponseRole { t = M.Organisation.Name.IdAsString, v = "Ocme" },
+                            new SyncResponseRole { t = M.Organisation.Owner.IdAsString, v = "2" },
+                            new SyncResponseRole { t = M.Organisation.Employees.IdAsString, v = "1" },
+                        },
+                    },
+                    new SyncResponseObject
+                    {
+                        i = "103",
+                        v = "1103",
+                        t = M.Organisation.ObjectType.IdAsString,
+                        r = new[]
+                        {
+                            new SyncResponseRole { t = M.Organisation.Name.IdAsString, v = "icme" },
+                            new SyncResponseRole { t = M.Organisation.Owner.IdAsString, v = "3" },
                         },
                     },
                 },

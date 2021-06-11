@@ -29,11 +29,11 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Pull ToJson() =>
             new Protocol.Data.Pull
             {
-                ExtentRef = this.ExtentRef,
-                Extent = this.Extent?.ToJson(),
-                ObjectType = this.ObjectType?.Id,
-                Object = this.ObjectId ?? this.Object?.Id.ToString(),
-                Results = this.Results?.Select(v => v.ToJson()).ToArray(),
+                extentRef = this.ExtentRef,
+                extent = this.Extent?.ToJson(),
+                objectType = this.ObjectType?.Id,
+                @object = this.ObjectId ?? this.Object?.Id.ToString(),
+                results = this.Results?.Select(v => v.ToJson()).ToArray(),
             };
     }
 }

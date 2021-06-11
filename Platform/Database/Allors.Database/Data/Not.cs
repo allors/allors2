@@ -26,8 +26,8 @@ namespace Allors.Data
         public Predicate Save() =>
             new Predicate()
             {
-                Kind = PredicateKind.Not,
-                Operand = this.Operand?.Save(),
+                kind = PredicateKind.Not,
+                operand = this.Operand?.Save(),
             };
 
         void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)

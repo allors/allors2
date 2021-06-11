@@ -8,13 +8,13 @@ namespace Allors.Protocol.Remote.Push
     public class PushResponseNewObject
     {
         /// <summary>
-        /// Gets or sets the id.
+        /// Id
         /// </summary>
-        public string I { get; set; }
+        public string i { get; set; }
 
         /// <summary>
-        /// Gets or sets the new id.
+        /// New Id
         /// </summary>
-        public string NI { get; set; }
+        public string ni { get; set; }
     }
 }

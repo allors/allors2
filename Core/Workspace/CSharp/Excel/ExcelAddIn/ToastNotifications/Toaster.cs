@@ -63,14 +63,14 @@ namespace ToastNotifications
             var sb = new StringBuilder();
             foreach (var error in errors)
             {
-                var toastNotification = new Notification("Correct errors and retry", error.M, duration, FormAnimator.AnimationMethod.Slide, FormAnimator.AnimationDirection.Up);
+                var toastNotification = new Notification("Correct errors and retry", error.m, duration, FormAnimator.AnimationMethod.Slide, FormAnimator.AnimationDirection.Up);
                 toastNotification.Show();
             }
         }
 
         public static void GeneralError(Response error, int duration = -1)
         {
-            var toastNotification = new Notification("General Error", error.ErrorMessage, duration, FormAnimator.AnimationMethod.Slide, FormAnimator.AnimationDirection.Up);
+            var toastNotification = new Notification("General Error", error.errorMessage, duration, FormAnimator.AnimationMethod.Slide, FormAnimator.AnimationDirection.Up);
             toastNotification.Show();
         }
     }

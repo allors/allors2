@@ -8,15 +8,18 @@ namespace Allors.Protocol.Remote.Push
     public class PushRequestObject
     {
         /// <summary>
-        /// Gets or sets the id.
+        /// Id
         /// </summary>
-        public string I { get; set; }
+        public string i { get; set; }
 
         /// <summary>
-        /// Gets or sets the version.
+        /// Version
         /// </summary>
-        public string V { get; set; }
+        public string v { get; set; }
 
-        public PushRequestRole[] Roles { get; set; }
+        /// <summary>
+        /// Roles
+        /// </summary>
+        public PushRequestRole[] roles { get; set; }
     }
 }

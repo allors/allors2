@@ -105,7 +105,7 @@ namespace Allors.Workspace
         public SecurityRequest Sync(SyncResponse syncResponse)
         {
             var ctx = new ResponseContext(this, this.AccessControlById, this.PermissionById);
-            foreach (var syncResponseObject in syncResponse.Objects)
+            foreach (var syncResponseObject in syncResponse.objects)
             {
                 var workspaceObject = new WorkspaceObject(ctx, syncResponseObject);
                 this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
@@ -115,8 +115,8 @@ namespace Allors.Workspace
             {
                 return new SecurityRequest
                 {
-                    AccessControls = ctx.MissingAccessControlIds.Select(v => v.ToString()).ToArray(),
-                    Permissions = ctx.MissingPermissionIds.Select(v => v.ToString()).ToArray(),
+                    accessControls = ctx.MissingAccessControlIds.Select(v => v.ToString()).ToArray(),
+                    permissions = ctx.MissingPermissionIds.Select(v => v.ToString()).ToArray(),
                 };
             }
 
@@ -125,9 +125,9 @@ namespace Allors.Workspace
 
         public SecurityRequest Security(SecurityResponse securityResponse)
         {
-            if (securityResponse.Permissions != null)
+            if (securityResponse.permissions != null)
             {
-                foreach (var syncResponsePermission in securityResponse.Permissions)
+                foreach (var syncResponsePermission in securityResponse.permissions)
                 {
                     var id = long.Parse(syncResponsePermission[0]);
                     var @class = (IClass)this.ObjectFactory.MetaPopulation.Find(Guid.Parse(syncResponsePermission[1]));
@@ -179,13 +179,13 @@ namespace Allors.Workspace
             }
 
             HashSet<long> missingPermissionIds = null;
-            if (securityResponse.AccessControls != null)
+            if (securityResponse.accessControls != null)
             {
-                foreach (var syncResponseAccessControl in securityResponse.AccessControls)
+                foreach (var syncResponseAccessControl in securityResponse.accessControls)
                 {
-                    var id = long.Parse(syncResponseAccessControl.I);
-                    var version = long.Parse(syncResponseAccessControl.V);
-                    var permissionsIds = !string.IsNullOrWhiteSpace(syncResponseAccessControl.P) ? syncResponseAccessControl.P
+                    var id = long.Parse(syncResponseAccessControl.i);
+                    var version = long.Parse(syncResponseAccessControl.v);
+                    var permissionsIds = !string.IsNullOrWhiteSpace(syncResponseAccessControl.p) ? syncResponseAccessControl.p
                         ?.Split(',')
                         .Select(v =>
                         {
@@ -208,7 +208,7 @@ namespace Allors.Workspace
             {
                 return new SecurityRequest
                 {
-                    Permissions = missingPermissionIds.Select(v => v.ToString()).ToArray(),
+                    permissions = missingPermissionIds.Select(v => v.ToString()).ToArray(),
                 };
             }
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="InvokeRequest.cs" company="Allors bvba">
+// <copyright file="InvokeRequest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,13 +8,13 @@ namespace Allors.Protocol.Remote.Invoke
     public class InvokeRequest
     {
         /// <summary>
-        /// The id.
+        /// Invocations
         /// </summary>
-        public Invocation[] I { get; set; }
+        public Invocation[] i { get; set; }
 
         /// <summary>
-        /// The version.
+        /// Invoke Options
         /// </summary>
-        public InvokeOptions O { get; set; }
+        public InvokeOptions o { get; set; }
     }
 }

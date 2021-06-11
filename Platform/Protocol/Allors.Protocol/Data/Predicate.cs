@@ -9,30 +9,69 @@ namespace Allors.Protocol.Data
 
     public class Predicate
     {
-        public PredicateKind Kind { get; set; }
+        /// <summary>
+        /// Kind
+        /// </summary>
+        public string kind { get; set; }
 
-        public Guid? PropertyType { get; set; }
+        /// <summary>
+        /// Property Type
+        /// </summary>
+        public Guid? propertyType { get; set; }
 
-        public Guid? RoleType { get; set; }
+        /// <summary>
+        /// Role Type
+        /// </summary>
+        public Guid? roleType { get; set; }
 
-        public Guid? ObjectType { get; set; }
+        /// <summary>
+        /// Object Type
+        /// </summary>
+        public Guid? objectType { get; set; }
 
-        public string Parameter { get; set; }
+        /// <summary>
+        /// Parameter
+        /// </summary>
+        public string parameter { get; set; }
 
-        public string[] Dependencies { get; set; }
+        /// <summary>
+        /// Dependencies
+        /// </summary>
+        public string[] dependencies { get; set; }
 
-        public Predicate Operand { get; set; }
+        /// <summary>
+        /// Operand
+        /// </summary>
+        public Predicate operand { get; set; }
 
-        public Predicate[] Operands { get; set; }
+        /// <summary>
+        /// Operands
+        /// </summary>
+        public Predicate[] operands { get; set; }
 
-        public string Object { get; set; }
+        /// <summary>
+        /// Object
+        /// </summary>
+        public string @object { get; set; }
 
-        public string[] Objects { get; set; }
+        /// <summary>
+        /// Objects
+        /// </summary>
+        public string[] objects { get; set; }
 
-        public string Value { get; set; }
+        /// <summary>
+        /// Value
+        /// </summary>
+        public string value { get; set; }
 
-        public string[] Values { get; set; }
+        /// <summary>
+        /// Values
+        /// </summary>
+        public string[] values { get; set; }
 
-        public Extent Extent { get; set; }
+        /// <summary>
+        /// Extent
+        /// </summary>
+        public Extent extent { get; set; }
     }
 }

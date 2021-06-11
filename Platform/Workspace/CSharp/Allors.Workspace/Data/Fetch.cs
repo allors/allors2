@@ -35,8 +35,8 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Fetch ToJson() =>
             new Protocol.Data.Fetch
             {
-                Step = this.Step?.ToJson(),
-                Include = this.Include?.Select(v => v.ToData()).ToArray(),
+                step = this.Step?.ToJson(),
+                include = this.Include?.Select(v => v.ToData()).ToArray(),
             };
     }
 }

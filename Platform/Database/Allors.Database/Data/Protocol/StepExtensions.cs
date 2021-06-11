@@ -12,9 +12,9 @@ namespace Allors.Protocol.Data
         public static Allors.Data.Step Load(this Step @this, ISession session) =>
             new Allors.Data.Step
             {
-                PropertyType = @this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.PropertyType.Value) : null,
-                Next = @this.Next?.Load(session),
-                Include = @this.Include?.Load(session),
+                PropertyType = @this.propertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.propertyType.Value) : null,
+                Next = @this.next?.Load(session),
+                Include = @this.include?.Load(session),
             };
     }
 }

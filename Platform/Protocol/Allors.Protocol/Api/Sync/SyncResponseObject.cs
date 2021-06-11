@@ -8,38 +8,38 @@ namespace Allors.Protocol.Remote.Sync
     public class SyncResponseObject
     {
         /// <summary>
-        /// Gets or sets the object id.
+        /// Id
         /// </summary>
-        public string I { get; set; }
+        public string i { get; set; }
 
         /// <summary>
-        /// Gets or sets the object type.
+        /// Object Type
         /// Format is a mapping ":{key}:{value}" or a key "{key}".
         /// The key will be generated on first occurence of the ObjectType
         /// and is local to this Sync.
         /// </summary>
-        public string T { get; set; }
+        public string t { get; set; }
 
         /// <summary>
-        /// Gets or sets the version.
+        /// Version
         /// </summary>
-        public string V { get; set; }
+        public string v { get; set; }
 
         /// <summary>
-        /// Gets or sets the access controls.
+        /// AccessControls
         /// </summary>
-        public string A { get; set; }
+        public string a { get; set; }
 
         /// <summary>
-        /// Gets or sets the denied permissions.
+        /// DeniedPermissions
         /// </summary>
-        public string D { get; set; }
+        public string d { get; set; }
 
         /// <summary>
-        /// Gets or sets the roles.
+        /// Roles
         /// </summary>
-        public SyncResponseRole[] R { get; set; }
+        public SyncResponseRole[] r { get; set; }
 
-        public override string ToString() => $"{this.T} [{this.I}:{this.V}]";
+        public override string ToString() => $"{this.t} [{this.i}:{this.v}]";
     }
 }

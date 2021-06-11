@@ -40,8 +40,8 @@ namespace Allors.Workspace.Data
         {
             var data = new Protocol.Data.Node
             {
-                PropertyType = this.PropertyType.Id,
-                Nodes = this.Nodes.Select(v => v.ToData()).ToArray(),
+                propertyType = this.PropertyType.Id,
+                nodes = this.Nodes.Select(v => v.ToData()).ToArray(),
             };
 
             return data;

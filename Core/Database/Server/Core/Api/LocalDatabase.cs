@@ -72,9 +72,9 @@ namespace Allors.Workspace.Local
                     var acls = new WorkspaceAccessControlLists(session.GetUser());
                     var response = new PullResponseBuilder(acls, this.TreeService);
 
-                    if (request.P != null)
+                    if (request.p != null)
                     {
-                        foreach (var p in request.P)
+                        foreach (var p in request.p)
                         {
                             var pull = p.Load(session);
 

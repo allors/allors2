@@ -22,11 +22,11 @@ namespace Allors.Data
         public Protocol.Data.Result Save() =>
             new Protocol.Data.Result
             {
-                FetchRef = this.FetchRef,
-                Fetch = this.Fetch?.Save(),
-                Name = this.Name,
-                Skip = this.Skip,
-                Take = this.Take,
+                fetchRef = this.FetchRef,
+                fetch = this.Fetch?.Save(),
+                name = this.Name,
+                skip = this.Skip,
+                take = this.Take,
             };
 
         public override string ToString()

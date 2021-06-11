@@ -8,13 +8,13 @@ namespace Allors.Protocol.Remote
     public class ResponseDerivationError
     {
         /// <summary>
-        /// Gets or sets the error message.
+        /// Error Message
         /// </summary>
-        public string M { get; set; }
+        public string m { get; set; }
 
         /// <summary>
-        /// Gets or sets the roles.
+        /// Roles
         /// </summary>
-        public string[][] R { get; set; }
+        public string[][] r { get; set; }
     }
 }

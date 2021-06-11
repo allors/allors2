@@ -7,8 +7,14 @@ namespace Allors.Protocol.Remote.Push
 {
     public class PushRequest
     {
-        public PushRequestNewObject[] NewObjects { get; set; }
+        /// <summary>
+        /// New Objects
+        /// </summary>
+        public PushRequestNewObject[] newObjects { get; set; }
 
-        public PushRequestObject[] Objects { get; set; }
+        /// <summary>
+        /// Objects
+        /// </summary>
+        public PushRequestObject[] objects { get; set; }
     }
 }

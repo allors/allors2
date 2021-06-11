@@ -147,12 +147,12 @@ namespace Allors.Server
                         ? new[] { id, version, accessControls, deniedPermissions }
                         : new[] { id, version, accessControls };
                 }).ToArray(),
-                NamedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
-                NamedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
-                NamedValues = this.valueByName,
+                namedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
+                namedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
+                namedValues = this.valueByName,
             };
 
-            pullResponse.AccessControls = this.acls.EffectivePermissionIdsByAccessControl.Keys
+            pullResponse.accessControls = this.acls.EffectivePermissionIdsByAccessControl.Keys
                 .Select(v => new[]
                 {
                     v.Strategy.ObjectId.ToString(),

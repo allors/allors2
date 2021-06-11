@@ -26,10 +26,10 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Extent ToJson() =>
             new Protocol.Data.Extent
             {
-                Kind = ExtentKind.Extent,
-                ObjectType = this.ObjectType?.Id,
-                Predicate = this.Predicate?.ToJson(),
-                Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),
+                kind = ExtentKind.Extent,
+                objectType = this.ObjectType?.Id,
+                predicate = this.Predicate?.ToJson(),
+                sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { @descending = v.Descending, roleType = v.RoleType?.Id }).ToArray(),
             };
     }
 }

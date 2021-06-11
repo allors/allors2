@@ -18,29 +18,29 @@ namespace Allors.Server
             {
                 var derivationErrorResponse = new ResponseDerivationError
                 {
-                    M = derivationError.Message,
-                    R = derivationError.Relations.Select(x => new[] { x.Association?.Id.ToString(), x.RoleType?.IdAsString }).ToArray(),
+                    m = derivationError.Message,
+                    r = derivationError.Relations.Select(x => new[] { x.Association?.Id.ToString(), x.RoleType?.IdAsString }).ToArray(),
                 };
 
-                @this.DerivationErrors = @this.DerivationErrors != null ?
-                                             new List<ResponseDerivationError>(@this.DerivationErrors) { derivationErrorResponse }.ToArray() :
+                @this.derivationErrors = @this.derivationErrors != null ?
+                                             new List<ResponseDerivationError>(@this.derivationErrors) { derivationErrorResponse }.ToArray() :
                                              new List<ResponseDerivationError> { derivationErrorResponse }.ToArray();
             }
         }
 
         public static void AddVersionError(this Response @this, IObject obj) =>
-            @this.VersionErrors = @this.VersionErrors != null ?
-                new List<string>(@this.VersionErrors) { obj.Id.ToString() }.ToArray() :
+            @this.versionErrors = @this.versionErrors != null ?
+                new List<string>(@this.versionErrors) { obj.Id.ToString() }.ToArray() :
                 new List<string> { obj.Id.ToString() }.ToArray();
 
         public static void AddAccessError(this Response @this, IObject obj) =>
-            @this.AccessErrors = @this.AccessErrors != null ?
-                new List<string>(@this.AccessErrors) { obj.Id.ToString() }.ToArray() :
+            @this.accessErrors = @this.accessErrors != null ?
+                new List<string>(@this.accessErrors) { obj.Id.ToString() }.ToArray() :
                 new List<string> { obj.Id.ToString() }.ToArray();
 
         public static void AddMissingError(this Response @this, string id) =>
-            @this.MissingErrors = @this.MissingErrors != null ?
-                new List<string>(@this.MissingErrors) { id }.ToArray() :
+            @this.missingErrors = @this.missingErrors != null ?
+                new List<string>(@this.missingErrors) { id }.ToArray() :
                 new List<string> { id }.ToArray();
     }
 }

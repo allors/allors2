@@ -25,10 +25,10 @@ namespace Allors.Data
         public Predicate Save() =>
             new Predicate
             {
-                Kind = PredicateKind.LessThan,
-                RoleType = this.RoleType?.Id,
-                Value = UnitConvert.ToString(this.Value),
-                Parameter = this.Parameter,
+                kind = PredicateKind.LessThan,
+                roleType = this.RoleType?.Id,
+                value = UnitConvert.ToString(this.Value),
+                parameter = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || ((IPredicate)this).HasMissingArguments(parameters);

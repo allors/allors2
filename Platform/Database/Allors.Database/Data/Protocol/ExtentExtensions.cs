@@ -25,22 +25,22 @@ namespace Allors.Protocol.Data
         /// </returns>
         public static IExtent Load(this Extent @this, ISession session)
         {
-            IExtent[] Operands() => @this.Operands.Select(v => v.Load(session)).ToArray();
+            IExtent[] Operands() => @this.operands.Select(v => v.Load(session)).ToArray();
 
             IExtent extent;
 
-            switch (@this.Kind)
+            switch (@this.kind)
             {
                 case ExtentKind.Extent:
-                    if (!@this.ObjectType.HasValue)
+                    if (!@this.objectType.HasValue)
                     {
                         return null;
                     }
 
-                    var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(@this.ObjectType.Value);
+                    var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(@this.objectType.Value);
                     extent = new Allors.Data.Extent(objectType)
                     {
-                        Predicate = @this.Predicate?.Load(session),
+                        Predicate = @this.predicate?.Load(session),
                     };
 
                     break;
@@ -58,10 +58,10 @@ namespace Allors.Protocol.Data
                     break;
 
                 default:
-                    throw new Exception("Unknown extent kind " + @this.Kind);
+                    throw new Exception("Unknown extent kind " + @this.kind);
             }
 
-            extent.Sorting = @this.Sorting?.Select(v => v.Load(session)).ToArray();
+            extent.Sorting = @this.sorting?.Select(v => v.Load(session)).ToArray();
             return extent;
         }
     }

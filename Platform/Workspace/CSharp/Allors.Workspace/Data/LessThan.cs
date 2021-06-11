@@ -23,11 +23,11 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate
             {
-                Kind = PredicateKind.LessThan,
-                Dependencies = this.Dependencies,
-                RoleType = this.RoleType?.Id,
-                Value = UnitConvert.ToString(this.Value),
-                Parameter = this.Parameter,
+                kind = PredicateKind.LessThan,
+                dependencies = this.Dependencies,
+                roleType = this.RoleType?.Id,
+                value = UnitConvert.ToString(this.Value),
+                parameter = this.Parameter,
             };
     }
 }

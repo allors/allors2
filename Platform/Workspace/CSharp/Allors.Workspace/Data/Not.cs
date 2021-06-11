@@ -22,9 +22,9 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate()
             {
-                Kind = PredicateKind.Not,
-                Dependencies = this.Dependencies,
-                Operand = this.Operand?.ToJson(),
+                kind = PredicateKind.Not,
+                dependencies = this.Dependencies,
+                operand = this.Operand?.ToJson(),
             };
     }
 }

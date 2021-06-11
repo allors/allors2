@@ -16,12 +16,12 @@ namespace Allors.Protocol.Data
         {
             var pull = new Allors.Data.Pull
             {
-                ExtentRef = @this.ExtentRef,
-                Extent = @this.Extent?.Load(session),
-                ObjectType = @this.ObjectType.HasValue ? (IObjectType)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null,
-                Object = @this.Object != null ? session.Instantiate(@this.Object) : null,
-                Results = @this.Results?.Select(v => v.Load(session)).ToArray(),
-                Parameters = @this.Parameters,
+                ExtentRef = @this.extentRef,
+                Extent = @this.extent?.Load(session),
+                ObjectType = @this.objectType.HasValue ? (IObjectType)session.Database.MetaPopulation.Find(@this.objectType.Value) : null,
+                Object = @this.@object != null ? session.Instantiate(@this.@object) : null,
+                Results = @this.results?.Select(v => v.Load(session)).ToArray(),
+                Parameters = @this.parameters,
             };
 
             return pull;

@@ -39,7 +39,7 @@ namespace Allors.Server.Tests
             response = await this.PostAsJsonAsync(uri, syncRequest);
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
 
-            Assert.Empty(syncResponse.Objects);
+            Assert.Empty(syncResponse.objects);
         }
 
         [Fact]
@@ -62,12 +62,12 @@ namespace Allors.Server.Tests
 
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
 
-            Assert.Single(syncResponse.Objects);
-            var syncObject = syncResponse.Objects[0];
+            Assert.Single(syncResponse.objects);
+            var syncObject = syncResponse.objects[0];
 
-            Assert.Equal(person.Id.ToString(), syncObject.I);
-            Assert.Equal($"{M.Person.Class.IdAsString}", syncObject.T);
-            Assert.Equal(person.Strategy.ObjectVersion.ToString(), syncObject.V);
+            Assert.Equal(person.Id.ToString(), syncObject.i);
+            Assert.Equal($"{M.Person.Class.IdAsString}", syncObject.t);
+            Assert.Equal(person.Strategy.ObjectVersion.ToString(), syncObject.v);
         }
 
 
@@ -92,11 +92,11 @@ namespace Allors.Server.Tests
 
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
 
-            Assert.Single(syncResponse.Objects);
-            var syncObject = syncResponse.Objects[0];
+            Assert.Single(syncResponse.objects);
+            var syncObject = syncResponse.objects[0];
 
-            Assert.Null(syncObject.A);
-            Assert.Null(syncObject.D);
+            Assert.Null(syncObject.a);
+            Assert.Null(syncObject.d);
         }
     }
 }

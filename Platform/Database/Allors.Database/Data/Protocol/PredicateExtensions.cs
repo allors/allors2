@@ -15,40 +15,40 @@ namespace Allors.Protocol.Data
     {
         public static IPredicate Load(this Predicate @this, ISession session)
         {
-            switch (@this.Kind)
+            switch (@this.kind)
             {
                 case PredicateKind.And:
                     return new And
                     {
-                        Dependencies = @this.Dependencies,
-                        Operands = @this.Operands.Select(v => v.Load(session)).ToArray(),
+                        Dependencies = @this.dependencies,
+                        Operands = @this.operands.Select(v => v.Load(session)).ToArray(),
                     };
 
                 case PredicateKind.Or:
                     return new Or
                     {
-                        Dependencies = @this.Dependencies,
-                        Operands = @this.Operands.Select(v => v.Load(session)).ToArray(),
+                        Dependencies = @this.dependencies,
+                        Operands = @this.operands.Select(v => v.Load(session)).ToArray(),
                     };
 
                 case PredicateKind.Not:
                     return new Not
                     {
-                        Dependencies = @this.Dependencies,
-                        Operand = @this.Operand.Load(session),
+                        Dependencies = @this.dependencies,
+                        Operand = @this.operand.Load(session),
                     };
 
                 default:
-                    var propertyType = @this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.PropertyType.Value) : null;
-                    var roleType = @this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(@this.RoleType.Value) : null;
+                    var propertyType = @this.propertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.propertyType.Value) : null;
+                    var roleType = @this.roleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(@this.roleType.Value) : null;
 
-                    switch (@this.Kind)
+                    switch (@this.kind)
                     {
                         case PredicateKind.InstanceOf:
 
-                            return new Instanceof(@this.ObjectType != null ? (IComposite)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null)
+                            return new Instanceof(@this.objectType != null ? (IComposite)session.Database.MetaPopulation.Find(@this.objectType.Value) : null)
                             {
-                                Dependencies = @this.Dependencies,
+                                Dependencies = @this.dependencies,
                                 PropertyType = propertyType,
                             };
 
@@ -56,36 +56,36 @@ namespace Allors.Protocol.Data
 
                             return new Exists
                             {
-                                Dependencies = @this.Dependencies,
+                                Dependencies = @this.dependencies,
                                 PropertyType = propertyType,
-                                Parameter = @this.Parameter,
+                                Parameter = @this.parameter,
                             };
 
                         case PredicateKind.Contains:
 
                             return new Contains
                             {
-                                Dependencies = @this.Dependencies,
+                                Dependencies = @this.dependencies,
                                 PropertyType = propertyType,
-                                Parameter = @this.Parameter,
-                                Object = session.Instantiate(@this.Object),
+                                Parameter = @this.parameter,
+                                Object = session.Instantiate(@this.@object),
                             };
 
                         case PredicateKind.ContainedIn:
 
                             var containedIn = new ContainedIn(propertyType)
                             {
-                                Dependencies = @this.Dependencies,
-                                Parameter = @this.Parameter
+                                Dependencies = @this.dependencies,
+                                Parameter = @this.parameter
                             };
 
-                            if (@this.Objects != null)
+                            if (@this.objects != null)
                             {
-                                containedIn.Objects = @this.Objects.Select(session.Instantiate).ToArray();
+                                containedIn.Objects = @this.objects.Select(session.Instantiate).ToArray();
                             }
-                            else if (@this.Extent != null)
+                            else if (@this.extent != null)
                             {
-                                containedIn.Extent = @this.Extent.Load(session);
+                                containedIn.Extent = @this.extent.Load(session);
                             }
 
                             return containedIn;
@@ -94,17 +94,17 @@ namespace Allors.Protocol.Data
 
                             var equals = new Equals(propertyType)
                             {
-                                Dependencies = @this.Dependencies,
-                                Parameter = @this.Parameter
+                                Dependencies = @this.dependencies,
+                                Parameter = @this.parameter
                             };
 
-                            if (@this.Object != null)
+                            if (@this.@object != null)
                             {
-                                equals.Object = session.Instantiate(@this.Object);
+                                equals.Object = session.Instantiate(@this.@object);
                             }
-                            else if (@this.Value != null)
+                            else if (@this.value != null)
                             {
-                                var value = UnitConvert.Parse(((IRoleType)propertyType).ObjectType.Id, @this.Value);
+                                var value = UnitConvert.Parse(((IRoleType)propertyType).ObjectType.Id, @this.value);
                                 equals.Value = value;
                             }
 
@@ -114,40 +114,40 @@ namespace Allors.Protocol.Data
 
                             return new Between(roleType)
                             {
-                                Dependencies = @this.Dependencies,
-                                Parameter = @this.Parameter,
-                                Values = @this.Values?.Select(v => UnitConvert.Parse(roleType.ObjectType.Id, v)).ToArray(),
+                                Dependencies = @this.dependencies,
+                                Parameter = @this.parameter,
+                                Values = @this.values?.Select(v => UnitConvert.Parse(roleType.ObjectType.Id, v)).ToArray(),
                             };
 
                         case PredicateKind.GreaterThan:
 
                             return new GreaterThan(roleType)
                             {
-                                Dependencies = @this.Dependencies,
-                                Parameter = @this.Parameter,
-                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value),
+                                Dependencies = @this.dependencies,
+                                Parameter = @this.parameter,
+                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.value),
                             };
 
                         case PredicateKind.LessThan:
 
                             return new LessThan(roleType)
                             {
-                                Dependencies = @this.Dependencies,
-                                Parameter = @this.Parameter,
-                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value),
+                                Dependencies = @this.dependencies,
+                                Parameter = @this.parameter,
+                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.value),
                             };
 
                         case PredicateKind.Like:
 
                             return new Like(roleType)
                             {
-                                Dependencies = @this.Dependencies,
-                                Parameter = @this.Parameter,
-                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value)?.ToString(),
+                                Dependencies = @this.dependencies,
+                                Parameter = @this.parameter,
+                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.value)?.ToString(),
                             };
 
                         default:
-                            throw new Exception("Unknown predicate kind " + @this.Kind);
+                            throw new Exception("Unknown predicate kind " + @this.kind);
                     }
             }
         }

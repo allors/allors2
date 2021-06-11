@@ -7,8 +7,14 @@ namespace Allors.Protocol.Remote.Sync
 {
     public class SyncResponse
     {
-        public string[][] AccessControls { get; set; }
+        /// <summary>
+        /// AccessControls
+        /// </summary>
+        public string[][] accessControls { get; set; }
 
-        public SyncResponseObject[] Objects { get; set; }
+        /// <summary>
+        /// Objects
+        /// </summary>
+        public SyncResponseObject[] objects { get; set; }
     }
 }

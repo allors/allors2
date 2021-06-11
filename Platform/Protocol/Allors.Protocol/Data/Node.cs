@@ -9,8 +9,14 @@ namespace Allors.Protocol.Data
 
     public class Node
     {
-        public Guid? PropertyType { get; set; }
+        /// <summary>
+        /// PropertyType
+        /// </summary>
+        public Guid? propertyType { get; set; }
 
-        public Node[] Nodes { get; set; }
+        /// <summary>
+        /// Nodes
+        /// </summary>
+        public Node[] nodes { get; set; }
     }
 }

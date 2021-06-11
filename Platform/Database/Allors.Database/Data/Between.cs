@@ -26,10 +26,10 @@ namespace Allors.Data
         public Predicate Save() =>
             new Predicate
             {
-                Kind = PredicateKind.Between,
-                RoleType = this.RoleType?.Id,
-                Values = this.Values.Select(UnitConvert.ToString).ToArray(),
-                Parameter = this.Parameter,
+                kind = PredicateKind.Between,
+                roleType = this.RoleType?.Id,
+                values = this.Values.Select(UnitConvert.ToString).ToArray(),
+                parameter = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || ((IPredicate)this).HasMissingArguments(parameters);

@@ -9,14 +9,29 @@ namespace Allors.Protocol.Data
 
     public class Extent
     {
-        public string Kind { get; set; }
+        /// <summary>
+        /// Kind
+        /// </summary>
+        public string kind { get; set; }
 
-        public Extent[] Operands { get; set; }
+        /// <summary>
+        /// Operands
+        /// </summary>
+        public Extent[] operands { get; set; }
 
-        public Guid? ObjectType { get; set; }
+        /// <summary>
+        /// ObjectType
+        /// </summary>
+        public Guid? objectType { get; set; }
 
-        public Predicate Predicate { get; set; }
+        /// <summary>
+        /// Predicate
+        /// </summary>
+        public Predicate predicate { get; set; }
 
-        public Sort[] Sorting { get; set; }
+        /// <summary>
+        /// Sorting
+        /// </summary>
+        public Sort[] sorting { get; set; }
     }
 }

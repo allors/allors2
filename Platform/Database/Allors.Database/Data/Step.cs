@@ -51,9 +51,9 @@ namespace Allors.Data
         public Protocol.Data.Step Save() =>
             new Protocol.Data.Step
             {
-                Include = this.Include?.Save(),
-                PropertyType = this.PropertyType.Id,
-                Next = this.Next.Save(),
+                include = this.Include?.Save(),
+                propertyType = this.PropertyType.Id,
+                next = this.Next.Save(),
             };
 
         public IObjectType GetObjectType()

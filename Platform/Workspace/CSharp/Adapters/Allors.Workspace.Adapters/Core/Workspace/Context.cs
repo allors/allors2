@@ -36,13 +36,13 @@ namespace Allors.Workspace
         {
             var invokeRequest = new InvokeRequest
             {
-                I = methods.Select(v => new Invocation
+                i = methods.Select(v => new Invocation
                 {
-                    I = v.Object.Id.ToString(),
-                    V = v.Object.Version.ToString(),
-                    M = v.MethodType.IdAsString,
+                    i = v.Object.Id.ToString(),
+                    v = v.Object.Version.ToString(),
+                    m = v.MethodType.IdAsString,
                 }).ToArray(),
-                O = options,
+                o = options,
             };
 
             return this.database.Invoke(invokeRequest);
@@ -52,7 +52,7 @@ namespace Allors.Workspace
 
         public async Task<Result> Load(params Pull[] pulls)
         {
-            var pullRequest = new PullRequest { P = pulls.Select(v => v.ToJson()).ToArray() };
+            var pullRequest = new PullRequest { p = pulls.Select(v => v.ToJson()).ToArray() };
             var pullResponse = await this.database.Pull(pullRequest);
             var syncRequest = this.workspace.Diff(pullResponse);
             if (syncRequest.Objects.Length > 0)
@@ -68,12 +68,12 @@ namespace Allors.Workspace
         {
             if (args is Pull pull)
             {
-                args = new PullRequest { P = new[] { pull.ToJson() } };
+                args = new PullRequest { p = new[] { pull.ToJson() } };
             }
 
             if (args is IEnumerable<Pull> pulls)
             {
-                args = new PullRequest { P = pulls.Select(v => v.ToJson()).ToArray() };
+                args = new PullRequest { p = pulls.Select(v => v.ToJson()).ToArray() };
             }
 
             var pullResponse = await this.database.Pull(pullService, args);
@@ -96,10 +96,10 @@ namespace Allors.Workspace
             {
                 this.Session.PushResponse(pushResponse);
 
-                var objects = saveRequest.Objects.Select(v => v.I).ToArray();
-                if (pushResponse.NewObjects != null)
+                var objects = saveRequest.objects.Select(v => v.i).ToArray();
+                if (pushResponse.newObjects != null)
                 {
-                    objects = objects.Union(pushResponse.NewObjects.Select(v => v.I)).ToArray();
+                    objects = objects.Union(pushResponse.newObjects.Select(v => v.i)).ToArray();
                 }
 
                 var syncRequests = new SyncRequest

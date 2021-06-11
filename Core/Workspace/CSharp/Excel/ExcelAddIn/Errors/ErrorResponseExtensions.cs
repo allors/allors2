@@ -21,41 +21,41 @@ namespace ExcelAddIn
 
         public static void Show(this Response error)
         {
-            if (error.AccessErrors?.Length > 0)
+            if (error.accessErrors?.Length > 0)
             {
                 MessageBox.Show(@"You do not have the required rights.", @"Access Error");
             }
-            else if (error.DerivationErrors?.Length > 0)
+            else if (error.derivationErrors?.Length > 0)
             {
                 var message = new StringBuilder();
-                foreach (var derivationError in error.DerivationErrors)
+                foreach (var derivationError in error.derivationErrors)
                 {
-                    message.Append($" - {derivationError.M}\n");
+                    message.Append($" - {derivationError.m}\n");
                 }
 
                 MessageBox.Show(message.ToString(), @"Derivation Errors");
             }
-            else if (error.VersionErrors?.Length > 0 || error.MissingErrors?.Length > 0)
+            else if (error.versionErrors?.Length > 0 || error.missingErrors?.Length > 0)
             {
                 MessageBox.Show(@"Modifications were detected since last access.", @"Concurrency Error");
             }
             else
             {
-                MessageBox.Show($@"{error.ErrorMessage}", @"General Error");
+                MessageBox.Show($@"{error.errorMessage}", @"General Error");
             }
         }
 
         public static void ShowToaster(this Response @this, Form form)
         {
-            if (@this.AccessErrors?.Length > 0)
+            if (@this.accessErrors?.Length > 0)
             {
                 form.Invoke(new MethodInvoker(() => Toaster.NotAuthorizedToast()));
             }
-            else if (@this.DerivationErrors?.Length > 0)
+            else if (@this.derivationErrors?.Length > 0)
             {
-                form.Invoke(new MethodInvoker(() => Toaster.DerivationErrors(@this.DerivationErrors)));
+                form.Invoke(new MethodInvoker(() => Toaster.DerivationErrors(@this.derivationErrors)));
             }
-            else if (@this.VersionErrors?.Length > 0 || @this.MissingErrors?.Length > 0)
+            else if (@this.versionErrors?.Length > 0 || @this.missingErrors?.Length > 0)
             {
                 form.Invoke(new MethodInvoker(() => Toaster.ConcurrencyDetectedToast()));
             }
@@ -69,37 +69,37 @@ namespace ExcelAddIn
         {
             var logger = LogManager.GetCurrentClassLogger();
 
-            if (errorResponse.AccessErrors?.Length > 0)
+            if (errorResponse.accessErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.AccessErrors)
+                foreach (var error in errorResponse.accessErrors)
                 {
                     logger.Error("Access error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.VersionErrors?.Length > 0)
+            else if (errorResponse.versionErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.VersionErrors)
+                foreach (var error in errorResponse.versionErrors)
                 {
                     logger.Error("Version error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.MissingErrors?.Length > 0)
+            else if (errorResponse.missingErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.MissingErrors)
+                foreach (var error in errorResponse.missingErrors)
                 {
                     logger.Error("Missing error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.DerivationErrors?.Length > 0)
+            else if (errorResponse.derivationErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.DerivationErrors)
+                foreach (var error in errorResponse.derivationErrors)
                 {
-                    logger.Error("Derivation error: " + error.M);
+                    logger.Error("Derivation error: " + error.m);
                 }
             }
             else
             {
-                logger.Error($@"{errorResponse.ErrorMessage}");
+                logger.Error($@"{errorResponse.errorMessage}");
             }
         }
 

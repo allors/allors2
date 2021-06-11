@@ -7,8 +7,14 @@ namespace Allors.Protocol.Remote.Security
 {
     public class SecurityRequest
     {
-        public string[] AccessControls { get; set; }
+        /// <summary>
+        /// AccessControls
+        /// </summary>
+        public string[] accessControls { get; set; }
 
-        public string[] Permissions { get; set; }
+        /// <summary>
+        /// Permissions
+        /// </summary>
+        public string[] permissions { get; set; }
     }
 }

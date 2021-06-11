@@ -24,28 +24,28 @@ namespace Allors.Server
         {
             var securityResponse = new SecurityResponse();
 
-            if (this.securityRequest.AccessControls != null)
+            if (this.securityRequest.accessControls != null)
             {
-                var accessControlIds = this.securityRequest.AccessControls;
+                var accessControlIds = this.securityRequest.accessControls;
                 var accessControls = this.session.Instantiate(accessControlIds).Cast<AccessControl>().ToArray();
 
-                securityResponse.AccessControls = accessControls
+                securityResponse.accessControls = accessControls
                     .Select(v => new SecurityResponseAccessControl
                     {
-                        I = v.Strategy.ObjectId.ToString(),
-                        V = v.Strategy.ObjectVersion.ToString(),
-                        P = v.EffectiveWorkspacePermissionIds,
+                        i = v.Strategy.ObjectId.ToString(),
+                        v = v.Strategy.ObjectVersion.ToString(),
+                        p = v.EffectiveWorkspacePermissionIds,
                     }).ToArray();
             }
 
-            if (this.securityRequest.Permissions.Length > 0)
+            if (this.securityRequest.permissions.Length > 0)
             {
-                var permissionIds = this.securityRequest.Permissions;
+                var permissionIds = this.securityRequest.permissions;
                 var permissions = this.session.Instantiate(permissionIds)
                     .Cast<Permission>()
                     .Where(v => v.OperandType.Workspace);
 
-                securityResponse.Permissions = permissions.Select(v =>
+                securityResponse.permissions = permissions.Select(v =>
                     new[]
                     {
                         v.Strategy.ObjectId.ToString(),

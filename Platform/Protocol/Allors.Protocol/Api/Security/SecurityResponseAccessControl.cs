@@ -8,18 +8,18 @@ namespace Allors.Protocol.Remote.Security
     public class SecurityResponseAccessControl
     {
         /// <summary>
-        /// Gets or sets the id.
+        /// Id
         /// </summary>
-        public string I { get; set; }
+        public string i { get; set; }
 
         /// <summary>
-        /// Gets or sets the version.
+        /// Version
         /// </summary>
-        public string V { get; set; }
+        public string v { get; set; }
 
         /// <summary>
-        /// Gets or sets the permissions ids.
+        /// Permissions
         /// </summary>
-        public string P { get; set; }
+        public string p { get; set; }
     }
 }

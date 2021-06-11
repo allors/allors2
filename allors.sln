@@ -167,6 +167,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intranet.Tests", "Base\Work
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Core\Workspace\CSharp\Excel\ExcelAddIn\ExcelAddIn.csproj", "{7328F955-11F0-4123-BE5B-7C5023D0916B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Workspace.Adapters.Remote.RestSharp", "Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote.RestSharp\Allors.Workspace.Adapters.Remote.RestSharp.csproj", "{A62F40C6-45C8-440B-A947-C9D79880F318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -409,6 +411,10 @@ Global
 		{7328F955-11F0-4123-BE5B-7C5023D0916B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7328F955-11F0-4123-BE5B-7C5023D0916B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7328F955-11F0-4123-BE5B-7C5023D0916B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A62F40C6-45C8-440B-A947-C9D79880F318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A62F40C6-45C8-440B-A947-C9D79880F318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A62F40C6-45C8-440B-A947-C9D79880F318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A62F40C6-45C8-440B-A947-C9D79880F318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -493,6 +499,7 @@ Global
 		{5BDD4F4B-435C-46F5-86DF-93C7C511E72F} = {F6B04590-8991-4487-A32E-6D8A7D804CF9}
 		{E5CF4F09-5933-4AF1-BB17-6864D71BA7CA} = {F6B04590-8991-4487-A32E-6D8A7D804CF9}
 		{7328F955-11F0-4123-BE5B-7C5023D0916B} = {68D6CAF1-D3FB-4B72-B7D0-19A83066998B}
+		{A62F40C6-45C8-440B-A947-C9D79880F318} = {67E8A9A0-DB8C-40E5-AC3B-94F3226FB414}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00D78C3D-8536-4549-B1EE-C19BD0C50387}

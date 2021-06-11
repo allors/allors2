@@ -40,8 +40,8 @@ namespace Allors.Data
         public Protocol.Data.Node Save() =>
             new Protocol.Data.Node
             {
-                PropertyType = this.PropertyType.Id,
-                Nodes = this.Nodes.Select(v => v.Save()).ToArray(),
+                propertyType = this.PropertyType.Id,
+                nodes = this.Nodes.Select(v => v.Save()).ToArray(),
             };
 
         public void BuildPrefetchPolicy(PrefetchPolicyBuilder prefetchPolicyBuilder)

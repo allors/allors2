@@ -11,11 +11,11 @@ namespace Allors.Protocol.Data
         {
             var result = new Allors.Data.Result
             {
-                FetchRef = @this.FetchRef,
-                Fetch = @this.Fetch?.Load(session),
-                Name = @this.Name,
-                Skip = @this.Skip,
-                Take = @this.Take,
+                FetchRef = @this.fetchRef,
+                Fetch = @this.fetch?.Load(session),
+                Name = @this.name,
+                Skip = @this.skip,
+                Take = @this.take,
             };
 
             return result;

@@ -9,6 +9,9 @@ namespace Allors.Protocol.Remote.Pull
 
     public class PullRequest
     {
-        public Pull[] P { get; set; }
+        /// <summary>
+        /// Pulls
+        /// </summary>
+        public Pull[] p { get; set; }
     }
 }

@@ -25,11 +25,11 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate
             {
-                Kind = PredicateKind.Between,
-                Dependencies = this.Dependencies,
-                RoleType = this.RoleType?.Id,
-                Values = this.Values.Select(UnitConvert.ToString).ToArray(),
-                Parameter = this.Parameter,
+                kind = PredicateKind.Between,
+                dependencies = this.Dependencies,
+                roleType = this.RoleType?.Id,
+                values = this.Values.Select(UnitConvert.ToString).ToArray(),
+                parameter = this.Parameter,
             };
     }
 }

@@ -28,11 +28,11 @@ namespace Allors.Data
         public Predicate Save() =>
             new Predicate
             {
-                Kind = PredicateKind.Equals,
-                PropertyType = this.PropertyType.Id,
-                Object = this.Object?.Id.ToString(),
-                Value = UnitConvert.ToString(this.Value),
-                Parameter = this.Parameter,
+                kind = PredicateKind.Equals,
+                propertyType = this.PropertyType.Id,
+                @object = this.Object?.Id.ToString(),
+                value = UnitConvert.ToString(this.Value),
+                parameter = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || ((IPredicate)this).HasMissingArguments(parameters);

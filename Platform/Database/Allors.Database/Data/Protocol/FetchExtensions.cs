@@ -10,8 +10,8 @@ namespace Allors.Protocol.Data
         public static Allors.Data.Fetch Load(this Fetch @this, ISession session) =>
             new Allors.Data.Fetch(session.Database.MetaPopulation)
             {
-                Step = @this.Step?.Load(session),
-                Include = @this.Include?.Load(session),
+                Step = @this.step?.Load(session),
+                Include = @this.include?.Load(session),
             };
     }
 }

@@ -5,30 +5,30 @@
 
 namespace Allors.Protocol.Data
 {
-    public enum PredicateKind
+    public static class PredicateKind
     {
-        And = 1,
+        public const string And = "And";
 
-        Or = 2,
+        public const string Or = "Or";
 
-        Not = 3,
+        public const string Not = "Not";
 
-        InstanceOf = 4,
+        public const string InstanceOf = "Instanceof";
 
-        Exists = 5,
+        public const string Exists = "Exists";
 
-        Equals = 6,
+        public const string Equals = "Equals";
 
-        Contains = 7,
+        public const string Contains = "Contains";
 
-        ContainedIn = 8,
+        public const string ContainedIn = "ContainedIn";
 
-        Between = 9,
+        public const string Between = "Between";
 
-        GreaterThan = 10,
+        public const string GreaterThan = "GreaterThan";
 
-        LessThan = 11,
+        public const string LessThan = "LessThan";
 
-        Like = 12,
+        public const string Like = "Like";
     }
 }

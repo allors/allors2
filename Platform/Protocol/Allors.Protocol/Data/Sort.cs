@@ -9,8 +9,14 @@ namespace Allors.Protocol.Data
 
     public class Sort
     {
-        public Guid? RoleType { get; set; }
+        /// <summary>
+        /// Role Type
+        /// </summary>
+        public Guid? roleType { get; set; }
 
-        public bool Descending { get; set; }
+        /// <summary>
+        /// Descending
+        /// </summary>
+        public bool @descending { get; set; }
     }
 }

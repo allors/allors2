@@ -37,9 +37,9 @@ namespace Allors.Data
         public Protocol.Data.Extent Save() =>
             new Protocol.Data.Extent
             {
-                Kind = ExtentKind.Union,
-                Operands = this.Operands.Select(v => v.Save()).ToArray(),
-                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),
+                kind = ExtentKind.Union,
+                operands = this.Operands.Select(v => v.Save()).ToArray(),
+                sorting = this.Sorting.Select(v => new Protocol.Data.Sort { @descending = v.Descending, roleType = v.RoleType?.Id }).ToArray(),
             };
     }
 }

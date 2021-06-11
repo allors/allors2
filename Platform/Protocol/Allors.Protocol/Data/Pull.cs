@@ -10,16 +10,34 @@ namespace Allors.Protocol.Data
 
     public class Pull
     {
-        public Guid? ExtentRef { get; set; }
+        /// <summary>
+        /// Extent Ref
+        /// </summary>
+        public Guid? extentRef { get; set; }
 
-        public Extent Extent { get; set; }
+        /// <summary>
+        /// Extent
+        /// </summary>
+        public Extent extent { get; set; }
 
-        public Guid? ObjectType { get; set; }
+        /// <summary>
+        /// Object Type
+        /// </summary>
+        public Guid? objectType { get; set; }
 
-        public string Object { get; set; }
+        /// <summary>
+        /// Object
+        /// </summary>
+        public string @object { get; set; }
 
-        public Result[] Results { get; set; }
+        /// <summary>
+        /// Results
+        /// </summary>
+        public Result[] results { get; set; }
 
-        public IDictionary<string, string> Parameters { get; set; }
+        /// <summary>
+        /// Parameters
+        /// </summary>
+        public IDictionary<string, string> parameters { get; set; }
     }
 }

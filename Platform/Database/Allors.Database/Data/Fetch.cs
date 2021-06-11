@@ -43,8 +43,8 @@ namespace Allors.Data
         public Protocol.Data.Fetch Save() =>
             new Protocol.Data.Fetch
             {
-                Step = this.Step?.Save(),
-                Include = this.Include?.Save(),
+                step = this.Step?.Save(),
+                include = this.Include?.Save(),
             };
 
         private static IPropertyType Resolve(IComposite composite, string propertyName)

@@ -28,12 +28,12 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate
             {
-                Kind = PredicateKind.ContainedIn,
-                Dependencies = this.Dependencies,
-                PropertyType = this.PropertyType?.Id,
-                Extent = this.Extent?.ToJson(),
-                Values = this.Objects?.Select(v => v.Id.ToString()).ToArray(),
-                Parameter = this.Parameter,
+                kind = PredicateKind.ContainedIn,
+                dependencies = this.Dependencies,
+                propertyType = this.PropertyType?.Id,
+                extent = this.Extent?.ToJson(),
+                values = this.Objects?.Select(v => v.Id.ToString()).ToArray(),
+                parameter = this.Parameter,
             };
     }
 }

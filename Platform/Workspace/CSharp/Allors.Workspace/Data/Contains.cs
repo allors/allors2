@@ -24,11 +24,11 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate
             {
-                Kind = PredicateKind.Contains,
-                Dependencies = this.Dependencies,
-                PropertyType = this.PropertyType?.Id,
-                Object = this.Object?.Id.ToString(),
-                Parameter = this.Parameter,
+                kind = PredicateKind.Contains,
+                dependencies = this.Dependencies,
+                propertyType = this.PropertyType?.Id,
+                @object = this.Object?.Id.ToString(),
+                parameter = this.Parameter,
             };
     }
 }

@@ -7,8 +7,14 @@ namespace Allors.Protocol.Data
 {
     public class Parameter
     {
-        public string K { get; set; }
+        /// <summary>
+        /// Key
+        /// </summary>
+        public string k { get; set; }
 
-        public string V { get; set; }
+        /// <summary>
+        /// Value
+        /// </summary>
+        public string v { get; set; }
     }
 }

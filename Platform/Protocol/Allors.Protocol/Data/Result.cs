@@ -9,14 +9,29 @@ namespace Allors.Protocol.Data
 
     public class Result
     {
-        public Guid? FetchRef { get; set; }
+        /// <summary>
+        /// FetchRef
+        /// </summary>
+        public Guid? fetchRef { get; set; }
 
-        public Fetch Fetch { get; set; }
+        /// <summary>
+        /// Fetch
+        /// </summary>
+        public Fetch fetch { get; set; }
 
-        public string Name { get; set; }
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string name { get; set; }
 
-        public int? Skip { get; set; }
+        /// <summary>
+        /// Skip
+        /// </summary>
+        public int? skip { get; set; }
 
-        public int? Take { get; set; }
+        /// <summary>
+        /// Take
+        /// </summary>
+        public int? take { get; set; }
     }
 }

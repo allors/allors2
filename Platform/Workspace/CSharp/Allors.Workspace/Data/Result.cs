@@ -22,11 +22,11 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Result ToJson() =>
             new Protocol.Data.Result
             {
-                FetchRef = this.FetchRef,
-                Fetch = this.Fetch?.ToJson(),
-                Name = this.Name,
-                Skip = this.Skip,
-                Take = this.Take,
+                fetchRef = this.FetchRef,
+                fetch = this.Fetch?.ToJson(),
+                name = this.Name,
+                skip = this.Skip,
+                take = this.Take,
             };
     }
 }

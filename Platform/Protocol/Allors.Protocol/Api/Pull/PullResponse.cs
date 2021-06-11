@@ -9,14 +9,29 @@ namespace Allors.Protocol.Remote.Pull
 
     public class PullResponse
     {
-        public string[][] AccessControls { get; set; }
+        /// <summary>
+        /// Access Controls
+        /// </summary>
+        public string[][] accessControls { get; set; }
 
-        public Dictionary<string, string[]> NamedCollections { get; set; }
+        /// <summary>
+        /// Named Collections
+        /// </summary>
+        public Dictionary<string, string[]> namedCollections { get; set; }
 
-        public Dictionary<string, string> NamedObjects { get; set; }
+        /// <summary>
+        /// Named Objects
+        /// </summary>
+        public Dictionary<string, string> namedObjects { get; set; }
 
-        public Dictionary<string, object> NamedValues { get; set; }
+        /// <summary>
+        /// Named Values
+        /// </summary>
+        public Dictionary<string, object> namedValues { get; set; }
 
+        /// <summary>
+        /// Objects
+        /// </summary>
         public string[][] Objects { get; set; }
     }
 }

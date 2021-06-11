@@ -52,9 +52,9 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Step ToJson() =>
             new Protocol.Data.Step
             {
-                Include = this.Include?.Select(v => v.ToData()).ToArray(),
-                PropertyType = this.PropertyType.Id,
-                Next = this.Next?.ToJson(),
+                include = this.Include?.Select(v => v.ToData()).ToArray(),
+                propertyType = this.PropertyType.Id,
+                next = this.Next?.ToJson(),
             };
 
         public IObjectType GetObjectType()

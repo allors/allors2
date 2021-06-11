@@ -8,7 +8,7 @@
         {
             <h4>You do not have the required rights.</h4>
             <ul>
-                @foreach (var error in Response.AccessErrors)
+                @foreach (var error in Response.accessErrors)
                 {
                     <li>@error</li>
                 }
@@ -19,7 +19,7 @@
         {
             <h4>Modifications were detected since last access</h4>
             <ul>
-                @foreach (var error in Response.VersionErrors)
+                @foreach (var error in Response.versionErrors)
                 {
                     <li>@error</li>
                 }
@@ -30,7 +30,7 @@
         {
             <h4>Access to a deleted object was requested.</h4>
             <ul>
-                @foreach (var error in Response.MissingErrors)
+                @foreach (var error in Response.missingErrors)
                 {
                     <li>@error</li>
                 }
@@ -41,16 +41,16 @@
         {
             <h4>Following errors were encountered during derivation.</h4>
             <ul>
-                @foreach (var error in Response.DerivationErrors)
+                @foreach (var error in Response.derivationErrors)
                 {
-                    <li>@error.M</li>
+                    <li>@error.m</li>
                 }
             </ul>
         }
 
         @if (isOtherError)
         {
-            @Response.ErrorMessage
+            @Response.errorMessage
         }
 
     </BSAlert>
@@ -86,22 +86,22 @@
 
         if (this.HasErrors)
         {
-            if (this.Response.AccessErrors?.Length > 0)
+            if (this.Response.accessErrors?.Length > 0)
             {
                 this.isAccessError = true;
                 this.title = "Access Error";
             }
-            else if (this.Response.VersionErrors?.Length > 0)
+            else if (this.Response.versionErrors?.Length > 0)
             {
                 this.isVersionError = true;
                 this.title = "Concurrency Error";
             }
-            else if (this.Response.MissingErrors?.Length > 0)
+            else if (this.Response.missingErrors?.Length > 0)
             {
                 this.isMissingError = true;
                 this.title = "Missing Error";
             }
-            else if (this.Response.DerivationErrors?.Length > 0)
+            else if (this.Response.derivationErrors?.Length > 0)
             {
                 this.isDerivationError = true;
                 this.title = "Derivation Errors";

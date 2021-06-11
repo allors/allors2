@@ -7,6 +7,9 @@ namespace Allors.Protocol.Remote.Sync
 {
     public class SyncRequest
     {
+        /// <summary>
+        /// Objects
+        /// </summary>
         public string[] Objects { get; set; }
     }
 }

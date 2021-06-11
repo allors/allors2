@@ -21,9 +21,9 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate()
             {
-                Kind = PredicateKind.And,
-                Dependencies = this.Dependencies,
-                Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
+                kind = PredicateKind.And,
+                dependencies = this.Dependencies,
+                operands = this.Operands.Select(v => v.ToJson()).ToArray(),
             };
 
         public void AddPredicate(IPredicate predicate) => this.Operands = new List<IPredicate>(this.Operands) { predicate }.ToArray();

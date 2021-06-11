@@ -8,23 +8,23 @@ namespace Allors.Protocol.Remote.Push
     public class PushRequestRole
     {
         /// <summary>
-        /// Gets or sets the role type.
+        /// Role Type
         /// </summary>
-        public string T { get; set; }
+        public string t { get; set; }
 
         /// <summary>
-        /// Gets or sets the set role.
+        /// Set Role
         /// </summary>
-        public string S { get; set; }
+        public string s { get; set; }
 
         /// <summary>
-        /// Gets or sets the add roles.
+        /// Add Roles
         /// </summary>
-        public string[] A { get; set; }
+        public string[] a { get; set; }
 
         /// <summary>
-        /// Gets or sets the remove roles.
+        /// Remove Roles
         /// </summary>
-        public string[] R { get; set; }
+        public string[] r { get; set; }
     }
 }

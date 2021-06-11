@@ -32,12 +32,12 @@ namespace Allors.Workspace
         internal WorkspaceObject(ResponseContext ctx, SyncResponseObject syncResponseObject)
         {
             this.Workspace = ctx.Workspace;
-            this.Id = long.Parse(syncResponseObject.I);
-            this.Class = (IClass)this.Workspace.ObjectFactory.MetaPopulation.Find(Guid.Parse(syncResponseObject.T));
-            this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
-            this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(this.Workspace.ObjectFactory.MetaPopulation, v)).Cast<IWorkspaceRole>().ToArray();
-            this.SortedAccessControlIds = ctx.ReadSortedAccessControlIds(syncResponseObject.A);
-            this.SortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(syncResponseObject.D);
+            this.Id = long.Parse(syncResponseObject.i);
+            this.Class = (IClass)this.Workspace.ObjectFactory.MetaPopulation.Find(Guid.Parse(syncResponseObject.t));
+            this.Version = !string.IsNullOrEmpty(syncResponseObject.v) ? long.Parse(syncResponseObject.v) : 0;
+            this.Roles = syncResponseObject.r?.Select(v => new WorkspaceRole(this.Workspace.ObjectFactory.MetaPopulation, v)).Cast<IWorkspaceRole>().ToArray();
+            this.SortedAccessControlIds = ctx.ReadSortedAccessControlIds(syncResponseObject.a);
+            this.SortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(syncResponseObject.d);
         }
 
         public IClass Class { get; }

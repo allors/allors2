@@ -245,9 +245,9 @@ namespace Allors.Workspace
             {
                 var data = new PushRequestObject
                 {
-                    I = this.Id.ToString(),
-                    V = this.Version.ToString(),
-                    Roles = this.SaveRoles(),
+                    i = this.Id.ToString(),
+                    v = this.Version.ToString(),
+                    roles = this.SaveRoles(),
                 };
 
                 return data;
@@ -260,13 +260,13 @@ namespace Allors.Workspace
         {
             var data = new PushRequestNewObject
             {
-                NI = this.NewId.ToString(),
-                T = this.ObjectType.IdAsString,
+                ni = this.NewId.ToString(),
+                t = this.ObjectType.IdAsString,
             };
 
             if (this.changedRoleByRoleType != null)
             {
-                data.Roles = this.SaveRoles();
+                data.roles = this.SaveRoles();
             }
 
             return data;
@@ -351,18 +351,18 @@ namespace Allors.Workspace
                 var roleType = keyValuePair.Key;
                 var roleValue = keyValuePair.Value;
 
-                var pushRequestRole = new PushRequestRole { T = roleType.IdAsString };
+                var pushRequestRole = new PushRequestRole { t = roleType.IdAsString };
 
                 if (roleType.ObjectType.IsUnit)
                 {
-                    pushRequestRole.S = UnitConvert.ToString(roleValue);
+                    pushRequestRole.s = UnitConvert.ToString(roleValue);
                 }
                 else
                 {
                     if (roleType.IsOne)
                     {
                         var sessionRole = (SessionObject)roleValue;
-                        pushRequestRole.S = sessionRole?.Id.ToString();
+                        pushRequestRole.s = sessionRole?.Id.ToString();
                     }
                     else
                     {
@@ -370,14 +370,14 @@ namespace Allors.Workspace
                         var roleIds = sessionRoles.Select(item => item.Id.ToString()).ToArray();
                         if (this.NewId != null)
                         {
-                            pushRequestRole.A = roleIds;
+                            pushRequestRole.a = roleIds;
                         }
                         else
                         {
                             var workspaceRole = this.WorkspaceObject.Roles.FirstOrDefault(v => v.RoleType == roleType);
                             if (workspaceRole?.Value == null)
                             {
-                                pushRequestRole.A = roleIds;
+                                pushRequestRole.a = roleIds;
                             }
                             else
                             {
@@ -386,12 +386,12 @@ namespace Allors.Workspace
                                     var originalRoleIds = ((IEnumerable<long>)workspaceRole.Value)
                                         .Select(v => v.ToString())
                                         .ToArray();
-                                    pushRequestRole.A = roleIds.Except(originalRoleIds).ToArray();
-                                    pushRequestRole.R = originalRoleIds.Except(roleIds).ToArray();
+                                    pushRequestRole.a = roleIds.Except(originalRoleIds).ToArray();
+                                    pushRequestRole.r = originalRoleIds.Except(roleIds).ToArray();
                                 }
                                 else
                                 {
-                                    pushRequestRole.A = roleIds.ToArray();
+                                    pushRequestRole.a = roleIds.ToArray();
                                 }
                             }
                         }

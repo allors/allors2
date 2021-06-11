@@ -24,7 +24,7 @@ namespace Allors.Server.Tests
 
             var pushRequest = new PushRequest
             {
-                NewObjects = new[] { new PushRequestNewObject { T = M.Build.Class.IdAsString, NI = "-1" }, },
+                newObjects = new[] { new PushRequestNewObject { t = M.Build.Class.IdAsString, ni = "-1" }, },
             };
 
             var response = await this.PostAsJsonAsync(uri, pushRequest);
@@ -32,7 +32,7 @@ namespace Allors.Server.Tests
 
             this.Session.Rollback();
 
-            var build = (Build)this.Session.Instantiate(pushResponse.NewObjects[0].I);
+            var build = (Build)this.Session.Instantiate(pushResponse.newObjects[0].i);
 
             Assert.Equal(new Guid("DCE649A4-7CF6-48FA-93E4-CDE222DA2A94"), build.Guid);
             Assert.Equal("Exist", build.String);
@@ -56,18 +56,18 @@ namespace Allors.Server.Tests
 
             var pushRequest = new PushRequest
             {
-                Objects = new[]
+                objects = new[]
                 {
                     new PushRequestObject
                 {
-                                                                                  I = organisationId,
-                                                                                  V = organisationVersion,
-                                                                                  Roles = new[]
+                                                                                  i = organisationId,
+                                                                                  v = organisationVersion,
+                                                                                  roles = new[]
                                                                                       {
                                                                                           new PushRequestRole
                                                                                               {
-                                                                                                  T = M.Organisation.Name.PropertyName,
-                                                                                                  S = "Acme"
+                                                                                                  t = M.Organisation.Name.PropertyName,
+                                                                                                  s = "Acme"
                                                                                               },
                                                                                       },
                                                                                   },
@@ -80,8 +80,8 @@ namespace Allors.Server.Tests
             var pushResponse = await this.ReadAsAsync<PushResponse>(response);
 
             Assert.True(pushResponse.HasErrors);
-            Assert.Single(pushResponse.MissingErrors);
-            Assert.Contains(organisationId, pushResponse.MissingErrors);
+            Assert.Single(pushResponse.missingErrors);
+            Assert.Contains(organisationId, pushResponse.missingErrors);
         }
     }
 }

@@ -49,11 +49,11 @@ namespace Allors.Server.Tests
 
             var pullRequest = new PullRequest
             {
-                P = new[]
+                p = new[]
                 {
                     new Pull
                     {
-                        Extent = extent.Save(),
+                        extent = extent.Save(),
                     },
                 },
             };
@@ -61,7 +61,7 @@ namespace Allors.Server.Tests
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
 
-            var namedCollection = pullResponse.NamedCollections["Datas"];
+            var namedCollection = pullResponse.namedCollections["Datas"];
 
             Assert.Single(namedCollection);
 
@@ -97,12 +97,12 @@ namespace Allors.Server.Tests
 
             var pullRequest = new PullRequest
             {
-                P = new[]
+                p = new[]
                   {
                       new Pull
                           {
-                              ExtentRef = PreparedExtents.ByName,
-                              Parameters = new Dictionary<string, string> { ["name"] = "Acme" },
+                              extentRef = PreparedExtents.ByName,
+                              parameters = new Dictionary<string, string> { ["name"] = "Acme" },
                           },
                   },
             };
@@ -113,7 +113,7 @@ namespace Allors.Server.Tests
 
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
 
-            var organisations = pullResponse.NamedCollections["Organisations"];
+            var organisations = pullResponse.namedCollections["Organisations"];
 
             Assert.Single(organisations);
         }
@@ -129,12 +129,12 @@ namespace Allors.Server.Tests
 
             var pullRequest = new PullRequest
             {
-                P = new[]
+                p = new[]
                   {
                       new Pull
                           {
-                              ExtentRef = PreparedExtents.ByName,
-                              Parameters = new Dictionary<string, string> { ["name"] = "Acme" },
+                              extentRef = PreparedExtents.ByName,
+                              parameters = new Dictionary<string, string> { ["name"] = "Acme" },
                           },
                   },
             };
@@ -145,7 +145,7 @@ namespace Allors.Server.Tests
 
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
 
-            var organisations = pullResponse.NamedCollections["Organisations"];
+            var organisations = pullResponse.namedCollections["Organisations"];
 
             Assert.Single(organisations);
         }
@@ -165,11 +165,11 @@ namespace Allors.Server.Tests
 
             var pullRequest = new PullRequest
             {
-                P = new[]
+                p = new[]
                       {
                           new Pull
                               {
-                                  Extent = extent.Save(),
+                                  extent = extent.Save(),
                               },
                       },
             };
@@ -177,7 +177,7 @@ namespace Allors.Server.Tests
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
 
-            var namedCollection = pullResponse.NamedCollections["Datas"];
+            var namedCollection = pullResponse.namedCollections["Datas"];
 
             Assert.Single(namedCollection);
 
@@ -216,14 +216,14 @@ namespace Allors.Server.Tests
 
             var pullRequest = new PullRequest
             {
-                P = new[]
+                p = new[]
                       {
                           new Pull
                               {
-                                  Extent = extent.Save(),
-                                  Results = new[]
+                                  extent = extent.Save(),
+                                  results = new[]
                                                 {
-                                                    new Result { Name = "Datas" },
+                                                    new Result { name = "Datas" },
                                                 },
                               },
                       },
@@ -232,7 +232,7 @@ namespace Allors.Server.Tests
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
 
-            var namedCollection = pullResponse.NamedCollections["Datas"];
+            var namedCollection = pullResponse.namedCollections["Datas"];
 
             Assert.Single(namedCollection);
 

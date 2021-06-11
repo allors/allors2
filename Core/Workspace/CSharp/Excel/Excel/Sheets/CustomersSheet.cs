@@ -141,7 +141,7 @@ namespace Application.Sheets
             var response = await this.Context.Save();
             if (response.HasErrors)
             {
-                if (response.AccessErrors?.Any() == true || response.MissingErrors?.Any() == true || response.VersionErrors?.Any() == true)
+                if (response.accessErrors?.Any() == true || response.missingErrors?.Any() == true || response.versionErrors?.Any() == true)
                 {
                     this.ErrorService.Handle(response, this.Context.Session);
                     this.MessageService.Show("Error was irrecoverable, sheet has been reset", "Info");

@@ -52,22 +52,22 @@ namespace Allors.Server
 
             SyncResponseRole CreateSyncResponseRole(IObject @object, IRoleType roleType)
             {
-                var syncResponseRole = new SyncResponseRole { T = roleType.IdAsString };
+                var syncResponseRole = new SyncResponseRole { t = roleType.IdAsString };
 
                 if (roleType.ObjectType.IsUnit)
                 {
-                    syncResponseRole.V = UnitConvert.ToString(@object.Strategy.GetUnitRole(roleType.RelationType));
+                    syncResponseRole.v = UnitConvert.ToString(@object.Strategy.GetUnitRole(roleType.RelationType));
                 }
                 else if (roleType.IsOne)
                 {
-                    syncResponseRole.V = @object.Strategy.GetCompositeRole(roleType.RelationType)?.Id.ToString();
+                    syncResponseRole.v = @object.Strategy.GetCompositeRole(roleType.RelationType)?.Id.ToString();
                 }
                 else
                 {
                     var roles = @object.Strategy.GetCompositeRoles(roleType.RelationType);
                     if (roles.Count > 0)
                     {
-                        syncResponseRole.V = string.Join(
+                        syncResponseRole.v = string.Join(
                             separator: Encoding.Separator,
                             values: roles
                                 .Cast<IObject>()
@@ -80,27 +80,27 @@ namespace Allors.Server
 
             var syncResponse = new SyncResponse
             {
-                Objects = objects.Select(v =>
+                objects = objects.Select(v =>
                 {
                     var @class = (Class)v.Strategy.Class;
                     var acl = this.acls[v];
 
                     return new SyncResponseObject
                     {
-                        I = v.Id.ToString(),
-                        V = v.Strategy.ObjectVersion.ToString(),
-                        T = v.Strategy.Class.IdAsString,
-                        R = @class.WorkspaceRoleTypes
+                        i = v.Id.ToString(),
+                        v = v.Strategy.ObjectVersion.ToString(),
+                        t = v.Strategy.Class.IdAsString,
+                        r = @class.WorkspaceRoleTypes
                             .Where(w => acl.CanRead(w) && v.Strategy.ExistRole(w.RelationType))
                             .Select(w => CreateSyncResponseRole(v, w))
                             .ToArray(),
-                        A = this.accessControlsWriter.Write(v),
-                        D = this.permissionsWriter.Write(v),
+                        a = this.accessControlsWriter.Write(v),
+                        d = this.permissionsWriter.Write(v),
                     };
                 }).ToArray(),
             };
 
-            syncResponse.AccessControls = this.acls.EffectivePermissionIdsByAccessControl.Keys
+            syncResponse.accessControls = this.acls.EffectivePermissionIdsByAccessControl.Keys
                 .Select(v => new[]
                 {
                     v.Strategy.ObjectId.ToString(),

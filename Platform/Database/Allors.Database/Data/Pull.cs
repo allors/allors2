@@ -28,11 +28,11 @@ namespace Allors.Data
         public Protocol.Data.Pull Save() =>
             new Protocol.Data.Pull
             {
-                ExtentRef = this.ExtentRef,
-                Extent = this.Extent?.Save(),
-                ObjectType = this.ObjectType?.Id,
-                Object = this.Object?.Id.ToString(),
-                Results = this.Results?.Select(v => v.Save()).ToArray(),
+                extentRef = this.ExtentRef,
+                extent = this.Extent?.Save(),
+                objectType = this.ObjectType?.Id,
+                @object = this.Object?.Id.ToString(),
+                results = this.Results?.Select(v => v.Save()).ToArray(),
             };
     }
 }

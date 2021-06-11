@@ -24,9 +24,9 @@ namespace Allors.Data
         public Predicate Save() =>
             new Predicate
             {
-                Kind = PredicateKind.Exists,
-                PropertyType = this.PropertyType?.Id,
-                Parameter = this.Parameter,
+                kind = PredicateKind.Exists,
+                propertyType = this.PropertyType?.Id,
+                parameter = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || ((IPredicate)this).HasMissingArguments(parameters);

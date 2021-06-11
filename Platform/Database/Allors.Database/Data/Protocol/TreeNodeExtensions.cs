@@ -11,11 +11,11 @@ namespace Allors.Protocol.Data
     {
         public static void Load(this Node @this, ISession session, Allors.Data.Node node)
         {
-            if (@this.Nodes != null)
+            if (@this.nodes != null)
             {
-                foreach (var childProtocolTreeNode in @this.Nodes)
+                foreach (var childProtocolTreeNode in @this.nodes)
                 {
-                    var childPropertyType = childProtocolTreeNode.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(childProtocolTreeNode.PropertyType.Value) : null;
+                    var childPropertyType = childProtocolTreeNode.propertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(childProtocolTreeNode.propertyType.Value) : null;
                     var childTreeNode = new Allors.Data.Node(childPropertyType);
                     node.Add(childTreeNode);
                     childProtocolTreeNode.Load(session, childTreeNode);

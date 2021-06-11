@@ -9,10 +9,19 @@ namespace Allors.Protocol.Data
 
     public class Step
     {
-        public Guid? PropertyType { get; set; }
+        /// <summary>
+        /// Property Type
+        /// </summary>
+        public Guid? propertyType { get; set; }
 
-        public Step Next { get; set; }
+        /// <summary>
+        /// Next
+        /// </summary>
+        public Step next { get; set; }
 
-        public Node[] Include { get; set; }
+        /// <summary>
+        /// Include
+        /// </summary>
+        public Node[] include { get; set; }
     }
 }

@@ -21,10 +21,10 @@ namespace Allors.Workspace.Data
         public Predicate ToJson() =>
             new Predicate
             {
-                Kind = PredicateKind.Exists,
-                Dependencies = this.Dependencies,
-                PropertyType = this.PropertyType?.Id,
-                Parameter = this.Parameter,
+                kind = PredicateKind.Exists,
+                dependencies = this.Dependencies,
+                propertyType = this.PropertyType?.Id,
+                parameter = this.Parameter,
             };
     }
 }

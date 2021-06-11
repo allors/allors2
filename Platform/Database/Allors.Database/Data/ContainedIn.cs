@@ -32,11 +32,11 @@ namespace Allors.Data
         public Predicate Save() =>
             new Predicate
             {
-                Kind = PredicateKind.ContainedIn,
-                PropertyType = this.PropertyType?.Id,
-                Extent = this.Extent?.Save(),
-                Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
-                Parameter = this.Parameter,
+                kind = PredicateKind.ContainedIn,
+                propertyType = this.PropertyType?.Id,
+                extent = this.Extent?.Save(),
+                values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
+                parameter = this.Parameter,
             };
 
         void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)

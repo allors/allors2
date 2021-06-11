@@ -23,9 +23,9 @@ namespace Allors.Server
         public InvokeResponseBuilder(ISession session, InvokeRequest invokeRequest, IAccessControlLists acls)
         {
             this.session = session;
-            this.invocations = invokeRequest.I;
-            this.isolated = invokeRequest.O?.I ?? false;
-            this.continueOnError = invokeRequest.O?.C ?? false;
+            this.invocations = invokeRequest.i;
+            this.isolated = invokeRequest.o?.i ?? false;
+            this.continueOnError = invokeRequest.o?.c ?? false;
 
             this.acls = acls;
         }
@@ -90,28 +90,28 @@ namespace Allors.Server
         private bool Invoke(Invocation invocation, InvokeResponse invokeResponse)
         {
             // TODO: M should be a methodTypeId instead of the methodName
-            if (invocation.M == null || invocation.I == null || invocation.V == null)
+            if (invocation.m == null || invocation.i == null || invocation.v == null)
             {
                 throw new ArgumentException();
             }
 
-            var obj = this.session.Instantiate(invocation.I);
+            var obj = this.session.Instantiate(invocation.i);
             if (obj == null)
             {
-                invokeResponse.AddMissingError(invocation.I);
+                invokeResponse.AddMissingError(invocation.i);
                 return true;
             }
 
             var composite = (Composite)obj.Strategy.Class;
             var methodTypes = composite.WorkspaceMethodTypes;
-            var methodType = methodTypes.FirstOrDefault(x => x.Id.Equals(Guid.Parse(invocation.M)));
+            var methodType = methodTypes.FirstOrDefault(x => x.Id.Equals(Guid.Parse(invocation.m)));
 
             if (methodType == null)
             {
-                throw new Exception("Method " + invocation.M + " not found.");
+                throw new Exception("Method " + invocation.m + " not found.");
             }
 
-            if (!invocation.V.Equals(obj.Strategy.ObjectVersion.ToString()))
+            if (!invocation.v.Equals(obj.Strategy.ObjectVersion.ToString()))
             {
                 invokeResponse.AddVersionError(obj);
                 return true;
@@ -138,7 +138,7 @@ namespace Allors.Server
                     innerException = innerException.InnerException;
                 }
 
-                invokeResponse.ErrorMessage = innerException.Message;
+                invokeResponse.errorMessage = innerException.Message;
                 return true;
             }
 
