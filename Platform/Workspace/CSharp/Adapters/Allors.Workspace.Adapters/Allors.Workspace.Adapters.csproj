@@ -4,10 +4,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Polly" Version="7.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Allors.Workspace\Allors.Workspace.csproj" />
   </ItemGroup>
 

@@ -13,8 +13,6 @@ namespace Allors.Workspace.Remote
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
-    using Polly;
-    using Polly.Retry;
     using Protocol.Remote.Security;
     using RestSharp;
 
@@ -36,7 +34,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<PushResponse> Push(PushRequest pushRequest)
         {
-            var uri = new Uri("sync", UriKind.Relative);
+            var uri = new Uri("push", UriKind.Relative);
             // TODO: Retry for network errors, but not for server errors
             return await this.PostOnce<PushResponse>(uri, pushRequest);
         }
@@ -61,13 +59,13 @@ namespace Allors.Workspace.Remote
 
         public async Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
         {
-            var uri = new Uri("sync", UriKind.Relative);
+            var uri = new Uri("invoke", UriKind.Relative);
             return await this.Post<InvokeResponse>(uri, invokeRequest);
         }
 
         public async Task<InvokeResponse> Invoke(string service, object args)
         {
-            var uri = new Uri(service + "pull", UriKind.Relative);
+            var uri = new Uri(service + "invoke", UriKind.Relative);
             return await this.Post<InvokeResponse>(uri, args);
         }
 
