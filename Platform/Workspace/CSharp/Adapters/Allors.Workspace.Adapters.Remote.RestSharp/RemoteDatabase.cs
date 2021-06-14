@@ -124,7 +124,12 @@ namespace Allors.Workspace.Remote
 
         private async Task<T> PostOnce<T>(Uri uri, object data)
         {
-            var request = new RestRequest(uri, Method.POST, DataFormat.Json).AddJsonBody(data);
+            var request = new RestRequest(uri, Method.POST, DataFormat.Json);
+            if (data != null)
+            {
+                request.AddJsonBody(data);
+            }
+
             return await this.RestClient.PostAsync<T>(request);
         }
     }
