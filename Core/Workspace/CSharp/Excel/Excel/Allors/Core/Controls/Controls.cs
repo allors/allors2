@@ -141,6 +141,13 @@ namespace Application.Excel
             this.ActiveControls.Add(formulaControl);
         }
 
+        internal void Hyperlink(int row, int column, string textToDisplay)
+        {
+            var cell = this.Worksheet[row, column];
+
+            this.Worksheet.AddHyperLink(textToDisplay, cell);
+           
+        }
 
         /// <summary>
         /// Sets a readonly value in the cell. Changes are not handled.
