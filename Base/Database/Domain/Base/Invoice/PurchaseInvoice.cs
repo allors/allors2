@@ -262,9 +262,11 @@ namespace Allors.Domain
                             invoiceItem.SerialisedItem.Buyer = this.BilledTo;
                         }
 
+                        //TODO: Martien , remove check on date and place it in custom derive
                         // who comes first?
                         // Item you purchased can be on sold via sales invoice even before purchase invoice is created and confirmed!!
-                        if (!invoiceItem.SerialisedItem.SalesInvoiceItemsWhereSerialisedItem.Any(v => (v.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer as Organisation)?.IsInternalOrganisation == false))
+                        if (this.InvoiceDate > new DateTime(2021, 07, 04)
+                             && !invoiceItem.SerialisedItem.SalesInvoiceItemsWhereSerialisedItem.Any(v => (v.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer as Organisation)?.IsInternalOrganisation == false))
                         {
                             invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
                             invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
