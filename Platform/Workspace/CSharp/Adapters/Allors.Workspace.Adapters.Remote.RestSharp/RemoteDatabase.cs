@@ -18,13 +18,9 @@ namespace Allors.Workspace.Remote
 
     public class RemoteDatabase : IDatabase
     {
-        private readonly IRestClient initialRestClient;
+        private readonly Func<IRestClient> restClientFactory;
 
-        public RemoteDatabase(IRestClient restClient)
-        {
-            this.initialRestClient = restClient;
-            this.RestClient = this.initialRestClient;
-        }
+        public RemoteDatabase(Func<IRestClient> restClientFactory) => this.restClientFactory = restClientFactory;
 
         public IRestClient RestClient { get; private set; }
 
@@ -77,15 +73,18 @@ namespace Allors.Workspace.Remote
 
         public async Task<bool> Login(Uri url, string username, string password)
         {
+            this.RestClient = this.restClientFactory();
+
             var data = new { UserName = username, Password = password };
             var result = await this.Post<AuthenticationResult>(url, data);
 
             if (!result.Authenticated)
             {
+                this.RestClient = null;
                 return false;
             }
 
-            this.RestClient = this.RestClient.AddDefaultHeader("Authorization", $"Bearer {result.Token}");
+            this.RestClient.AddDefaultHeader("Authorization", $"Bearer {result.Token}");
             this.UserId = result.UserId;
 
             return true;
@@ -93,7 +92,7 @@ namespace Allors.Workspace.Remote
 
         public void Logoff()
         {
-            this.RestClient = this.initialRestClient;
+            this.RestClient = null;
             this.UserId = null;
         }
 
