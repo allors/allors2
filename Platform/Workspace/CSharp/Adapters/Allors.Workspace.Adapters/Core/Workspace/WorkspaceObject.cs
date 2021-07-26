@@ -82,12 +82,13 @@ namespace Allors.Workspace
             if (this.accessControls == null && this.SortedAccessControlIds != null)
             {
                 this.accessControls = this.SortedAccessControlIds.Split(Encoding.Separator).Select(v => this.Workspace.AccessControlById[long.Parse(v)]).ToArray();
-                if (this.deniedPermissions != null)
-                {
-                    this.deniedPermissions = this.SortedDeniedPermissionIds.Split(Encoding.Separator).Select(v => this.Workspace.PermissionById[long.Parse(v)]).ToArray();
-                }
             }
 
+            if (this.deniedPermissions == null && this.SortedDeniedPermissionIds != null)
+            {
+                this.deniedPermissions = this.SortedDeniedPermissionIds.Split(Encoding.Separator).Select(v => this.Workspace.PermissionById[long.Parse(v)]).ToArray();
+            }
+            
             if (this.deniedPermissions != null && this.deniedPermissions.Contains(permission))
             {
                 return false;
