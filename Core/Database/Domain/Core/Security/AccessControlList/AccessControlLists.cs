@@ -37,7 +37,7 @@ namespace Allors.Domain
             {
                 if (!this.AclByObject.TryGetValue(@object, out var acl))
                 {
-                    acl = new AccessControlList(this, @object);
+                    acl = new AccessControlList(this, @object, false);
                     this.AclByObject.Add(@object, acl);
                 }
 

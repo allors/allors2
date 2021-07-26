@@ -165,6 +165,23 @@ namespace Allors.Repository
         [Indexed]
         public Organisation[] CycleMany { get; set; }
 
+        #region Allors
+        [Id("DF313FD7-2DC5-48E8-87FD-B629896E3242")]
+        [AssociationId("89481ECE-3F18-4FDA-AA60-4273DC66325B")]
+        [RoleId("E523C240-AF08-423E-B5D9-2D578C92EEC2")]
+        #endregion
+        [Workspace]
+        [Indexed]
+        public string WorkspaceField { get; set; }
+
+        #region Allors
+        [Id("06AD47A5-28F2-4AF2-96C7-4E748428B081")]
+        [AssociationId("C17A5BBE-4BF2-4497-AC16-9FA05CF7919A")]
+        [RoleId("EA35E2D7-137C-43F2-A317-4C06A1A54597")]
+        #endregion
+        [Indexed]
+        public string DatabaseOnlyField { get; set; }
+        
         #region inherited methods
         public void Delete() { }
         #endregion

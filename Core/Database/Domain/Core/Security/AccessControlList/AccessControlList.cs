@@ -18,21 +18,30 @@ namespace Allors.Domain
     public class AccessControlList : IAccessControlList
     {
         private readonly Guid classId;
+        private readonly Func<Permission, bool> deniedPermissionFilter;
 
         private AccessControl[] accessControls;
-        private HashSet<long> deniedPermissions;
+        private HashSet<long> deniedPermissionIds;
         private bool lazyLoaded;
         private PermissionCache permissionCache;
         private Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
-        internal AccessControlList(IAccessControlLists accessControlLists, IObject @object)
+        internal AccessControlList(IAccessControlLists accessControlLists, IObject @object, bool isWorkspace)
         {
+            this.deniedPermissionFilter = isWorkspace
+                ? (Func<Permission, bool>)WorkspaceDeniedPermissionFilter
+                : DatabaseDeniedPermissionFilter;
+
             this.AccessControlLists = accessControlLists;
             this.Object = (Object)@object;
             this.classId = this.Object.Strategy.Class.Id;
 
             this.lazyLoaded = false;
         }
+        
+        private static bool DatabaseDeniedPermissionFilter(Permission permission) => true;
+
+        private static bool WorkspaceDeniedPermissionFilter(Permission permission) => permission.OperandType.Workspace;
 
         public AccessControl[] AccessControls
         {
@@ -48,7 +57,7 @@ namespace Allors.Domain
             get
             {
                 this.LazyLoad();
-                return this.deniedPermissions;
+                return this.deniedPermissionIds;
             }
         }
 
@@ -79,7 +88,7 @@ namespace Allors.Domain
             {
                 if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
                 {
-                    if (this.deniedPermissions?.Contains(permissionId) == true)
+                    if (this.deniedPermissionIds?.Contains(permissionId) == true)
                     {
                         return false;
                     }
@@ -111,13 +120,13 @@ namespace Allors.Domain
                     var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
                     if (delegatedAccessDeniedPermissions != null && delegatedAccessDeniedPermissions.Length > 0)
                     {
-                        this.deniedPermissions = this.Object.DeniedPermissions.Count > 0 ?
-                                                     new HashSet<long>(this.Object.DeniedPermissions.Union(delegatedAccessDeniedPermissions).Select(v => v.Id)) :
-                                                     new HashSet<long>(delegatedAccessDeniedPermissions.Select(v => v.Id));
+                        this.deniedPermissionIds = this.Object.DeniedPermissions.Count > 0 ?
+                                                     new HashSet<long>(this.Object.DeniedPermissions.Union(delegatedAccessDeniedPermissions).Where(this.deniedPermissionFilter).Select(v => v.Id)) :
+                                                     new HashSet<long>(delegatedAccessDeniedPermissions.Where(this.deniedPermissionFilter).Select(v => v.Id));
                     }
                     else if (this.Object.DeniedPermissions.Count > 0)
                     {
-                        this.deniedPermissions = new HashSet<long>(this.Object.DeniedPermissions.Select(v => v.Id));
+                        this.deniedPermissionIds = new HashSet<long>(this.Object.DeniedPermissions.Where(this.deniedPermissionFilter).Select(v => v.Id));
                     }
                 }
                 else
@@ -126,7 +135,7 @@ namespace Allors.Domain
 
                     if (this.Object.DeniedPermissions.Count > 0)
                     {
-                        this.deniedPermissions = new HashSet<long>(this.Object.DeniedPermissions.Select(v => v.Id));
+                        this.deniedPermissionIds = new HashSet<long>(this.Object.DeniedPermissions.Where(this.deniedPermissionFilter).Select(v => v.Id));
                     }
                 }
 
