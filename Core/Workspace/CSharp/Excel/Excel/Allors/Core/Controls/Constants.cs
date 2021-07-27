@@ -15,7 +15,7 @@ namespace Application.Excel
 
         public static readonly Style ChangedStyle = new Style(Color.DeepSkyBlue, Color.Black);
 
-        public static readonly Style ReadOnlyStyle = new Style(Color.LightSalmon, Color.Black);
+        public static readonly Style ReadOnlyStyle = new Style(Color.FromArgb(253, 233, 217), Color.Black);
 
         public static readonly Style WriteStyle = new Style(Color.LightBlue, Color.Black);
     }
