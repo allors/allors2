@@ -452,6 +452,10 @@ namespace Allors.Domain
                 }
             }
 
+            if (this.PurchaseOrderState.IsCompleted && this.PurchaseOrderPaymentState.IsNotPaid && this.PurchaseOrderShipmentState.IsNa)
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Reopen, Operations.Execute));
+            }
         }
 
         public void BaseDelete(PurchaseOrderDelete method)
