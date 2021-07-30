@@ -44,7 +44,8 @@
       "@allors/promise/core": ["libs/promise/core/src/index.ts"],
       "@allors/promise/custom": ["libs/promise/custom/src/index.ts"],
       "@allors/protocol/system": ["libs/protocol/system/src/index.ts"]
-    }
+    },
+    "preserveSymlinks": true
   },
   "exclude": ["node_modules", "tmp"]
 }
