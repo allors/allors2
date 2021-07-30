@@ -31,6 +31,8 @@ export class NotificationLinkComponent implements OnInit, OnDestroy {
         return Math.round(count / 1000) + 'k';
       }
     }
+
+    return "?";
   }
 
   constructor(

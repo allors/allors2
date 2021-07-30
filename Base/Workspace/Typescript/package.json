@@ -45,6 +45,7 @@
     "@angular/router": "^12.1.0",
     "angular-calendar": "^0.28.26",
     "bootstrap": "^5.0.2",
+    "common-tags": "^1.8.0",
     "date-fns": "^2.23.0",
     "easymde": "^2.15.0",
     "jsnlog": "^2.30.0",
