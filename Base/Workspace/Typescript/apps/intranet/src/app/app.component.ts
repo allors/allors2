@@ -3,7 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-root',
+  selector: 'allors-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
