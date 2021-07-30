@@ -13,7 +13,7 @@ npm install @angular/cdk
 npm install @angular/flex-layout
 npm install @angular/material
 npm install axios
-npm install bootstrap
+npm install bootstrap@4.6.0
 npm install date-fns
 npm install easymde
 npm install gatsby-plugin-graphql-codegen

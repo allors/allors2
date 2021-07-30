@@ -11,7 +11,7 @@ npm install @angular/cdk
 npm install @angular/material
 npm install angular-calendar
 npm install common-tags
-npm install bootstrap
+npm install bootstrap@4.6.0
 npm install date-fns
 npm install easymde
 npm install jsnlog
