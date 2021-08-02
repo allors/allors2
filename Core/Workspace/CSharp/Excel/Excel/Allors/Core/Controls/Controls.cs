@@ -76,9 +76,10 @@ namespace Application.Excel
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <param name="value"></param>
-        internal void Static<T>(int row, int column, T value)
+        internal void Static<T>(int row, int column, T value, string numberFormat = null)
         {
             var cell = this.Worksheet[row, column];
+            cell.NumberFormat = numberFormat;
 
             if (!this.ControlByCell.TryGetValue(cell, out var control))
             {
