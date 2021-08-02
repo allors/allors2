@@ -4,14 +4,10 @@
     "defaultBase": "master"
   },
   "implicitDependencies": {
-    "workspace.json": "*",
     "package.json": {
       "dependencies": "*",
       "devDependencies": "*"
     },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*",
     ".eslintrc.json": "*"
   },
   "tasksRunnerOptions": {
@@ -22,14 +18,37 @@
       }
     }
   },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
   "projects": {
+    "angular-base": {
+      "tags": []
+    },
+    "angular-core": {
+      "tags": []
+    },
+    "angular-material-base": {
+      "tags": []
+    },
+    "angular-material-core": {
+      "tags": []
+    },
+    "angular-material-custom": {
+      "tags": []
+    },
+    "angular-material-services-core": {
+      "tags": []
+    },
+    "angular-services-core": {
+      "tags": []
+    },
     "data-system": {
-      "tags": []
-    },
-    "domain-system": {
-      "tags": []
-    },
-    "domain-generated": {
       "tags": []
     },
     "domain-base": {
@@ -38,40 +57,25 @@
     "domain-custom": {
       "tags": []
     },
-    "meta-system": {
+    "domain-generated": {
       "tags": []
     },
-    "meta-generated": {
-      "tags": []
-    },
-    "meta-core": {
-      "tags": []
-    },
-    "protocol-system": {
-      "tags": []
-    },
-    "angular-core": {
-      "tags": []
-    },
-    "angular-base": {
-      "tags": []
-    },
-    "angular-material-core": {
-      "tags": []
-    },
-    "angular-material-base": {
-      "tags": []
-    },
-    "angular-material-custom": {
+    "domain-system": {
       "tags": []
     },
     "intranet": {
       "tags": []
     },
-    "angular-services-core": {
+    "meta-core": {
       "tags": []
     },
-    "angular-material-services-core": {
+    "meta-generated": {
+      "tags": []
+    },
+    "meta-system": {
+      "tags": []
+    },
+    "protocol-system": {
       "tags": []
     }
   }

@@ -15,22 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@allors/meta/system": ["libs/meta/system/src/index.ts"],
-      "@allors/meta/core": ["libs/meta/core/src/index.ts"],
-      "@allors/meta/custom": ["libs/meta/custom/src/index.ts"],
-      "@allors/meta/generated": ["libs/meta/generated/src/index.ts"],
-      "@allors/protocol/system": ["libs/protocol/system/src/index.ts"],
-      "@allors/data/system": ["libs/data/system/src/index.ts"],
-      "@allors/domain/system": ["libs/domain/system/src/index.ts"],
-      "@allors/domain/custom": ["libs/domain/custom/src/index.ts"],
-      "@allors/domain/generated": ["libs/domain/generated/src/index.ts"],
-      "@allors/promise/core": ["libs/promise/core/src/index.ts"],
-      "@allors/promise/custom": ["libs/promise/custom/src/index.ts"],
       "@allors/angular/core": ["libs/angular/core/src/index.ts"],
       "@allors/angular/custom": ["libs/angular/custom/src/index.ts"],
-      "@allors/angular/services/core": [
-        "libs/angular/services/core/src/index.ts"
-      ],
       "@allors/angular/material/core": [
         "libs/angular/material/core/src/index.ts"
       ],
@@ -40,15 +26,26 @@
       "@allors/angular/material/services/core": [
         "libs/angular/material/services/core/src/index.ts"
       ],
+      "@allors/angular/services/core": [
+        "libs/angular/services/core/src/index.ts"
+      ],
+      "@allors/data/system": ["libs/data/system/src/index.ts"],
+      "@allors/domain/custom": ["libs/domain/custom/src/index.ts"],
+      "@allors/domain/generated": ["libs/domain/generated/src/index.ts"],
+      "@allors/domain/system": ["libs/domain/system/src/index.ts"],
       "@allors/gatsby/source/core": ["libs/gatsby/source/core/src/index.ts"],
-      "@allors/gatsby/source/custom": ["libs/gatsby/source/custom/src/index.ts"]
+      "@allors/gatsby/source/custom": [
+        "libs/gatsby/source/custom/src/index.ts"
+      ],
+      "@allors/meta/core": ["libs/meta/core/src/index.ts"],
+      "@allors/meta/custom": ["libs/meta/custom/src/index.ts"],
+      "@allors/meta/generated": ["libs/meta/generated/src/index.ts"],
+      "@allors/meta/system": ["libs/meta/system/src/index.ts"],
+      "@allors/promise/core": ["libs/promise/core/src/index.ts"],
+      "@allors/promise/custom": ["libs/promise/custom/src/index.ts"],
+      "@allors/protocol/system": ["libs/protocol/system/src/index.ts"]
     },
-    "preserveSymlinks": true,
-    "resolveJsonModule": true
-  },
-  "angularCompilerOptions": {
-    "strictInjectionParameters": true,
-    "strictTemplates": true
+    "preserveSymlinks": true
   },
   "exclude": ["node_modules", "tmp"]
 }

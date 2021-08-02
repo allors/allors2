@@ -106,5 +106,7 @@ export class PersonOverviewSummaryComponent extends TestScope {
         return this.mediaService.url(media);
       }
     }
+
+    return undefined;
   }
 }

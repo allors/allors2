@@ -1,21 +1,5 @@
+const { getJestProjects } = require('@nrwl/jest');
+
 module.exports = {
-  projects: [
-    '<rootDir>/libs/data/system',
-    '<rootDir>/libs/domain/system',
-    '<rootDir>/libs/domain/generated',
-    '<rootDir>/libs/domain/base',
-    '<rootDir>/libs/domain/custom',
-    '<rootDir>/libs/meta/system',
-    '<rootDir>/libs/meta/generated',
-    '<rootDir>/libs/meta/core',
-    '<rootDir>/libs/protocol/system',
-    '<rootDir>/libs/angular/core',
-    '<rootDir>/libs/angular/base',
-    '<rootDir>/libs/angular/material/core',
-    '<rootDir>/libs/angular/material/base',
-    '<rootDir>/libs/angular/material/custom',
-    '<rootDir>/apps/intranet',
-    '<rootDir>/libs/angular/services/core',
-    '<rootDir>/libs/angular/material/services/core',
-  ],
+  projects: getJestProjects(),
 };

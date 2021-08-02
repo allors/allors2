@@ -14,17 +14,19 @@ export class LoginComponent implements OnDestroy {
     userName: ['', Validators.required],
   });
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
-  constructor(private authService: AuthenticationService, private router: Router, public formBuilder: FormBuilder) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router,
+    public formBuilder: FormBuilder
+  ) {}
 
   public login() {
     const userName = this.loginForm.controls.userName.value;
     const password = this.loginForm.controls.password.value;
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription?.unsubscribe();
 
     this.subscription = this.authService.login$(userName, password).subscribe(
       (result) => {
@@ -39,8 +41,6 @@ export class LoginComponent implements OnDestroy {
   }
 
   public ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription?.unsubscribe();
   }
 }

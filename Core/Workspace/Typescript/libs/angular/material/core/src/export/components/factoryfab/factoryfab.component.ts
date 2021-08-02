@@ -14,11 +14,11 @@ import { ObjectData, ObjectService } from '@allors/angular/material/services/cor
 })
 export class FactoryFabComponent implements OnInit {
 
-  @Input() private objectType: ObjectType;
+  @Input() objectType: ObjectType;
 
-  @Input() private createData: ObjectData;
+  @Input() createData: ObjectData;
 
-  @Output() private created: EventEmitter<IObject> = new EventEmitter();
+  @Output() created: EventEmitter<IObject> = new EventEmitter();
 
   classes: ObjectType[];
 

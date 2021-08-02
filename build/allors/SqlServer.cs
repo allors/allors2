@@ -51,6 +51,12 @@ partial class SqlServer : IDisposable
 
     public void Dispose()
     {
+        try
+        {
+            this.manager.Stop();
+        }
+        catch { }
+
         this.sqlLocalDbApi?.Dispose();
 
         this.sqlLocalDbApi = null;

@@ -10,35 +10,39 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "typeRoots": ["node_modules/@types"],
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@allors/angular/base": ["libs/angular/base/src/index.ts"],
+      "@allors/angular/core": ["libs/angular/core/src/index.ts"],
+      "@allors/angular/material/base": [
+        "libs/angular/material/base/src/index.ts"
+      ],
+      "@allors/angular/material/core": [
+        "libs/angular/material/core/src/index.ts"
+      ],
+      "@allors/angular/material/custom": [
+        "libs/angular/material/custom/src/index.ts"
+      ],
+      "@allors/angular/material/services/core": [
+        "libs/angular/material/services/core/src/index.ts"
+      ],
+      "@allors/angular/services/core": [
+        "libs/angular/services/core/src/index.ts"
+      ],
       "@allors/data/system": ["libs/data/system/src/index.ts"],
-      "@allors/domain/system": ["libs/domain/system/src/index.ts"],
-      "@allors/domain/generated": ["libs/domain/generated/src/index.ts"],
       "@allors/domain/base": ["libs/domain/base/src/index.ts"],
       "@allors/domain/custom": ["libs/domain/custom/src/index.ts"],
-      "@allors/meta/system": ["libs/meta/system/src/index.ts"],
-      "@allors/meta/generated": ["libs/meta/generated/src/index.ts"],
+      "@allors/domain/generated": ["libs/domain/generated/src/index.ts"],
+      "@allors/domain/system": ["libs/domain/system/src/index.ts"],
       "@allors/meta/core": ["libs/meta/core/src/index.ts"],
-      "@allors/protocol/system": ["libs/protocol/system/src/index.ts"],
-      "@allors/angular/core": ["libs/angular/core/src/index.ts"],
-      "@allors/angular/base": ["libs/angular/base/src/index.ts"],
-      "@allors/angular/material/core": ["libs/angular/material/core/src/index.ts"],
-      "@allors/angular/material/base": ["libs/angular/material/base/src/index.ts"],
-      "@allors/angular/material/custom": ["libs/angular/material/custom/src/index.ts"],
-      "@allors/angular/services/core": ["libs/angular/services/core/src/index.ts"],
-      "@allors/angular/material/services/core": ["libs/angular/material/services/core/src/index.ts"]
+      "@allors/meta/generated": ["libs/meta/generated/src/index.ts"],
+      "@allors/meta/system": ["libs/meta/system/src/index.ts"],
+      "@allors/protocol/system": ["libs/protocol/system/src/index.ts"]
     },
-    "preserveSymlinks": true,
-    "resolveJsonModule": true
-  },
-  "angularCompilerOptions": {
-    "strictInjectionParameters": true,
-    "strictTemplates": true
+    "preserveSymlinks": true
   },
   "exclude": ["node_modules", "tmp"]
 }

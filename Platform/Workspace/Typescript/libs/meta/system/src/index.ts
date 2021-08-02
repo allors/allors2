@@ -7,6 +7,7 @@ export { PropertyType } from './PropertyType';
 export { AssociationType } from './AssociationType';
 export { RoleType } from './RoleType';
 export { MethodType } from './MethodType';
+export { MetaData } from './Data';
 
 export { assert } from './assert';
 export { humanize } from './humanize';

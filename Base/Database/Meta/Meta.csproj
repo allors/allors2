@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.9.0" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
     <PackageReference Include="StringTemplate4" Version="4.0.8" />
   </ItemGroup>
 

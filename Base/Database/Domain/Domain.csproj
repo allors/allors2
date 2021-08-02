@@ -7,8 +7,8 @@
   <ItemGroup>
     <PackageReference Include="Allors.Documents" Version="1.0.3" />
     <PackageReference Include="DataUtils.DataUrl" Version="1.0.2" />
-    <PackageReference Include="Markdig" Version="0.24.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.15" />
+    <PackageReference Include="Markdig" Version="0.25.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.17" />
     <PackageReference Include="MimeTypesMap" Version="1.0.8" />
   </ItemGroup>
 
