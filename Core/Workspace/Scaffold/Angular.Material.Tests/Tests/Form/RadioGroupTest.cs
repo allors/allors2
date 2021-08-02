@@ -25,7 +25,6 @@ namespace Tests
         }
 
         [Fact]
-        [Trait("Category", "Investigate")]
         public void Initial()
         {
             this.Driver.WaitForAngular();
@@ -46,6 +45,29 @@ namespace Tests
             var data = after.Except(before).First();
 
             Assert.Equal("one", data.RadioGroup);
+        }
+
+        [Fact]
+        public void Set()
+        {
+            this.Driver.WaitForAngular();
+
+            var before = new Datas(this.Session).Extent().ToArray();
+
+            this.page.RadioGroup.Select("two");
+
+            this.page.SAVE.Click();
+
+            this.Driver.WaitForAngular();
+            this.Session.Rollback();
+
+            var after = new Datas(this.Session).Extent().ToArray();
+
+            Assert.Equal(before.Length + 1, after.Length);
+
+            var data = after.Except(before).First();
+
+            Assert.Equal("two", data.RadioGroup);
         }
     }
 }
