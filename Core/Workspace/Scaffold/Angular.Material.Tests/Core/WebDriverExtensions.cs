@@ -17,7 +17,8 @@ namespace Components
             const string Function =
                 @"
 if(window.getAngularTestability){
-    var testability = window.getAngularTestability(document.querySelector('app-root'));
+    var app = document.querySelector('allors-root');
+    var testability = window.getAngularTestability(app);
     if(testability){
         return testability.isStable();
     }

@@ -19,7 +19,7 @@ namespace ExcelDNA
     using RestSharp.Serializers.NewtonsoftJson;
 
     [ComVisible(true)]
-    public class Ribbon : ExcelRibbon
+    public class Ribbon : ExcelRibbon, IRibbon
     {
         private RemoteDatabase database;
 
@@ -45,13 +45,13 @@ namespace ExcelDNA
                 this.AppConfig = new AppConfig();
 
                 var restClient = new RestClient(this.AppConfig.AllorsDatabaseAddress).UseNewtonsoftJson();
-                this.database = new RemoteDatabase(restClient);
+                this.database = new RemoteDatabase(() => restClient);
 
                 var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
                 var workspace = new Workspace(objectFactory);
                 this.Client = new Client(this.database, workspace);
                 this.Program = new Program(new ServiceLocator(), this.Client);
-                this.AddIn = new AddIn((InteropApplication)ExcelDnaUtil.Application, this.Program);
+                this.AddIn = new AddIn((InteropApplication)ExcelDnaUtil.Application, this.Program, this);
                 this.Authentication = new Authentication(this.Program, this.database, this.Client, this.AppConfig);
 
                 return RibbonResources.Ribbon;
@@ -76,6 +76,8 @@ namespace ExcelDNA
                 e.Handle();
             }
         }
+
+        public void Invalidate() => this.RibbonUI.Invalidate();
 
         #region Ribbon Labels
 
