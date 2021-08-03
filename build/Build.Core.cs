@@ -236,7 +236,8 @@ partial class Build
     Target CoreWorkspaceTypescriptTest => _ => _
         .DependsOn(CoreWorkspaceTypescriptDomain)
         .DependsOn(CoreWorkspaceTypescriptPromise)
-        .DependsOn(CoreWorkspaceTypescriptAngular)
+        // TODO: Koen
+        //.DependsOn(CoreWorkspaceTypescriptAngular)
         .DependsOn(CoreWorkspaceTypescriptMaterialTests);
 
     Target CoreWorkspaceCSharpTest => _ => _

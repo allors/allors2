@@ -173,6 +173,11 @@ namespace Allors.Workspace
 
         public void Set(IRoleType roleType, object value)
         {
+            if (roleType.ObjectType.IsUnit)
+            {
+                value = roleType.Normalize(value);
+            }
+
             var current = this.Get(roleType);
             if (roleType.ObjectType.IsUnit || roleType.IsOne)
             {

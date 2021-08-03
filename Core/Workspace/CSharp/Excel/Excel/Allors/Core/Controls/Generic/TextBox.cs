@@ -121,6 +121,7 @@ namespace Application.Excel
                     this.SessionObject.Set(this.RoleType, relation);
                 }
 
+                // TODO: check if role changed
                 this.Cell.Style = Constants.ChangedStyle;
             }
         }
