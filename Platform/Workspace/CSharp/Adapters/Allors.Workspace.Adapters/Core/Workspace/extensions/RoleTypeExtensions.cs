@@ -37,12 +37,7 @@ namespace Allors.Workspace
             switch (unitTypeTag)
             {
                 case UnitTags.String:
-                    if (!(unit is string))
-                    {
-                        throw new ArgumentException("RoleType is not a String.");
-                    }
-
-                    var stringUnit = (string)unit;
+                    var stringUnit = unit.ToString();
                     var size = roleType.Size;
                     if (size > -1 && stringUnit.Length > size)
                     {
