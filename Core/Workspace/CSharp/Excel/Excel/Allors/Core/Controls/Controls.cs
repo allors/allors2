@@ -157,11 +157,12 @@ namespace Application.Excel
         /// <param name="sessionObject"></param>
         /// <param name="roleType"></param>
         /// <param name="relationType"></param>
-        internal void Label(int row, int column, ISessionObject sessionObject, RoleType roleType, RoleType relationType = null)
+        internal void Label(int row, int column, ISessionObject sessionObject, RoleType roleType, RoleType relationType = null, string numberFormat = null)
         {
             if (sessionObject != null)
             {
                 var cell = this.Worksheet[row, column];
+                cell.NumberFormat = numberFormat;
 
                 if (!this.ControlByCell.TryGetValue(cell, out var control))
                 {
