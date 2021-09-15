@@ -10,14 +10,14 @@ namespace App {
 
     $translateProvider.useUrlLoader("/translation/translate");
 
-    //$translateProvider.preferredLanguage("en");
-    //$translateProvider.fallbackLanguage("en");
+    $translateProvider.preferredLanguage("en");
+    $translateProvider.fallbackLanguage("en");
 
-    //$translateProvider.registerAvailableLanguageKeys(["en"], {
-    //    'en_*': "en",
-    //});
+    $translateProvider.registerAvailableLanguageKeys(["en"], {
+      'en_*': "en",
+    });
 
-    //$translateProvider.determinePreferredLanguage();
+    $translateProvider.determinePreferredLanguage();
 
     $translateProvider.use('en');
   }

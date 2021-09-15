@@ -1,32 +1,21 @@
-namespace Allors.Meta {
-  export class RoleTypeVirtual {
-    isRequired: boolean;
-  }
+﻿namespace Allors.Meta {
+    export class RoleType {
+        name: string;
+        objectType: string;
+        isUnit: boolean;
+        isOne: boolean;
+        isRequired: boolean; 
+        
+        constructor(roleTypeData: Data.RoleType) {
+            this.name = roleTypeData.name;
+            this.objectType = roleTypeData.objectType;
+            this.isUnit = roleTypeData.isUnit;
+            this.isOne = roleTypeData.isOne;
+            this.isRequired = roleTypeData.isRequired;
+        }
 
-  export class RoleType implements PropertyType {
-    metaPopulation: MetaPopulation;
+        get isComposite() { return !this.isUnit}
 
-    overridesByClass: Map<ObjectType, RoleTypeVirtual>;
-
-    id: string;
-    objectType: ObjectType;
-    name: string;
-    singular: string;
-    plural: string;
-    isOne: boolean;
-    isDerived: boolean;
-
-    isRequired(objectType: ObjectType) {
-      const override = this.overridesByClass.get(objectType);
-      return override ? override.isRequired : this.virtual.isRequired;
+        get isMany() { return this.isComposite && !this.isOne; }
     }
-
-    constructor(public relationType: RelationType, private virtual: RoleTypeVirtual) {
-      relationType.roleType = this;
-      this.metaPopulation = relationType.metaPopulation;
-      this.overridesByClass = new Map();
-    }
-
-    get isMany(): boolean { return !this.isOne; }
-  }
 }

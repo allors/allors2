@@ -1,16 +1,11 @@
-using Microsoft.Extensions.Configuration;
-
 namespace Web.Controllers
 {
-    using Allors;
-    using Allors.Domain;
+    using Microsoft.Extensions.Configuration;
     using Allors.Services;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
+    [Route("/")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;

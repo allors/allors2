@@ -44,7 +44,7 @@ namespace Allors {
 
                 this.context
                     .save()
-                    .then((saveResponse: Protocol.PushResponse) => {
+                    .then((saveResponse: Data.PushResponse) => {
                         this.events.broadcastRefresh();
                         resolve(saveResponse);
                     })
@@ -54,15 +54,15 @@ namespace Allors {
             });
         }
 
-        invoke(method: Method): angular.IPromise<Protocol.InvokeResponse>;
-        invoke(service: string, args?: any): angular.IPromise<Protocol.InvokeResponse>;
-        invoke(methodOrService: Method | string, args?: any): angular.IPromise<Protocol.InvokeResponse> {
+        invoke(method: Method): angular.IPromise<Data.InvokeResponse>;
+        invoke(service: string, args?: any): angular.IPromise<Data.InvokeResponse>;
+        invoke(methodOrService: Method | string, args?: any): angular.IPromise<Data.InvokeResponse> {
             return this.$q((resolve, reject) => {
 
                 if (methodOrService instanceof Method) {
                     return this.context
                         .invoke(methodOrService)
-                        .then((invokeResponse: Protocol.InvokeResponse) => {
+                        .then((invokeResponse: Data.InvokeResponse) => {
                             resolve(invokeResponse);
                         })
                         .catch(e => {
@@ -72,7 +72,7 @@ namespace Allors {
                 } else {
                     return this.context
                         .invoke(methodOrService as string, args)
-                        .then((invokeResponse: Protocol.InvokeResponse) => {
+                        .then((invokeResponse: Data.InvokeResponse) => {
                             resolve(invokeResponse);
                         })
                         .catch(e => {
@@ -84,7 +84,7 @@ namespace Allors {
             });
         }
 
-        saveAndInvoke(method: Method): angular.IPromise<Protocol.InvokeResponse>;
+        saveAndInvoke(method: Method): angular.IPromise<Data.InvokeResponse>;
         saveAndInvoke(service: string, args?: any): angular.IPromise<any>;
         saveAndInvoke(methodOrService: Method | string, args?: any): angular.IPromise<any> {
             return this.$q((resolve, reject) => {
@@ -96,14 +96,14 @@ namespace Allors {
                                 .then(() => {
                                     if (methodOrService instanceof Method) {
                                         this.context.invoke(methodOrService)
-                                            .then((invokeResponse: Protocol.InvokeResponse) => {
+                                            .then((invokeResponse: Data.InvokeResponse) => {
                                                 resolve(invokeResponse);
                                             })
                                             .catch(e => reject(e))
                                             .finally(() => this.events.broadcastRefresh());
                                     } else {
                                         this.context.invoke(methodOrService as string, args)
-                                            .then((invokeResponse: Protocol.InvokeResponse) => {
+                                            .then((invokeResponse: Data.InvokeResponse) => {
                                                 resolve(invokeResponse);
                                             })
                                             .catch(e => reject(e))

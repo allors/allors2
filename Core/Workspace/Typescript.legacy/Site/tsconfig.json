@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "outFile": "wwwroot/tsc.js",
+    "outFile": "./wwwroot/tsc.js",
     "module": "none",
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es2015",
     "downlevelIteration": true,
     "sourceMap": true,
     "typeRoots": [

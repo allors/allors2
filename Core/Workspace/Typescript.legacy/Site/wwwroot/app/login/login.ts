@@ -9,7 +9,7 @@ module App.General.Tasks {
         static $inject = ["$http", "$state", "$scope", "allorsService", "$cookies"];
         constructor(public $http: ng.IHttpService, public $state: angular.ui.IStateService, public $scope: ng.IScope, public allors: Services.AllorsService, $cookies: angular.cookies.ICookiesService) {
 
-            const authenticationUrl = this.allors.baseUrl + "TestAuthentication/Token";
+            const authenticationUrl = this.allors.baseUrl + "/TestAuthentication/Token";
             let cookieName = "autoLogin";
 
             var username = $cookies.get(cookieName);
@@ -53,7 +53,7 @@ module App.General.Tasks {
 
         login() {
 
-            const authenticationUrl = this.allors.baseUrl + "TestAuthentication/Token";
+            const authenticationUrl = this.allors.baseUrl + "/TestAuthentication/Token";
 
             return this.$http
                 .post(authenticationUrl, { 'UserName': this.user, 'Password': this.password })

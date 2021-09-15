@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +20,18 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\Core\Angular\components\bootstrap\registerTemplates.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\bootstrap\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\bootstrap\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\bootstrap\js\bootstrap.js" />
+    <None Include="wwwroot\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\bootstrap\js\npm.js" />
   </ItemGroup>
 
   <ItemGroup>

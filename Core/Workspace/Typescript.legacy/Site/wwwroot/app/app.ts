@@ -1,16 +1,15 @@
-module App
-{
-    angular.module("app",
+namespace App {
+  angular.module("app",
     [
-        "allors", 
+      "allors",
 
-        // Angular
-        "ngSanitize", "ngAnimate", "ngCookies", "ngMessages",
+      // Angular
+      "ngSanitize", "ngAnimate", "ngCookies", "ngMessages",
 
-        // Angular UI
-        "ui.router", "ui.bootstrap", "ui.select",
+      // Angular UI
+      "ui.router", "ui.bootstrap", "ui.select",
 
-        // Third Party
-        "pascalprecht.translate", "toastr", "angular-loading-bar", "blockUI"
+      // Third Party
+      "pascalprecht.translate", "toastr", "angular-loading-bar", "blockUI"
     ]);
 }

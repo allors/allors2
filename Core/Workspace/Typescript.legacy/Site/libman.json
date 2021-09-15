@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "angular.js@1.8.2",
+      "destination": "wwwroot/lib/angular.js/"
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "angular-ui-select@0.19.8",
+      "destination": "wwwroot/lib/angular-ui-select/"
+    },
+    {
+      "library": "angular-block-ui@0.2.2",
+      "destination": "wwwroot/lib/angular-block-ui/"
+    },
+    {
+      "library": "angular-toastr@2.1.1",
+      "destination": "wwwroot/lib/angular-toastr/"
+    },
+    {
+      "library": "angular-loading-bar@0.9.0",
+      "destination": "wwwroot/lib/angular-loading-bar/"
+    },
+    {
+      "library": "jquery@3.6.0",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "lodash.js@4.17.21",
+      "destination": "wwwroot/lib/lodash.js/"
+    },
+    {
+      "library": "moment.js@2.29.1",
+      "destination": "wwwroot/lib/moment.js/"
+    },
+    {
+      "library": "jsnlog@2.30.0",
+      "destination": "wwwroot/lib/jsnlog/"
+    },
+    {
+      "library": "angular-cookies@1.8.2",
+      "destination": "wwwroot/lib/angular-cookies/"
+    },
+    {
+      "library": "angular-animate@1.8.2",
+      "destination": "wwwroot/lib/angular-animate/"
+    },
+    {
+      "library": "angular-sanitize@1.8.2",
+      "destination": "wwwroot/lib/angular-sanitize/"
+    },
+    {
+      "library": "angular-ui-bootstrap@2.5.6",
+      "destination": "wwwroot/lib/angular-ui-bootstrap/"
+    },
+    {
+      "library": "angular-ui-router@1.0.29",
+      "destination": "wwwroot/lib/angular-ui-router/"
+    },
+    {
+      "library": "angular-messages@1.8.2",
+      "destination": "wwwroot/lib/angular-messages/"
+    },
+    {
+      "library": "angular-translate@2.19.0",
+      "destination": "wwwroot/lib/angular-translate/"
+    },
+    {
+      "library": "angular-translate-loader-url@2.19.0",
+      "destination": "wwwroot/lib/angular-translate-loader-url/"
+    }
+  ]
+}

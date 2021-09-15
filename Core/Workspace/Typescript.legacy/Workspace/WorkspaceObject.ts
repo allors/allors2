@@ -1,4 +1,4 @@
-﻿namespace Allors {
+namespace Allors {
     export interface IWorkspaceObject {
         id: string;
         version: string;
@@ -34,7 +34,7 @@
             this.roles = {};
             this.methods = {};
 
-            var objectType = this.workspace.objectTypeByName[this.t];
+            var objectType = this.workspace.objectTypeById[this.t];
 
             _.forEach(loadObject.roles, role => {
                 var [name, access] = role;

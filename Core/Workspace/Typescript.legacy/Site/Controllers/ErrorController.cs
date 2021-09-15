@@ -2,12 +2,11 @@ namespace Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
 
+    [Route("/error")]
     public class ErrorController : Controller
     {
-        public ActionResult Index()
-        {
+        public ActionResult Index() =>
             // TODO: Log to the database
-            return this.View();
-        }
+            this.View();
     }
 }
