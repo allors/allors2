@@ -98,6 +98,8 @@ namespace Allors.Domain
         {
             if (!@this.CanInvoice)
             {
+                @this.AddRestriction(NonInvoiceableRestriction);
+
                 @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
             }
             else

@@ -9,6 +9,6 @@ namespace Allors.Domain
 
     public static partial class ObjectStateExtensions
     {
-        public static void CoreOnPostBuild(this ObjectState @this, ObjectOnPostBuild method) => ((ObjectStateDerivedRoles)@this).ObjectRestriction = new RestrictionBuilder(@this.Session()).WithUniqueId(Guid.NewGuid()).Build();
+        public static void CoreOnPostBuild(this ObjectState @this, ObjectOnPostBuild method) => @this.ObjectRestriction = new RestrictionBuilder(@this.Session()).WithUniqueId(Guid.NewGuid()).Build();
     }
 }

@@ -12,15 +12,6 @@ namespace Allors.Repository
     public partial interface Object
     {
         #region Allors
-        [Id("E989F7D2-A4AC-43D8-AC7C-CBCDA2CFB6D3")]
-        [AssociationId("3DFE89DB-321B-44D0-88ED-CB1A0179C860")]
-        [RoleId("696EFAFC-8DDB-4EA1-ABF1-6E53F822F2F7")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        Restriction[] Restrictions { get; set; }
-
-        #region Allors
         [Id("b816fccd-08e0-46e0-a49c-7213c3604416")]
         [AssociationId("1739db0d-fe6b-42e1-a6a5-286536ff4f56")]
         [RoleId("9f722315-385a-42ab-b84e-83063b0e5b0d")]
@@ -28,6 +19,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         SecurityToken[] SecurityTokens { get; set; }
+
+        #region Allors
+        [Id("E989F7D2-A4AC-43D8-AC7C-CBCDA2CFB6D3")]
+        [AssociationId("3DFE89DB-321B-44D0-88ED-CB1A0179C860")]
+        [RoleId("696EFAFC-8DDB-4EA1-ABF1-6E53F822F2F7")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Derived]
+        Restriction[] Restrictions { get; set; }
 
         #region Allors
         [Id("FDD32313-CF62-4166-9167-EF90BE3A3C75")]

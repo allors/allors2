@@ -16,7 +16,7 @@ namespace Allors.Domain
             }
             else
             {
-                var toggleRestriction = new Organisations(this.strategy.Session).ToggleRestriction;
+                var toggleRestriction = new Restrictions(this.strategy.Session).ToggleRestriction;
                 this.AddRestriction(toggleRestriction);
             }
 

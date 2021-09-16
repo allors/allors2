@@ -41,7 +41,7 @@ namespace Allors.Domain
             }
 
             // Update security
-            @this.Restrictions = @this.ObjectStates.SelectMany(v => v.Restrictions).ToArray();
+            ((TransitionalDerivedRoles)@this).Restrictions = @this.ObjectStates.Select(v => v.ObjectRestriction).ToArray();
         }
 
         public static bool HasChangedStates(this Transitional @this) =>

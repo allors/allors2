@@ -272,7 +272,7 @@ namespace Tests
                 var restriction = new RestrictionBuilder(this.Session).WithUniqueId(Guid.NewGuid())
                     .WithDeniedPermission(readOrganisationName).Build();
 
-                organisation.AddRestriction(restriction);
+                ((OrganisationDerivedRoles)organisation).AddRestriction(restriction);
 
                 acl = new AccessControlLists(person)[organisation];
 

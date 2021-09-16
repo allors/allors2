@@ -113,7 +113,7 @@ namespace Allors.Domain
             foreach (Role role in this.session.Extent<Role>())
             {
                 role.RemovePermissions();
-                role.RemoveRestrictions();
+                ((RoleDerivedRoles)role).RemoveRestrictions();
             }
 
             this.OnPreSetup();

@@ -20,7 +20,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Derived]
         Restriction ObjectRestriction { get; set; }
 
         #region Allors
