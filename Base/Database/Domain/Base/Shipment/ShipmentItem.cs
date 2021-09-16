@@ -29,9 +29,9 @@ namespace Allors.Domain
                 method.SecurityTokens = this.SyncedShipment?.SecurityTokens.ToArray();
             }
 
-            if (method.DeniedPermissions == null)
+            if (method.Restrictions == null)
             {
-                method.DeniedPermissions = this.SyncedShipment?.DeniedPermissions.ToArray();
+                method.Restrictions = this.SyncedShipment?.Restrictions.ToArray();
             }
         }
 

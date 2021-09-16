@@ -10,30 +10,20 @@ namespace Allors.Domain
     {
         public void CustomToggleCanWrite(OrganisationToggleCanWrite method)
         {
-            if (this.DeniedPermissions.Count != 0)
+            if (this.ExistRestrictions)
             {
-                this.RemoveDeniedPermissions();
+                this.RemoveRestrictions();
             }
             else
             {
-                var permissions = new Permissions(this.strategy.Session);
-                var deniedPermissions = new[]
-                                            {
-                                                permissions.Get(this.Meta.Class, this.Meta.Name, Operations.Write),
-                                                permissions.Get(this.Meta.Class, this.Meta.Owner, Operations.Write),
-                                                permissions.Get(this.Meta.Class, this.Meta.Employees, Operations.Write),
-                                            };
-
-                this.DeniedPermissions = deniedPermissions;
+                var toggleRestriction = new Organisations(this.strategy.Session).ToggleRestriction;
+                this.AddRestriction(toggleRestriction);
             }
 
             this.Address = this.MainAddress;
         }
 
-        public void CustomJustDoIt(OrganisationJustDoIt method)
-        {
-            this.JustDidIt = true;
-        }
+        public void CustomJustDoIt(OrganisationJustDoIt method) => this.JustDidIt = true;
 
         public override string ToString() => this.Name;
     }

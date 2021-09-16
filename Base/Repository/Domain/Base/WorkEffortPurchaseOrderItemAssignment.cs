@@ -13,7 +13,7 @@ namespace Allors.Repository
     public partial class WorkEffortPurchaseOrderItemAssignment : Deletable, DelegatedAccessControlledObject
     {
         #region inherited properties
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

@@ -23,7 +23,7 @@ namespace Allors.Repository
 
         public PrintDocument PrintDocument { get; set; }
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

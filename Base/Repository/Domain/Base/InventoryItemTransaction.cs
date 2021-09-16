@@ -15,7 +15,7 @@ namespace Allors.Repository
     public partial class InventoryItemTransaction : Commentable, Deletable
     {
         #region inherited properties
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

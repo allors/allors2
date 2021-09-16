@@ -12,13 +12,13 @@ namespace Allors.Repository
     public partial interface Object
     {
         #region Allors
-        [Id("5c70ca14-4601-4c65-9b0d-cb189f90be27")]
-        [AssociationId("267053f0-43b4-4cc7-a0e2-103992b2d0c5")]
-        [RoleId("867765fa-49dc-462f-b430-3c0e264c5283")]
+        [Id("E989F7D2-A4AC-43D8-AC7C-CBCDA2CFB6D3")]
+        [AssociationId("3DFE89DB-321B-44D0-88ED-CB1A0179C860")]
+        [RoleId("696EFAFC-8DDB-4EA1-ABF1-6E53F822F2F7")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        Permission[] DeniedPermissions { get; set; }
+        Restriction[] Restrictions { get; set; }
 
         #region Allors
         [Id("b816fccd-08e0-46e0-a49c-7213c3604416")]

@@ -15,7 +15,7 @@ namespace Allors.Repository
     public partial class PersonVersion : PartyVersion
     {
         #region inherited properties
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

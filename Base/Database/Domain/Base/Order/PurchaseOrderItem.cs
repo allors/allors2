@@ -72,9 +72,9 @@ namespace Allors.Domain
                 method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
             }
 
-            if (method.DeniedPermissions == null)
+            if (method.Restrictions == null)
             {
-                method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+                method.Restrictions = this.SyncedOrder?.Restrictions.ToArray();
             }
         }
 

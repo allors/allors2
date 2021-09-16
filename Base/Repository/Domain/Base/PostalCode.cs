@@ -17,7 +17,7 @@ namespace Allors.Repository
         #region inherited properties
         public Country Country { get; set; }
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

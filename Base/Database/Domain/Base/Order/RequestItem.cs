@@ -35,9 +35,9 @@ namespace Allors.Domain
                 method.SecurityTokens = this.SyncedRequest?.SecurityTokens.ToArray();
             }
 
-            if (method.DeniedPermissions == null)
+            if (method.Restrictions == null)
             {
-                method.DeniedPermissions = this.SyncedRequest?.DeniedPermissions.ToArray();
+                method.Restrictions = this.SyncedRequest?.Restrictions.ToArray();
             }
         }
 

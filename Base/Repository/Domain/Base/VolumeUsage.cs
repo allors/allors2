@@ -17,7 +17,7 @@ namespace Allors.Repository
         #region inherited properties
         public TimeFrequency Frequency { get; set; }
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

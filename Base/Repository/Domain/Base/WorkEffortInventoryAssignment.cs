@@ -15,7 +15,7 @@ namespace Allors.Repository
     public partial class WorkEffortInventoryAssignment : Versioned, Deletable, DelegatedAccessControlledObject
     {
         #region inherited properties
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

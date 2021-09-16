@@ -22,7 +22,7 @@ namespace Allors.Repository
 
         public ContactMechanismType ContactMechanismType { get; set; }
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

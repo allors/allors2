@@ -21,7 +21,7 @@ namespace Allors.Repository
 
         public AccessControl OwnerAccessControl { get; set; }
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

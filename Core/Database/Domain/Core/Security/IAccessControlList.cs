@@ -15,7 +15,7 @@ namespace Allors.Domain
     {
         AccessControl[] AccessControls { get; }
 
-        HashSet<long> DeniedPermissionIds { get; }
+        Restriction[] Restrictions { get; }
 
         Object Object { get; }
 

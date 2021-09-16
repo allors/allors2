@@ -23,7 +23,7 @@ namespace Allors.Repository
 
         public double Longitude { get; set; }
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

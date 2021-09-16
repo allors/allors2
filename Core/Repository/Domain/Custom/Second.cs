@@ -35,7 +35,7 @@ namespace Allors.Repository
 
         #region inherited methods
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

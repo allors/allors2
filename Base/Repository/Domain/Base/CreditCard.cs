@@ -15,7 +15,7 @@ namespace Allors.Repository
         #region inherited properties
         public FinancialAccountTransaction[] FinancialAccountTransactions { get; set; }
 
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 

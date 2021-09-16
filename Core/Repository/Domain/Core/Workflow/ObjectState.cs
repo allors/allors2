@@ -14,13 +14,14 @@ namespace Allors.Repository
     public partial interface ObjectState : UniquelyIdentifiable
     {
         #region Allors
-        [Id("59338f0b-40e7-49e8-ba1a-3ecebf96aebe")]
-        [AssociationId("fca0f3f6-bdd6-4405-93b3-35dd769bff0e")]
-        [RoleId("c338f087-559c-4239-9c6a-1f691e58ed16")]
+        [Id("913C994F-15B0-40D2-AC4F-81E362B9142C")]
+        [AssociationId("EB17BE96-C9EA-4312-B358-47203F3062B5")]
+        [RoleId("943036A4-9A1A-4C9B-9351-6E63FAA9FE9F")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        Permission[] ObjectDeniedPermissions { get; set; }
+        [Derived]
+        Restriction ObjectRestriction { get; set; }
 
         #region Allors
         [Id("b86f9e42-fe10-4302-ab7c-6c6c7d357c39")]

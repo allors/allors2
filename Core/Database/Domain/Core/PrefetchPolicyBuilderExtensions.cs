@@ -39,7 +39,7 @@ namespace Allors
             {
                 var builder = new PrefetchPolicyBuilder()
                     .WithRule(MetaObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy)
-                    .WithRule(MetaObject.Instance.DeniedPermissions)
+                    .WithRule(MetaObject.Instance.Restrictions)
                     .Build();
 
                 var delegatedAccessRoleTypes = @class.DelegatedAccessRoleTypes;
@@ -50,7 +50,7 @@ namespace Allors
             }
 
             @this.WithRule(MetaObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy);
-            @this.WithRule(MetaObject.Instance.DeniedPermissions);
+            @this.WithRule(MetaObject.Instance.Restrictions);
         }
     }
 }

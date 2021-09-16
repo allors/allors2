@@ -16,51 +16,51 @@ namespace Tests
     {
         public override Config Config => new Config { SetupSecurity = true };
 
-        [Fact]
-        public void GivenAWorkspaceAccessControlListsThenADatabaseDeniedPermissionsIsNotPresent()
-        {
-            var administrator = new PersonBuilder(this.Session).WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
+        //[Fact]
+        //public void GivenAWorkspaceAccessControlListsThenADatabaseDeniedPermissionsIsNotPresent()
+        //{
+        //    var administrator = new PersonBuilder(this.Session).WithUserName("administrator").Build();
+        //    var administrators = new UserGroups(this.Session).Administrators;
+        //    administrators.AddMember(administrator);
 
-            this.Session.Derive();
-            this.Session.Commit();
+        //    this.Session.Derive();
+        //    this.Session.Commit();
 
-            var databaseOnlyPermissions = new Permissions(this.Session).Extent().Where(v => v.OperandType.Equals(M.Person.DatabaseOnlyField));
-            var databaseOnlyReadPermission = databaseOnlyPermissions.First(v => v.Operation == Operations.Read);
+        //    var databaseOnlyPermissions = new Permissions(this.Session).Extent().Where(v => v.OperandType.Equals(M.Person.DatabaseOnlyField));
+        //    var databaseOnlyReadPermission = databaseOnlyPermissions.First(v => v.Operation == Operations.Read);
 
-            administrator.AddDeniedPermission(databaseOnlyReadPermission);
+        //    administrator.AddDeniedPermission(databaseOnlyReadPermission);
 
-            var workspaceAccessControlLists = new WorkspaceAccessControlLists(administrator);
-            var acl = workspaceAccessControlLists[administrator];
+        //    var workspaceAccessControlLists = new WorkspaceAccessControlLists(administrator);
+        //    var acl = workspaceAccessControlLists[administrator];
 
-            var deniedWorkspacePermissions = acl.DeniedPermissionIds;
+        //    var deniedWorkspacePermissions = acl.DeniedPermissionIds;
 
-            Assert.DoesNotContain(databaseOnlyReadPermission.Id, deniedWorkspacePermissions);
-        }
+        //    Assert.DoesNotContain(databaseOnlyReadPermission.Id, deniedWorkspacePermissions);
+        //}
 
-        [Fact]
-        public void GivenAWorkspaceAccessControlListsThenAWorkspaceDeniedPermissionsIsNotPresent()
-        {
-            var administrator = new PersonBuilder(this.Session).WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
+        //[Fact]
+        //public void GivenAWorkspaceAccessControlListsThenAWorkspaceDeniedPermissionsIsNotPresent()
+        //{
+        //    var administrator = new PersonBuilder(this.Session).WithUserName("administrator").Build();
+        //    var administrators = new UserGroups(this.Session).Administrators;
+        //    administrators.AddMember(administrator);
 
-            this.Session.Derive();
-            this.Session.Commit();
+        //    this.Session.Derive();
+        //    this.Session.Commit();
 
-            var workspacePermissions = new Permissions(this.Session).Extent().Where(v => v.OperandType.Equals(M.Person.WorkspaceField));
-            var workspaceReadPermission = workspacePermissions.First(v => v.Operation == Operations.Read);
+        //    var workspacePermissions = new Permissions(this.Session).Extent().Where(v => v.OperandType.Equals(M.Person.WorkspaceField));
+        //    var workspaceReadPermission = workspacePermissions.First(v => v.Operation == Operations.Read);
 
-            administrator.AddDeniedPermission(workspaceReadPermission);
+        //    administrator.AddDeniedPermission(workspaceReadPermission);
 
-            var workspaceAccessControlLists = new WorkspaceAccessControlLists(administrator);
-            var acl = workspaceAccessControlLists[administrator];
+        //    var workspaceAccessControlLists = new WorkspaceAccessControlLists(administrator);
+        //    var acl = workspaceAccessControlLists[administrator];
 
-            var deniedWorkspacePermissions = acl.DeniedPermissionIds;
+        //    var deniedWorkspacePermissions = acl.DeniedPermissionIds;
 
-            Assert.Contains(workspaceReadPermission.Id, deniedWorkspacePermissions);
-        }
+        //    Assert.Contains(workspaceReadPermission.Id, deniedWorkspacePermissions);
+        //}
 
         private Permission FindPermission(ObjectType objectType, RoleType roleType, Operations operation)
         {

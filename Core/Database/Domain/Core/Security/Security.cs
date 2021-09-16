@@ -113,7 +113,7 @@ namespace Allors.Domain
             foreach (Role role in this.session.Extent<Role>())
             {
                 role.RemovePermissions();
-                role.RemoveDeniedPermissions();
+                role.RemoveRestrictions();
             }
 
             this.OnPreSetup();
@@ -156,7 +156,7 @@ namespace Allors.Domain
                 {
                     foreach (var dictionaryEntry in permissionByOperandType)
                     {
-                        objectState.AddDeniedPermission(dictionaryEntry.Value);
+                        objectState.ObjectRestriction.AddDeniedPermission(dictionaryEntry.Value);
                     }
                 }
             }
@@ -172,7 +172,7 @@ namespace Allors.Domain
                 {
                     if (deniablePermissionByOperandTypeId.TryGetValue(operandType.Id, out var permission))
                     {
-                        objectState.AddDeniedPermission(permission);
+                        objectState.ObjectRestriction.AddDeniedPermission(permission);
                     }
                 }
             }
@@ -206,7 +206,7 @@ namespace Allors.Domain
                 {
                     foreach (var dictionaryEntry in permissionByOperandType.Where(v => !excepts.Contains(v.Key)))
                     {
-                        objectState.AddDeniedPermission(dictionaryEntry.Value);
+                        objectState.ObjectRestriction.AddDeniedPermission(dictionaryEntry.Value);
                     }
                 }
             }

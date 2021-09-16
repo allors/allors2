@@ -41,7 +41,7 @@ namespace Allors.Domain
             }
 
             // Update security
-            @this.DeniedPermissions = @this.ObjectStates.SelectMany(v => v.DeniedPermissions).ToArray();
+            @this.Restrictions = @this.ObjectStates.SelectMany(v => v.Restrictions).ToArray();
         }
 
         public static bool HasChangedStates(this Transitional @this) =>

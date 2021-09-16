@@ -5,10 +5,12 @@
 
 namespace Tests
 {
+    using System;
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;
+    using Object = Allors.Domain.Object;
 
     public class AccessControlListTests : DomainTest
     {
@@ -237,7 +239,7 @@ namespace Tests
         }
 
         [Fact]
-        public void DeniedPermissions()
+        public void Restrictions()
         {
             var readOrganisationName = this.FindPermission(M.Organisation.Name, Operations.Read);
             var databaseRole = new RoleBuilder(this.Session).WithName("Role").WithPermission(readOrganisationName).Build();
@@ -267,7 +269,10 @@ namespace Tests
 
                 Assert.True(acl.CanRead(M.Organisation.Name));
 
-                organisation.AddDeniedPermission(readOrganisationName);
+                var restriction = new RestrictionBuilder(this.Session).WithUniqueId(Guid.NewGuid())
+                    .WithDeniedPermission(readOrganisationName).Build();
+
+                organisation.AddRestriction(restriction);
 
                 acl = new AccessControlLists(person)[organisation];
 

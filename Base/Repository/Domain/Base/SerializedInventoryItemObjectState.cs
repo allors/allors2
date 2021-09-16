@@ -15,11 +15,11 @@ namespace Allors.Repository
     public partial class SerialisedInventoryItemObjectState : ObjectState
     {
         #region inherited properties
-        public Permission[] DeniedPermissions { get; set; }
+        public Restriction[] Restrictions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public Permission[] ObjectDeniedPermissions { get; set; }
+        public Restriction ObjectRestriction { get; set; }
 
         public string Name { get; set; }
 
