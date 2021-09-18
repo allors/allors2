@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             if (this.ExistFrom && this.ExistInternalOrganisation && !this.ExistTo)
             {
-                var acl = new AccessControlLists(session.GetUser())[this.From];
+                var acl = new DatabaseAccessControlLists(session.GetUser())[this.From];
                 if (!acl.CanExecute(M.SalesOrder.DoTransfer))
                 {
                     derivation.Validation.AddError(this, this.Meta.To, "No rights to transfer salesorder");

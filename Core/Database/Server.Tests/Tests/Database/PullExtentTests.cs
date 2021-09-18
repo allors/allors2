@@ -75,7 +75,7 @@ namespace Allors.Server.Tests
 
             var @object = objects[0];
 
-            var acls = new AccessControlLists(this.Administrator);
+            var acls = new DatabaseAccessControlLists(this.Administrator);
             var acl = acls[data];
 
             Assert.Equal(4, @object.Length);
@@ -191,7 +191,7 @@ namespace Allors.Server.Tests
 
             var @object = objects[0];
 
-            var acls = new AccessControlLists(this.Administrator);
+            var acls = new DatabaseAccessControlLists(this.Administrator);
             var acl = acls[data];
 
             Assert.Equal(3, @object.Length);
@@ -246,7 +246,7 @@ namespace Allors.Server.Tests
 
             var @object = objects[0];
 
-            var acls = new AccessControlLists(this.Administrator);
+            var acls = new DatabaseAccessControlLists(this.Administrator);
             var acl = acls[data];
 
             Assert.Equal(3, @object.Length);

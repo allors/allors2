@@ -33,7 +33,7 @@ namespace Tests
             var acs = new AccessControls(this.Session).Extent().Where(v => v.EffectiveUsers.Contains(administrator));
             var acs2 = new AccessControls(this.Session).Extent().Where(v => v.SubjectGroups.Contains(administrators));
 
-            var acl = new AccessControlLists(administrator)[accessClass];
+            var acl = new DatabaseAccessControlLists(administrator)[accessClass];
             Assert.True(acl.CanRead(M.AccessClass.Property));
             Assert.True(acl.CanWrite(M.AccessClass.Property));
 
@@ -54,7 +54,7 @@ namespace Tests
             this.Session.Commit();
 
             // Use default security from Singleton
-            var acl = new AccessControlLists(administrator)[accessClass];
+            var acl = new DatabaseAccessControlLists(administrator)[accessClass];
             Assert.True(acl.CanRead(M.AccessClass.Property));
             Assert.True(acl.CanWrite(M.AccessClass.Property));
 

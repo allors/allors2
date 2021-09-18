@@ -516,7 +516,7 @@ namespace Allors.Domain
             this.Session.Commit();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Created, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
 
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Delete));
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Cancel));
@@ -551,7 +551,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
         }
@@ -599,7 +599,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
 
             Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
@@ -636,7 +636,7 @@ namespace Allors.Domain
             this.order.Send();
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Sent, item.PurchaseOrderItemState);
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.QuickReceive));
@@ -673,7 +673,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Cancelled, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
         }
@@ -709,7 +709,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Cancelled, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
@@ -743,7 +743,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Rejected, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
         }
@@ -778,7 +778,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Rejected, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
@@ -816,7 +816,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Completed, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -856,7 +856,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.True(item.PurchaseOrderItemShipmentState.IsReceived);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.QuickReceive));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
@@ -893,7 +893,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Finished, item.PurchaseOrderItemState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
@@ -942,7 +942,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
-            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanWrite(M.PurchaseOrderItem.Part));
         }
 

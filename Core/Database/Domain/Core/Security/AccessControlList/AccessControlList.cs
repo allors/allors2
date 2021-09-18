@@ -8,7 +8,6 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using Allors;
     using Allors.Meta;
 
@@ -17,6 +16,7 @@ namespace Allors.Domain
     /// </summary>
     public class AccessControlList : IAccessControlList
     {
+        private readonly bool isWorkspace;
         private readonly Guid classId;
 
         private AccessControl[] accessControls;
@@ -26,8 +26,9 @@ namespace Allors.Domain
         private PermissionCache permissionCache;
         private Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
-        internal AccessControlList(IAccessControlLists accessControlLists, IObject @object)
+        internal AccessControlList(IAccessControlLists accessControlLists, IObject @object, bool isWorkspace)
         {
+            this.isWorkspace = isWorkspace;
             this.AccessControlLists = accessControlLists;
             this.Object = (Object)@object;
             this.classId = this.Object.Strategy.Class.Id;
@@ -101,6 +102,7 @@ namespace Allors.Domain
                 var session = strategy.Session;
 
                 SecurityToken[] securityTokens;
+                IEnumerable<Restriction> unfilterdRestrictions = null;
                 if (this.Object is DelegatedAccessControlledObject controlledObject)
                 {
                     var delegatedAccess = controlledObject.DelegateAccess();
@@ -113,13 +115,13 @@ namespace Allors.Domain
                     var delegatedAccessRestrictions = delegatedAccess.Restrictions;
                     if (delegatedAccessRestrictions != null && delegatedAccessRestrictions.Length > 0)
                     {
-                        this.restrictions = this.Object.Restrictions.Count > 0 ?
-                                                     this.Object.Restrictions.Union(delegatedAccessRestrictions).ToArray() :
+                        unfilterdRestrictions = this.Object.Restrictions.Count > 0 ?
+                                                     this.Object.Restrictions.Union(delegatedAccessRestrictions) :
                                                      delegatedAccessRestrictions;
                     }
                     else if (this.Object.Restrictions.Count > 0)
                     {
-                        this.restrictions = this.Object.Restrictions;
+                        unfilterdRestrictions = this.Object.Restrictions;
                     }
                 }
                 else
@@ -128,7 +130,7 @@ namespace Allors.Domain
 
                     if (this.Object.Restrictions.Count > 0)
                     {
-                        this.restrictions = this.Object.Restrictions;
+                        unfilterdRestrictions = this.Object.Restrictions;
                     }
                 }
 
@@ -144,6 +146,15 @@ namespace Allors.Domain
                     .Distinct()
                     .Where(this.AccessControlLists.EffectivePermissionIdsByAccessControl.ContainsKey)
                     .ToArray();
+
+                if (this.isWorkspace)
+                {
+                    this.restrictions = unfilterdRestrictions != null ? unfilterdRestrictions.Where(v => v.IsWorkspace).ToArray() : Array.Empty<Restriction>();
+                }
+                else
+                {
+                    this.restrictions = unfilterdRestrictions != null ? unfilterdRestrictions.ToArray() : Array.Empty<Restriction>();
+                }
 
                 this.permissionCache = session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(session));
                 this.permissionIdByOperationByOperandTypeId = this.permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[this.classId];

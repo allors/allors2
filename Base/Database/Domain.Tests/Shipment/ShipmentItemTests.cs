@@ -72,7 +72,7 @@ namespace Allors.Domain
             shipment.Pick();
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[shipmentItem];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[shipmentItem];
             Assert.Equal(new ShipmentItemStates(this.Session).Picking, shipmentItem.ShipmentItemState);
             Assert.False(acl.CanExecute(M.ShipmentItem.Delete));
 
@@ -82,7 +82,7 @@ namespace Allors.Domain
             pickList.SetPicked();
             this.Session.Derive();
 
-            acl = new AccessControlLists(this.Session.GetUser())[shipmentItem];
+            acl = new DatabaseAccessControlLists(this.Session.GetUser())[shipmentItem];
             Assert.Equal(new ShipmentItemStates(this.Session).Picked, shipmentItem.ShipmentItemState);
             Assert.False(acl.CanExecute(M.ShipmentItem.Delete));
 
@@ -99,14 +99,14 @@ namespace Allors.Domain
             shipment.SetPacked();
             this.Session.Derive();
 
-            acl = new AccessControlLists(this.Session.GetUser())[shipmentItem];
+            acl = new DatabaseAccessControlLists(this.Session.GetUser())[shipmentItem];
             Assert.Equal(new ShipmentItemStates(this.Session).Packed, shipmentItem.ShipmentItemState);
             Assert.False(acl.CanExecute(M.ShipmentItem.Delete));
 
             shipment.Ship();
             this.Session.Derive();
 
-            acl = new AccessControlLists(this.Session.GetUser())[shipmentItem];
+            acl = new DatabaseAccessControlLists(this.Session.GetUser())[shipmentItem];
             Assert.Equal(new ShipmentItemStates(this.Session).Shipped, shipmentItem.ShipmentItemState);
             Assert.False(acl.CanExecute(M.ShipmentItem.Delete));
         }

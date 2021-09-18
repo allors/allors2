@@ -65,7 +65,7 @@ namespace Commands
                 var jane = people.FindBy(M.Person.FirstName, "jane");
                 var john = people.FindBy(M.Person.FirstName, "john");
 
-                var acls = new AccessControlLists(jane);
+                var acls = new DatabaseAccessControlLists(jane);
                 var acl = acls[john];
 
                 var accessControl = acl.AccessControls.Single();

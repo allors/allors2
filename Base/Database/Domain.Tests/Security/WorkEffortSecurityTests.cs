@@ -30,7 +30,7 @@ namespace Allors.Domain
             User user = this.Administrator;
             this.Session.SetUser(user);
 
-            var acl = new AccessControlLists(this.Administrator)[workTask];
+            var acl = new DatabaseAccessControlLists(this.Administrator)[workTask];
             Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
             Assert.False(acl.CanExecute(M.WorkEffort.Complete));
@@ -57,7 +57,7 @@ namespace Allors.Domain
             User user = this.Administrator;
             this.Session.SetUser(user);
 
-            var acl = new AccessControlLists(this.Administrator)[workTask];
+            var acl = new DatabaseAccessControlLists(this.Administrator)[workTask];
             Assert.True(acl.CanExecute(M.WorkEffort.Invoice));
             Assert.False(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
@@ -112,7 +112,7 @@ namespace Allors.Domain
             User user = this.Administrator;
             this.Session.SetUser(user);
 
-            var acl = new AccessControlLists(this.Administrator)[workTask];
+            var acl = new DatabaseAccessControlLists(this.Administrator)[workTask];
             Assert.False(acl.CanExecute(M.WorkEffort.Invoice));
             Assert.False(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
@@ -155,7 +155,7 @@ namespace Allors.Domain
             User user = this.Administrator;
             this.Session.SetUser(user);
 
-            var acl = new AccessControlLists(this.Administrator)[timeEntry];
+            var acl = new DatabaseAccessControlLists(this.Administrator)[timeEntry];
             Assert.False(acl.CanWrite(M.TimeEntry.AmountOfTime));
         }
     }

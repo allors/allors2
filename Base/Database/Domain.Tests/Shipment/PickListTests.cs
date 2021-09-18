@@ -641,7 +641,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[pickList];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[pickList];
             Assert.True(acl.CanExecute(M.PickList.Cancel));
         }
 
@@ -662,7 +662,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[pickList];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[pickList];
             Assert.False(acl.CanExecute(M.PickList.Cancel));
             Assert.False(acl.CanExecute(M.PickList.SetPicked));
         }
@@ -684,7 +684,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[pickList];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[pickList];
             Assert.False(acl.CanExecute(M.PickList.Cancel));
             Assert.False(acl.CanExecute(M.PickList.SetPicked));
         }

@@ -31,6 +31,16 @@ namespace Allors.Repository
         [Indexed]
         public Permission[] DeniedPermissions { get; set; }
 
+        #region Allors
+        [Id("2848B7B7-DDBC-4A47-8D70-258DB1D90916")]
+        [AssociationId("BDC9AF3A-EAC2-4F46-9A5B-90523D3C5774")]
+        [RoleId("11BCE16D-AEA7-4EEC-B4BB-8CF7C3247B6B")]
+        #endregion
+        [Indexed]
+        [Required]
+        [Derived]
+        public bool IsWorkspace { get; set; }
+
         #region inherited methods
         public void OnBuild() { }
 

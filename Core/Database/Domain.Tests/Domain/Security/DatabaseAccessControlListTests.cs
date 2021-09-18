@@ -12,7 +12,7 @@ namespace Tests
     using Xunit;
     using Object = Allors.Domain.Object;
 
-    public class AccessControlListTests : DomainTest
+    public class DatabaseAccessControlListTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
 
@@ -28,7 +28,7 @@ namespace Tests
                 session.Commit();
 
                 var guest = new AutomatedAgents(this.Session).Guest;
-                var acls = new AccessControlLists(guest);
+                var acls = new DatabaseAccessControlLists(guest);
                 foreach (Object aco in (IObject[])session.Extent(M.Organisation.ObjectType))
                 {
                     // When
@@ -70,7 +70,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlLists(person)[organisation];
+                var acl = new DatabaseAccessControlLists(person)[organisation];
 
                 Assert.True(acl.CanRead(M.Organisation.Name));
 
@@ -106,7 +106,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlLists(person)[organisation];
+                var acl = new DatabaseAccessControlLists(person)[organisation];
 
                 Assert.True(acl.CanRead(M.Organisation.Name));
 
@@ -147,7 +147,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlLists(person)[organisation];
+                var acl = new DatabaseAccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 
@@ -188,7 +188,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlLists(person)[organisation];
+                var acl = new DatabaseAccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 
@@ -223,14 +223,14 @@ namespace Tests
 
                 this.Session.Derive();
 
-                var acl = new AccessControlLists(person)[organisation];
+                var acl = new DatabaseAccessControlLists(person)[organisation];
 
                 accessControl.RemoveSubject(person);
                 accessControl.AddSubject(person2);
 
                 this.Session.Derive();
 
-                acl = new AccessControlLists(person)[organisation];
+                acl = new DatabaseAccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 
@@ -265,7 +265,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlLists(person)[organisation];
+                var acl = new DatabaseAccessControlLists(person)[organisation];
 
                 Assert.True(acl.CanRead(M.Organisation.Name));
 
@@ -274,7 +274,7 @@ namespace Tests
 
                 ((OrganisationDerivedRoles)organisation).AddRestriction(restriction);
 
-                acl = new AccessControlLists(person)[organisation];
+                acl = new DatabaseAccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 

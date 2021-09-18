@@ -1119,7 +1119,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[invoice];
             Assert.True(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.True(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -1164,7 +1164,7 @@ namespace Allors.Domain
 
             Assert.Equal(new SalesInvoiceStates(this.Session).NotPaid, invoice.SalesInvoiceState);
 
-            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[invoice];
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -1241,7 +1241,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[invoice];
 
             Assert.Equal(new SalesInvoiceStates(this.Session).Paid, invoice.SalesInvoiceState);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
@@ -1289,7 +1289,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[invoice];
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -1329,7 +1329,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[invoice];
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
@@ -1368,7 +1368,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[invoice];
             Assert.Equal(new SalesInvoiceStates(this.Session).Cancelled, invoice.SalesInvoiceState);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));

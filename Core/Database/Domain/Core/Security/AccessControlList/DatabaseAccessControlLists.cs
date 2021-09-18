@@ -9,14 +9,14 @@ namespace Allors.Domain
     using System.Linq;
     using Meta;
 
-    public class AccessControlLists : IAccessControlLists
+    public class DatabaseAccessControlLists : IAccessControlLists
     {
         private static readonly PrefetchPolicy PrefetchPolicy = new PrefetchPolicyBuilder()
             .WithRule(M.AccessControl.CacheId.RoleType)
             .WithRule(M.AccessControl.EffectivePermissions)
             .Build();
 
-        public AccessControlLists(User user)
+        public DatabaseAccessControlLists(User user)
         {
             this.User = user;
             this.AclByObject = new Dictionary<IObject, IAccessControlList>();
@@ -37,7 +37,7 @@ namespace Allors.Domain
             {
                 if (!this.AclByObject.TryGetValue(@object, out var acl))
                 {
-                    acl = new AccessControlList(this, @object);
+                    acl = new AccessControlList(this, @object, false);
                     this.AclByObject.Add(@object, acl);
                 }
 

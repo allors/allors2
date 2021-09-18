@@ -177,7 +177,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+            var acl = new DatabaseAccessControlLists(this.Session.GetUser())[invoice];
 
             Assert.Equal(new PurchaseInvoiceStates(this.Session).Created, invoice.PurchaseInvoiceState);
             Assert.False(acl.CanExecute(M.PurchaseInvoice.Approve));
