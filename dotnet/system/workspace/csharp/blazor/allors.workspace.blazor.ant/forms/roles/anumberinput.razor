@@ -1,0 +1,13 @@
+@inherits ANumberInputBase
+
+@*<BSFormGroup>
+    <BSLabel>@Label</BSLabel>
+    <BSInput InputType="InputType" @bind-Value="IntModel"></BSInput>
+    <BSFormFeedback For="@(() => Model)" ValidMessage="@ValidMessage"/>
+</BSFormGroup>*@
+
+<FormItem @attributes="Attributes">
+    <label>@Label</label>
+    <AntDesign.InputNumber @bind-Value="IntModel"></AntDesign.InputNumber>
+    @*TODO: FormFeedback*@
+</FormItem>

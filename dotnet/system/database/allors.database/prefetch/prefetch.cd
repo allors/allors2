@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.PrefetchPolicy" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACEAAAAAAgABAAAAAAAABAAAAAAAAEAAAAAAAAAhA=</HashCode>
+      <FileName>Prefetch\PrefetchPolicy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="prefetchRules" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.PrefetchRule" Collapsed="true">
+    <Position X="4" Y="1.25" Width="1.5" />
+    <AssociationLine Name="prefetchPolicy" Type="Allors.PrefetchPolicy" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.938" Y="1.812" />
+        <Point X="4.938" Y="2.187" />
+        <Point X="1.25" Y="2.187" />
+        <Point X="1.25" Y="1.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAgAAAAAAAAIAAAACAAAAAAA=</HashCode>
+      <FileName>Prefetch\PrefetchRule.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="prefetchPolicy" />
+      <Field Name="propertyType" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="Allors.Meta.IPropertyType" Collapsed="true">
+    <Position X="7.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IPropertyType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Meta.IAssociationType" Collapsed="true">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAiAAAAAAAAAIAAEAAAAAAAAAAAAAQAJAAAAAAAAA=</HashCode>
+      <FileName>Meta\IAssociationType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Meta.IRoleType" Collapsed="true">
+    <Position X="8.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAAAAAAAgAIAAEIAAAAAgAAAAAAQAJAAAAAAEAA=</HashCode>
+      <FileName>Meta\IRoleType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Workspace.Adapters.Local.Strategy">
+    <Position X="0.5" Y="0.75" Width="2.5" />
+    <AssociationLine Name="workspaceState" Type="Allors.Workspace.Adapters.Local.WorkspaceState" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.438" />
+        <Point X="9.375" Y="1.438" />
+        <Point X="9.375" Y="2.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Session" Type="Allors.Workspace.Adapters.Local.Session" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="1.062" />
+        <Point X="11.75" Y="1.062" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAICABgAkIAABSBgEMIAFEgAAAAAAGEAAAAAAAlIAAA=</HashCode>
+      <FileName>Strategy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="workspaceState" />
+      <Property Name="DatabaseState" />
+      <Property Name="Session" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.Session">
+    <Position X="11.75" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgQAAEEAAQBIBgFwQAAAAQAABEAgAEAAAoMQoQAQiAA=</HashCode>
+      <FileName>Session\Session.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SessionState" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.DatabaseState">
+    <Position X="4.25" Y="1.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>MAAAEAUAAAAABwBBWEIAEAAAAAAgAAAAAEAAACxJAAA=</HashCode>
+      <FileName>Database\DatabaseState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.WorkspaceState">
+    <Position X="8" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAVAAABABwBAAAIAEAAAAAAAAAAAgFAAAAwBCAg=</HashCode>
+      <FileName>Workspace\WorkspaceState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.SessionState">
+    <Position X="15.5" Y="0.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAUACAAAAgFAgAAAEAABAAAAAgAAIAAQAAAJAAA=</HashCode>
+      <FileName>Session\SessionState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

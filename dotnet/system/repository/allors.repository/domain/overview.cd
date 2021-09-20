@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Repository.Domain.Repository">
+    <Position X="3.5" Y="2.25" Width="2.25" />
+    <Members>
+      <Field Name="AttributeNamespace" Hidden="true" />
+      <Method Name="CheckId" Hidden="true" />
+      <Property Name="ClassBySingularName" Hidden="true" />
+      <Property Name="CompositeByName" Hidden="true" />
+      <Method Name="CreateDomains" Hidden="true" />
+      <Method Name="CreateHierarchy" Hidden="true" />
+      <Method Name="CreateInheritedProperties" Hidden="true" />
+      <Method Name="CreateMembers" Hidden="true" />
+      <Method Name="CreateReverseProperties" Hidden="true" />
+      <Method Name="CreateTypes" Hidden="true" />
+      <Method Name="CreateUnits" Hidden="true" />
+      <Property Name="DomainByName" Hidden="true" />
+      <Method Name="FromReflection" Hidden="true" />
+      <Method Name="GetTypeName" Hidden="true" />
+      <Property Name="HasErrors" Hidden="true" />
+      <Field Name="inflector" Hidden="true" />
+      <Property Name="InterfaceBySingularName" Hidden="true" />
+      <Method Name="LinkImplementations" Hidden="true" />
+      <Field Name="Logger" Hidden="true" />
+      <Method Name="Repository" Hidden="true" />
+      <Field Name="RepositoryNamespaceName" Hidden="true" />
+      <Property Name="TypeBySingularName" Hidden="true" />
+      <Property Name="UnitBySingularName" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Classes" Type="Allors.Repository.Domain.Class" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="3.118" />
+        <Point X="4.25" Y="8.05" />
+        <Point X="10.5" Y="8.05" />
+        <Point X="10.5" Y="7.675" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Composites" Type="Allors.Repository.Domain.Composite" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.438" Y="3.118" />
+        <Point X="5.438" Y="5.05" />
+        <Point X="8.667" Y="5.05" Type="JumpStart" />
+        <Point X="8.833" Y="5.05" Type="JumpEnd" />
+        <Point X="8.854" Y="5.05" Type="JumpStart" />
+        <Point X="9.021" Y="5.05" Type="JumpEnd" />
+        <Point X="9.167" Y="5.05" Type="JumpStart" />
+        <Point X="9.333" Y="5.05" Type="JumpEnd" />
+        <Point X="9.562" Y="5.05" />
+        <Point X="9.562" Y="4.675" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IgEAAAAEMAMCAACAEAAAAAgAQEIgAEAMEBAiYAAACoA=</HashCode>
+      <FileName>Domain\Repository.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClassBySingularName" />
+      <Property Name="Classes" />
+      <Property Name="CompositeByName" />
+      <Property Name="Composites" />
+      <Property Name="DomainByName" />
+      <Property Name="Domains" />
+      <Property Name="InterfaceBySingularName" />
+      <Property Name="Interfaces" />
+      <Property Name="TypeBySingularName" />
+      <Property Name="Types" />
+      <Property Name="UnitBySingularName" />
+      <Property Name="Units" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="SortedDomains" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Class">
+    <Position X="9.25" Y="6.25" Width="2" />
+    <Members>
+      <Method Name="Class" Hidden="true" />
+      <Method Name="GetImplementedMethod" Hidden="true" />
+      <Method Name="GetImplementedProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAgAAAIAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Domain\Class.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Composite">
+    <Position X="8.5" Y="3.25" Width="1.5" />
+    <Members>
+      <Property Name="AttributeByName" Hidden="true" />
+      <Property Name="AttributesByName" Hidden="true" />
+      <Method Name="Composite" Hidden="true" />
+      <Property Name="DefinedReversePropertyByAssociationName" Hidden="true" />
+      <Field Name="inflector" Hidden="true" />
+      <Property Name="InheritedReversePropertyByAssociationName" Hidden="true" />
+      <Property Name="MethodByName" Hidden="true" />
+      <Property Name="PropertyByRoleName" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgQIQAEAAEgAACAEgAIAIAAAASgAEIAAACAEQ=</HashCode>
+      <FileName>Domain\Composite.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DefinedMethods" />
+      <Property Name="DefinedProperties" />
+      <Property Name="DefinedReverseProperties" />
+      <Property Name="Methods" />
+      <Property Name="Properties" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ImplementedInterfaces" />
+      <Property Name="ImplementedProperties" />
+      <Property Name="InheritedMethods" />
+      <Property Name="InheritedReverseProperties" />
+      <Property Name="Interfaces" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Domain">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Members>
+      <Method Name="Domain" Hidden="true" />
+      <Property Name="PartialClassBySingularName" Hidden="true" />
+      <Property Name="PartialInterfaceByName" Hidden="true" />
+      <Property Name="PartialTypeBySingularName" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQASAAAAAAAAACAEAAAAAAQABAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Domain\Domain.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Base" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Interface">
+    <Position X="7.5" Y="6.25" Width="1.5" />
+    <Members>
+      <Method Name="AddInterfaces" Hidden="true" />
+      <Method Name="GetImplementedMethod" Hidden="true" />
+      <Method Name="GetImplementedProperty" Hidden="true" />
+      <Property Name="InheritedPropertyByRoleName" Hidden="true" />
+      <Method Name="Interface" Hidden="true" />
+      <Property Name="PartialByDomainName" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAEAAAAAAgAAAIAAAAAEAABEAAAAAg=</HashCode>
+      <FileName>Domain\Interface.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="InheritedProperties" />
+      <Property Name="Interfaces" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Type">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="ToString" Hidden="true" />
+      <Method Name="Type" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Type.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Unit">
+    <Position X="6.75" Y="3.25" Width="1.5" />
+    <Members>
+      <Method Name="Unit" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Unit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Method">
+    <Position X="10.75" Y="1" Width="1.5" />
+    <Members>
+      <Property Name="AttributeByName" Hidden="true" />
+      <Property Name="AttributesByName" Hidden="true" />
+      <Method Name="Method" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAEAAAAAAQAAAAAAAAQAAMAAAAAAAQ=</HashCode>
+      <FileName>Domain\Method.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DefiningMethod" />
+      <Property Name="DefiningType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Repository.Domain.Property">
+    <Position X="14" Y="3" Width="1.75" />
+    <Members>
+      <Property Name="AttributeByName" Hidden="true" />
+      <Property Name="AttributesByName" Hidden="true" />
+      <Field Name="inflector" Hidden="true" />
+      <Method Name="Property" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAgCABqAMAAAAAEEAAAAQAAAGAIAAAAQAQEAEAAABAQ=</HashCode>
+      <FileName>Domain\Property.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DefiningType" />
+      <Property Name="DefiningProperty" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

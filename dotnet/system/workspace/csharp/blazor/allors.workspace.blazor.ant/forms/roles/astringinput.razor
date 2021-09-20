@@ -1,0 +1,37 @@
+@inherits AStringInputBase
+
+@*<BSFormGroup @attributes="Attributes">
+    @if (ShowLabel)
+    {
+        <BSLabel>@Label</BSLabel>
+    }
+    @if (HideValidation)
+    {
+        <input type="string" class="form-control" @bind="StringModel" />
+    }
+    else
+    {
+        <BSInput InputType="InputType" @bind-Value="StringModel"></BSInput>
+        <BSFormFeedback For="@(() => Model)" ValidMessage="@ValidMessage" />
+    }
+</BSFormGroup>*@
+
+<FormItem @attributes="Attributes">
+
+    @if (ShowLabel)
+    {
+        <label>@Label</label>
+    }
+
+    @if (HideValidation)
+    {
+        @*TODO: ?
+            <input type="string" class="form-control" @bind="StringModel" />*@
+    }
+    else
+    {
+        <Input @bind-Value="@StringModel" />
+        @*TODO: FormFeedback*@
+    }
+
+</FormItem>

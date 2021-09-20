@@ -2,7 +2,7 @@
 # ------
 generated/
 artifacts/
-build/Properties/launchSettings.json
+build/properties/launchSettings.json
 **/package-lock.json
 **/.DS_Store
 .gitignore.swp
@@ -337,8 +337,3 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-
-
-Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js
-Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js.map
-Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.tsbuildinfo

@@ -1,0 +1,29 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@allors/protocol/json/system": ["libs/protocol/json/system/src/index.ts"],
+      "@allors/workspace/meta/lazy/system": ["libs/workspace/meta/lazy/system/src/index.ts"],
+      "@allors/workspace/meta/lazy/tests": ["libs/workspace/meta/lazy/tests/src/index.ts"],
+      "@allors/workspace/meta/system": ["libs/workspace/meta/system/src/index.ts"],
+      "@allors/workspace/domain/system": ["libs/workspace/domain/system/src/index.ts"],
+      "@allors/workspace/domain/json/system": ["libs/workspace/domain/json/system/src/index.ts"],
+      "@allors/workspace/domain/json/tests": ["libs/workspace/domain/json/tests/src/index.ts"]
+    },
+    "strict": true
+  },
+  "exclude": ["node_modules", "tmp"]
+}

@@ -1,72 +1,43 @@
 using System;
 using MartinCostello.SqlLocalDb;
 using Microsoft.Data.SqlClient;
-using Nuke.Common.IO;
 using static Nuke.Common.Logger;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-partial class SqlServer : IDisposable
+internal class SqlServer : IDisposable
 {
-    private SqlLocalDbApi sqlLocalDbApi;
     private ISqlLocalDbInstanceInfo dbInstance;
     private ISqlLocalDbInstanceManager manager;
+    private SqlLocalDbApi sqlLocalDbApi;
 
     public SqlServer()
     {
-        this.sqlLocalDbApi = new SqlLocalDbApi();
-        this.dbInstance = this.sqlLocalDbApi.GetDefaultInstance();
-        this.manager = this.dbInstance.Manage();
+        sqlLocalDbApi = new SqlLocalDbApi();
+        dbInstance = sqlLocalDbApi.GetDefaultInstance();
+        manager = dbInstance.Manage();
 
-        if (!this.dbInstance.IsRunning)
+        if (!dbInstance.IsRunning)
         {
             Normal("SqlServer: Start");
-            this.manager.Start();
+            manager.Start();
         }
     }
-
-    public void Restart()
-    {
-        if (this.dbInstance.IsRunning)
-        {
-            Normal("SqlServer: Stop");
-            try
-            {
-                this.manager.Stop();
-            }
-            catch { }
-        }
-
-        if (!this.dbInstance.IsRunning)
-        {
-            Normal("SqlServer: Start");
-            this.manager.Start();
-        }
-    }
-
-    public void Populate(AbsolutePath commandsPath) => DotNet("Commands.dll Populate", commandsPath);
-
-    public void Drop(string database) => this.ExecuteCommand($"DROP DATABASE IF EXISTS [{database}]");
-
-    public void Create(string database) => this.ExecuteCommand($"CREATE DATABASE [{database}]");
 
     public void Dispose()
     {
-        try
-        {
-            this.manager.Stop();
-        }
-        catch { }
+        sqlLocalDbApi?.Dispose();
 
-        this.sqlLocalDbApi?.Dispose();
-
-        this.sqlLocalDbApi = null;
-        this.dbInstance = null;
-        this.manager = null;
+        sqlLocalDbApi = null;
+        dbInstance = null;
+        manager = null;
     }
+
+    public void Drop(string database) => ExecuteCommand($"DROP DATABASE IF EXISTS [{database}]");
+
+    public void Create(string database) => ExecuteCommand($"CREATE DATABASE [{database}]");
 
     private int ExecuteCommand(string commandText)
     {
-        using var connection = this.manager.CreateConnection();
+        using var connection = manager.CreateConnection();
         connection.Open();
         using var command = new SqlCommand(commandText, connection);
         return command.ExecuteNonQuery();

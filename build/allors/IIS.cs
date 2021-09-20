@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Nuke.Common.Tooling;
 
-partial class IIS : IDisposable
+internal class IIS : IDisposable
 {
     private const string Appcmd = @"C:\Windows\System32\inetsrv\appcmd.exe";
 
@@ -25,7 +25,7 @@ partial class IIS : IDisposable
     {
         if (File.Exists(Appcmd))
         {
-            foreach (var appPoolName in this.appPoolNames)
+            foreach (var appPoolName in appPoolNames)
             {
                 ProcessTasks.StartProcess(Appcmd, @$"START APPPOOL ""{appPoolName}""").WaitForExit();
             }

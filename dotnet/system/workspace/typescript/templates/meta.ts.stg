@@ -1,0 +1,187 @@
+delimiters "$", "$"
+
+TemplateId() ::= <<2FD8EE5D-4976-484F-96F9-9474AE09BFDB>>
+TemplateName() ::= <<Allors Typescript Meta>>
+TemplateVersion() ::= <<3.0.1>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(meta, workspaceName) ::= <<
+$!
+Copyright 2002-2017 Allors bvba.
+
+Dual Licensed under
+  a) the Lesser General Public Licence v3 (LGPL)
+  b) the Allors License
+
+The LGPL License is included in the file lgpl.txt.
+The Allors License is an addendum to your contract.
+
+Allors Platform is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+For more information visit http://www.allors.com/legal
+!$
+<generations>
+  <generation template="index" output="index.ts"/>
+  <generation template="m" output="m.g.ts"/>
+  <generation template="data" output="data.g.ts"/>
+</generations>
+>>
+
+index(meta, workspaceName) ::= <<
+/* Allors generated file. Do not edit, changes will be overwritten. */
+
+export * from './m.g';
+export { data } from './data.g';
+
+>>
+
+m(meta, workspaceName) ::= <<
+/* Allors generated file. Do not edit, changes will be overwritten. */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+import { MetaPopulation, Unit, Interface, Class, AssociationType, RoleType, MethodType } from '@allors/workspace/meta/system';
+
+export interface M extends MetaPopulation {
+$meta._.Units:{unit|  $unit._.SingularName$: $unit._.SingularName$;}; separator="\n"$
+
+$meta._.WorkspaceInterfacesByWorkspaceName.(workspaceName):{interface|  $interface._.SingularName$: $interface._.SingularName$;}; separator="\n"$
+
+$meta._.WorkspaceClassesByWorkspaceName.(workspaceName):{class|  $class._.SingularName$: $class._.SingularName$;}; separator="\n"$
+}
+
+$meta._.Units:{unit|$m_unit(unit)$}; separator="\n"$
+
+$meta._.Interfaces:{interface|$m_interface(interface)$}; separator="\n"$
+
+$meta._.Classes:{class|$m_class(class)$}; separator="\n"$
+
+$meta._.Composites:{composite|$m_associationTypes(composite)$}; separator="\n"$
+
+$meta._.Composites:{composite|$m_roleTypes(composite)$}; separator="\n"$
+>>
+
+m_unit(unit) ::= <<
+export type $unit._.SingularName$ = Unit;
+>>
+
+m_interface(interface) ::= <<
+export interface $interface._.SingularName$ extends Interface {
+
+$interface._.WorkspaceSubtypesByWorkspaceName.(workspaceName):{subtype|  As$subtype._.SingularName$: $subtype._.SingularName$;}; separator="\n"$
+
+$interface._.WorkspaceMethodTypesByWorkspaceName.(workspaceName):{methodType|  $methodType._.Name$: MethodType;}; separator="\n"$
+
+$interface._.WorkspaceRoleTypesByWorkspaceName.(workspaceName):{roleType|  $roleType._.Name$: $roleType._.FullName$;}; separator="\n"$
+
+$interface._.WorkspaceAssociationTypesByWorkspaceName.(workspaceName):{associationType|  $associationType._.Name$: $associationType._.Name$;}; separator="\n"$
+}
+
+>>
+
+m_class(class) ::= <<
+export interface $class._.SingularName$ extends Class {
+
+$class._.WorkspaceMethodTypesByWorkspaceName.(workspaceName):{methodType|  $methodType._.Name$: MethodType;}; separator="\n"$
+
+$class._.WorkspaceRoleTypesByWorkspaceName.(workspaceName):{roleType|  $roleType._.Name$: $roleType._.FullName$;}; separator="\n"$
+
+$class._.WorkspaceAssociationTypesByWorkspaceName.(workspaceName):{associationType|  $associationType._.Name$: $associationType._.Name$;}; separator="\n"$
+}
+
+>>
+
+m_associationTypes(composite) ::= <<
+$composite._.WorkspaceExclusiveRoleTypesByWorkspaceName.(workspaceName):{roleType|$m_associationType(roleType._.associationType)$}; separator="\n"$
+>>
+
+m_associationType(associationType) ::= <<
+export interface $associationType._.Name$ extends AssociationType
+{
+  ObjectType: $associationType._.ObjectType.SingularName$;
+}
+
+>>
+
+m_roleTypes(composite) ::= <<
+$composite._.WorkspaceExclusiveRoleTypesByWorkspaceName.(workspaceName):{roleType|$m_roleType(roleType)$}; separator="\n"$
+>>
+
+m_roleType(roleType) ::= <<
+$if(roleType._.ObjectType._.IsUnit)$
+export type $roleType.FullName$ = RoleType;
+$else$
+export interface $roleType.FullName$ extends RoleType
+{
+$if(roleType._.ObjectType._.IsComposite)$
+  ObjectType: $roleType._.ObjectType._.SingularName$;
+$endif$
+}
+$endif$
+
+>>
+
+data(meta, workspaceName) ::= <<
+import { MetaData } from '@allors/shared/system';
+
+export const data: MetaData =
+{
+  i:
+  [
+$meta._.WorkspaceInterfacesByWorkspaceName.(workspaceName):{objectType|$data_objectType(objectType)$}; separator=",\n"$
+  ],
+  c:
+  [
+$meta._.WorkspaceClassesByWorkspaceName.(workspaceName):{objectType|$data_objectType(objectType)$}; separator=",\n"$
+  ],
+  o:
+  [
+    [$meta._.WorkspaceWorkspaceOriginTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$],
+    [$meta._.WorkspaceSessionOriginTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$]
+  ],
+  m:
+  [
+    [$meta._.WorkspaceOneToOneTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$],
+    [$meta._.WorkspaceOneToManyTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$],
+    [$meta._.WorkspaceManyToManyTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$]
+  ],
+  d: [$meta._.WorkspaceDerivedTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$],
+  r: [$meta._.WorkspaceRequiredTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$],
+  u: [$meta._.WorkspaceUniqueTagsByWorkspaceName.(workspaceName):{tag|$tag$}; separator=","$],
+  t:
+  {
+    $meta._.WorkspaceMediaTagsByMediaTypeNameByWorkspaceName.(workspaceName):{mediaTypeName|"$mediaTypeName$": [$data_mediaType(mediaTypeName)$]}; separator=",\n"$
+  }
+}
+
+>>
+
+
+data_objectType(objectType) ::= <<
+    [$objectType._.Tag$, "$objectType._.SingularName$", $data_supertypes()$, $data_relationTypes()$, $data_methodTypes()$$if(objectType.ExistAssignedPluralName)$, "$objectType._.PluralName$"$endif$]
+>>
+
+data_supertypes() ::= <<[$objectType._.WorkspaceDirectSupertypesByWorkspaceName.(workspaceName):{supertype|$supertype._.Tag$}; separator=","$]>>
+
+data_relationTypes() ::= <<[$objectType._.WorkspaceExclusiveRoleTypesByWorkspaceName.(workspaceName):{roleType|$data_relationType(relationType=roleType._.RelationType, associationType=roleType._.AssociationType, roleType=roleType)$}; separator=","$]>>
+
+data_relationType(relationType, associationType, roleType) ::= <<[$relationType._.Tag$, $roleType._.ObjectType._.Tag$$data_relationType_singularAndPluralName()$]>>
+
+data_relationType_singularAndPluralName() ::= <<$if(roleType._.ExistAssignedSingularName)$, "$roleType._.singularName$"$data_relationType_pluralName()$$endif$>>
+
+data_relationType_pluralName() ::= <<$if(roleType._.ExistAssignedPluralName)$, "$roleType._.pluralName$"$endif$>>
+
+data_methodTypes() ::= <<[$objectType._.WorkspaceExclusiveMethodTypesByWorkspaceName.(workspaceName):{methodType|$data_methodType(methodType)$}; separator=","$]>>
+
+data_methodType(methodType) ::= <<[$methodType._.Tag$, "$methodType._.Name$"]>>
+
+data_origin(metaObject) ::= <<$if(!metaObject.IsDefaultOrigin)$$metaObject.Tag$$endif$>>
+
+data_mediaType(mediaTypeName) ::= <<$meta._.WorkspaceMediaTagsByMediaTypeNameByWorkspaceName.(workspaceName).(mediaTypeName):{tag|$tag$}; separator=","$>>
+
+boolean(value) ::= "$if(value)$true$else$false$endif$"
+
+DropEmpty ::= ["": false, default: key]
+
+Separated(l, s, w=false) ::= "$if (DropEmpty.(first(l)))$$if (w)$$s$$endif$$first(l)$$Separated(rest(l), s, true)$$else$$if (rest(l))$$Separated(rest(l), s, w)$$endif$$endif$"
