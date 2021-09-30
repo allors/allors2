@@ -1,0 +1,12 @@
+@inherits ABSCheckboxGroupBase
+
+<BSFormGroup @attributes="Attributes">
+
+    @foreach (var option in Options)
+    {
+        <BSFormGroup IsCheck="true">
+            <BSBasicInput InputType="InputType.Checkbox" Id="@OptionName(option)" Value="@IsSelected(option)" @onchange=@(v => OnChanged(v.Value, option)) />
+            <BSLabel For="@OptionName(option)">@(DisplayOption(option))</BSLabel>
+        </BSFormGroup>
+    }
+</BSFormGroup>

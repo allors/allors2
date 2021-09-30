@@ -1,0 +1,108 @@
+@implements IField
+@using System
+@using Allors.Workspace.Blazor.Validation
+@implements System.IDisposable
+
+<BSFormGroup @attributes="Attributes">
+    <BSLabel>@DerivedLabel</BSLabel>
+    <input type="datetime" class="form-control" @bind="Model" />
+    <BSFormFeedback For="@(() => Model)" ValidMessage="@ValidMessage"/>
+</BSFormGroup>
+
+@code {
+    //TODO: Inherit from rolefield
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; }
+
+    [CascadingParameter]
+    public Fields ValidationFields { get; set; }
+
+    [Parameter]
+    public IRoleType RoleType { get; set; }
+
+    [Parameter]
+    public IObject Object { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public bool FullWidth { get; set; } = true;
+
+    [Parameter]
+    public string ValidMessage { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object> Attributes { get; set; }
+
+    public IPropertyType PropertyType { get => this.RoleType; }
+
+    public IObject DerivedObject
+    {
+        get
+        {
+            return this.Object ?? (IObject)this.EditContext.Model;
+        }
+    }
+
+    public string DerivedLabel
+    {
+        get
+        {
+            return this.Label ?? this.RoleType.Name;
+        }
+    }
+
+    public DateTime? Model
+    {
+        get
+        {
+            return (DateTime?)this.DerivedObject.Strategy.GetRole(this.RoleType);
+        }
+
+        set
+        {
+            if (value.HasValue)
+            {
+                value = new DateTime(
+                    value.Value.Year,
+                    value.Value.Month,
+                    value.Value.Day,
+                    value.Value.Hour,
+                    value.Value.Minute,
+                    value.Value.Second,
+                    DateTimeKind.Utc);
+            }
+
+            this.DerivedObject.Strategy.SetRole(this.RoleType, value);
+        }
+    }
+
+    public FieldIdentifier FieldIdentifier => new FieldIdentifier(this, "Model");
+
+    public void Validate(ValidationMessageStore messages)
+    {
+        if (this.RoleType.IsRequired && this.Model == null)
+        {
+            messages.Add(this.FieldIdentifier, $"{this.RoleType.Name} is required");
+        }
+        else
+        {
+            messages.Clear(this.FieldIdentifier);
+        }
+    }
+
+    void System.IDisposable.Dispose()
+    {
+        this.ValidationFields.Remove(this);
+    }
+
+    override protected void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.ValidationFields.Add(this);
+        }
+    }
+}

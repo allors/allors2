@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Workspace.Adapters.Local.Strategy">
+    <Position X="4.5" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAICABgAgIAABSBgEMIAFEgAAAAAACEAAAAAAIFIAAA=</HashCode>
+      <FileName>Session\Strategy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="workspaceOriginState" />
+      <Property Name="DatabaseOriginState" />
+      <Property Name="Session" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.Session">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAgEAIQBIBgBwQAAAAQAAAEAgAEAEApMQgQAQigA=</HashCode>
+      <FileName>Session\Session.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SessionOriginState" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.SessionOriginState">
+    <Position X="15" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAEAAAAgBAgAAAIAAAAAAAAAAAAAAQAAABAAA=</HashCode>
+      <FileName>Session\OriginState\SessionOriginState.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="propertyByObjectByPropertyType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.PropertyByObjectByPropertyType">
+    <Position X="15" Y="13.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.DatabaseOriginState">
+    <Position X="9.25" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAQAABEAAEEEAAAAAAAAgAAAAAAAAAAAIhAA=</HashCode>
+      <FileName>Session\OriginState\DatabaseOriginState.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DatabaseRecord" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.WorkspaceOriginState">
+    <Position X="12.25" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAABEAAAAAAAAAAAAAAAAAEAAAAAAAADAA=</HashCode>
+      <FileName>Session\OriginState\WorkspaceOriginState.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="WorkspaceRecord" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.DatabaseRecord">
+    <Position X="9" Y="13.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IACAgAEAAAAAAAAAQAIAIAAAAAAAAAAAAEAAAIAAAAA=</HashCode>
+      <FileName>Database\DatabaseRecord.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.WorkspaceRecord">
+    <Position X="12.25" Y="13.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAEAAAAAAAAAYAIAAAAAAAAAAAAEAEAAAAAAAAA=</HashCode>
+      <FileName>Workspace\WorkspaceRecord.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.Adapters.Local.RecordBasedOriginState">
+    <Position X="10" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAUACQBAAyBgAAIAUAAAAAAAACAAAAAAADABBAA=</HashCode>
+      <FileName>Session\OriginState\RecordBasedOriginState.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Record" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="Allors.Workspace.Adapters.Local.IRecord">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IRecord.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

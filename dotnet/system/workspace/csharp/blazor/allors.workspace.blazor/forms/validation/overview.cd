@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Workspace.Blazor.Validation.Fields">
+    <Position X="8.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Forms\Validation\Fields.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Microsoft.AspNetCore.Components.Forms.EditContext">
+    <Position X="1.5" Y="2" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Allors.Workspace.Blazor.Validation.DefaultValidator">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAgAA=</HashCode>
+      <FileName>Forms\Validation\DefaultValidator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EditContext" />
+      <Property Name="Fields" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="Allors.Workspace.Blazor.Validation.IField">
+    <Position X="11.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAgAAAAAAAAAAAAAAAAIAACAAAAAAA=</HashCode>
+      <FileName>Forms\Validation\IField.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

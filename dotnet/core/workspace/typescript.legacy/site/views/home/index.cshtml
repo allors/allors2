@@ -1,0 +1,61 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+
+    <title>Allors Core</title>
+
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" asp-append-version="true">
+    <link href="/lib/font-awesome/css/all.css" rel="stylesheet" asp-append-version="true">
+    <link href="/lib/angular-ui-select/select.css" rel="stylesheet" asp-append-version="true">
+    <link href="/lib/angular-block-ui/angular-block-ui.css" rel="stylesheet" asp-append-version="true">
+    <link href="/lib/angular-toastr/angular-toastr.css" rel="stylesheet" asp-append-version="true">
+    <link href="/lib/angular-loading-bar/loading-bar.css" rel="stylesheet" asp-append-version="true">
+    <link href="/site.css" rel="stylesheet" asp-append-version="true">
+</head>
+
+<body ng-controller="mainController as main">
+
+    <nav ng-include="'app/shell/navbar.html'" class="navbar navbar-inverse navbar-fixed-top"></nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div ng-include="'app/shell/sidebar.html'" class="col-sm-3 col-md-2 sidebar"></div>
+            <div ui-view class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/jquery/jquery.js" asp-append-version="true"></script>
+    <script src="/lib/lodash.js/lodash.js" asp-append-version="true"></script>
+    <script src="/lib/moment.js/moment.js" asp-append-version="true"></script>
+    <script src="/lib/jsnlog/jsnlog.js" asp-append-version="true"></script>
+
+    <script src="/lib/angular.js/angular.js" asp-append-version="true"></script>
+    <script src="/lib/angular-cookies/angular-cookies.js" asp-append-version="true"></script>
+    <script src="/lib/angular-animate/angular-animate.js" asp-append-version="true"></script>
+    <script src="/lib/angular-sanitize/angular-sanitize.js" asp-append-version="true"></script>
+    <script src="/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js" asp-append-version="true"></script>
+    <script src="/lib/angular-toastr/angular-toastr.tpls.js" asp-append-version="true"></script>
+    <script src="/lib/angular-translate/angular-translate.js" asp-append-version="true"></script>
+    <script src="/lib/angular-translate-loader-url/angular-translate-loader-url.js" asp-append-version="true"></script>
+    <script src="/lib/angular-loading-bar/loading-bar.js" asp-append-version="true"></script>
+    <script src="/lib/angular-ui-router/angular-ui-router.js" asp-append-version="true"></script>
+    <script src="/lib/angular-ui-select/select.js" asp-append-version="true"></script>
+    <script src="/lib/angular-block-ui/angular-block-ui.js" asp-append-version="true"></script>
+    <script src="/lib/angular-messages/angular-messages.js" asp-append-version="true"></script>
+
+    <script src="/tsc.js" asp-append-version="true"></script>
+</body>
+</html>
+
+
+
+

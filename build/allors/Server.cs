@@ -1,18 +1,14 @@
 using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using static Nuke.Common.Logger;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tooling.ProcessTasks;
 
-partial class Server : IDisposable
+internal class Server : IDisposable
 {
-    private IProcess Process { get; set; }
-
     public Server(AbsolutePath path)
     {
         var arguments = $@"{path}/Server.dll";
@@ -20,6 +16,8 @@ partial class Server : IDisposable
 
         Process = StartProcess(DotNetTasks.DotNetPath, arguments, workingDirectory);
     }
+
+    private IProcess Process { get; set; }
 
     public void Dispose()
     {
@@ -42,7 +40,7 @@ partial class Server : IDisposable
         var run = 0;
 
         var success = false;
-        while (!success && (DateTime.Now < stop))
+        while (!success && DateTime.Now < stop)
         {
             await Task.Delay(1000);
 

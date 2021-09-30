@@ -1,0 +1,15 @@
+{
+  "npmScope": "allors",
+  "affected": { "defaultBase": "master" },
+  "implicitDependencies": { "package.json": { "dependencies": "*", "devDependencies": "*" }, ".eslintrc.json": "*" },
+  "tasksRunnerOptions": { "default": { "runner": "@nrwl/workspace/tasks-runners/default", "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] } } },
+  "projects": {
+    "protocol-json-system": { "tags": [] },
+    "workspace-meta-lazy-system": { "tags": [] },
+    "workspace-meta-lazy-tests": { "tags": [] },
+    "workspace-meta-system": { "tags": [] },
+    "workspace-domain-system": { "tags": [] },
+    "workspace-domain-json-system": { "tags": [] },
+    "workspace-domain-json-tests": { "tags": [] }
+  }
+}

@@ -1,0 +1,11 @@
+@inherits ABSRadioGroupBase
+
+<BSFormGroup @attributes="Attributes">
+    @foreach (var option in Options)
+    {
+        <BSFormGroup IsCheck="true">
+            <BSBasicInput InputType="InputType.Radio" Id="@OptionName(option)" RadioValue="@option" @bind-Value="@Model" />
+            <BSLabel For="@OptionName(option)">@(DisplayOption(option))</BSLabel>
+        </BSFormGroup>
+    }
+</BSFormGroup>

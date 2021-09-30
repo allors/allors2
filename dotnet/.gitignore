@@ -1,0 +1,9 @@
+# System
+# -----
+system/database/adapters/domain
+system/database/adapters/generate
+system/database/adapters/meta
+system/database/adapters/repository
+system/database/adapters/templates
+system/database/adapters/tests.dynamic
+system/database/adapters/tests.static

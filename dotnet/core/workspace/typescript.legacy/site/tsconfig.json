@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "outFile": "./wwwroot/tsc.js",
+    "module": "none",
+    "moduleResolution": "node",
+    "target": "es2015",
+    "downlevelIteration": true,
+    "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2015",
+      "es2015.iterable",
+      "dom"
+    ]
+  },
+  "include": [
+    "@types/jl.d.ts",
+    "@types/moment.d.ts",
+    "wwwroot/generated/**/*",
+    "wwwroot/Core/**/*",
+    "wwwroot/Custom/**/*",
+    "wwwroot/app/**/*"
+  ],
+  "exclude": [
+    "wwwroot/Core/Angular/components/bootstrap/registerTemplates.ts"
+  ],
+  "compileOnSave": true
+}

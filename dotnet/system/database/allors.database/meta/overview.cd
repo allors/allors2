@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Database.Meta.IAssociationType">
+    <Position X="10.5" Y="9.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIEAAAAAAAAAAAAAEAAAAAAAAAAAAAAAJAAAAAAAAA=</HashCode>
+      <FileName>Meta\IAssociationType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IComposite">
+    <Position X="5" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABBgAAAAAVACAARAKAgAgBAAAAYEAACAQCgAAAQAAA=</HashCode>
+      <FileName>Meta\IComposite.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IInterface">
+    <Position X="4.25" Y="14.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Meta\IInterface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IMetaPopulation">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACBAgAAAAAGCAAAIAIgAACgAAAAIgACAEAAAQACAAQA=</HashCode>
+      <FileName>Meta\IMetaPopulation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IObjectType">
+    <Position X="4.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAIIAAAAAAQAACCAAAACAAAAAUAAAAA=</HashCode>
+      <FileName>Meta\IObjectType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IRelationType">
+    <Position X="7" Y="4.75" Width="2.25" />
+    <AssociationLine Name="RoleType" Type="Allors.Database.Meta.IRoleType" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.703" Y="7.843" />
+        <Point X="7.703" Y="12.555" />
+        <Point X="13.25" Y="12.555" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAQACAYAIAABAAgiAAAABAAEAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IRelationType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AssociationType" />
+      <Property Name="RoleType" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IUnit">
+    <Position X="3.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAABIgAAAQAABAAAAAAIQAAAAAQAAAAA=</HashCode>
+      <FileName>Meta\IUnit.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IPropertyType">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAAAAAAAAAJAAAAAAAQAAAAAAAACAIAAAAAAAAA=</HashCode>
+      <FileName>Meta\IPropertyType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IRoleType">
+    <Position X="13.25" Y="9.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAhIgAgEIAAAAggAAAAAAAABAAAAAAEAA=</HashCode>
+      <FileName>Meta\IRoleType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IMetaObject">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhAAAA=</HashCode>
+      <FileName>Meta\IMetaObject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MetaPopulation" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IDomain">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IDomain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IOperandType">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IOperandType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IMethodType" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <InheritanceLine Type="Allors.Database.Meta.IMetaIdentifiableObject" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="3.925" />
+        <Point X="6.25" Y="4.375" />
+        <Point X="10.062" Y="4.375" />
+        <Point X="10.062" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAIAAAAAAQAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Meta\IMethodType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IClass">
+    <Position X="6.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IClass.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IMetaIdentifiableObject">
+    <Position X="5.25" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IMetaIdentifiableObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

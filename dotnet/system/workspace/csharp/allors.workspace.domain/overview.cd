@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Workspace.IWorkspace">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>domain\runtime\IWorkspace.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Configuration" />
+      <Property Name="Services" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.ISession">
+    <Position X="4.25" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAABAAgAAAAQAAAAAIAAAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>domain\runtime\ISession.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Workspace" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.IStrategy">
+    <Position X="8.5" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IFBCBAUIAAAQBQBgEEYQAAAAAAAAAAAAAAAQAAgJIAA=</HashCode>
+      <FileName>domain\runtime\IStrategy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Session" />
+      <Property Name="Object" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.IObject">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>domain\runtime\IObject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Strategy" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.IDatabase">
+    <Position X="4.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAiAA=</HashCode>
+      <FileName>domain\runtime\IDatabase.cs</FileName>
+      <NewMemberFileName>domain\runtime\IChangeSet.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.IObjectFactory">
+    <Position X="3.25" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAAA=</HashCode>
+      <FileName>domain\runtime\IObjectFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.IConfiguration">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>domain\runtime\IConfiguration.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MetaPopulation" />
+      <Property Name="ObjectFactory" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.ISessionServices">
+    <Position X="4.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>domain\runtime\ISessionServices.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.Meta.IMetaPopulation">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAgAAAAAECAABAAAAAACgAAAAAAAAAEAAAAAACAAA=</HashCode>
+      <FileName>meta\IMetaPopulation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.IWorkspaceServices">
+    <Position X="2" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>domain\runtime\IWorkspaceServices.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.IChangeSet">
+    <Position X="6" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAwAAAAQAAAAAAAAAAAQAAAAAAAAAAAE=</HashCode>
+      <FileName>domain\runtime\IChangeSet.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

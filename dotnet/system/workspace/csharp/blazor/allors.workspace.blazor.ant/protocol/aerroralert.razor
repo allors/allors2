@@ -1,0 +1,135 @@
+@if (HasErrors)
+{
+    <Alert Type="@AlertType.Error" Message="Success Text" />
+
+    <h3>@title</h3>
+
+    @if (isAccessError)
+    {
+        <h4>You do not have the required rights.</h4>
+        <ul>
+            @foreach (var error in Response.AccessErrors)
+            {
+                <li>@error.Id</li>
+            }
+        </ul>
+    }
+
+    @if (isVersionError)
+    {
+        <h4>Modifications were detected since last access</h4>
+        <ul>
+            @foreach (var error in Response.VersionErrors)
+            {
+                <li>@error.Id</li>
+            }
+        </ul>
+    }
+
+    @if (isMissingError)
+    {
+        <h4>Access to a deleted object was requested.</h4>
+        <ul>
+            @foreach (var error in Response.MissingErrors)
+            {
+                <li>@error.Id</li>
+            }
+        </ul>
+    }
+
+    @if (isDerivationError)
+    {
+        <h4>Following errors were encountered during derivation.</h4>
+        <ul>
+            @foreach (var error in Response.DerivationErrors)
+            {
+                <li>@error.Message</li>
+            }
+        </ul>
+    }
+
+    @if (isMergeError)
+    {
+        <h4>Following errors were encountered during merging.</h4>
+        <ul>
+            @foreach (var error in Response.MergeErrors)
+            {
+                <li>@error.Id</li>
+            }
+        </ul>
+    }
+
+
+    @if (isOtherError)
+    {
+        @Response.ErrorMessage
+    }
+
+}
+
+@code {
+
+    [Parameter]
+    public IPullResult Response { get; set; }
+
+    string title;
+
+    bool isAccessError;
+
+    bool isVersionError;
+
+    bool isMissingError;
+
+    bool isDerivationError;
+
+    bool isMergeError;
+
+    bool isOtherError;
+
+    bool HasErrors => this.Response?.HasErrors == true;
+
+    protected override void OnParametersSet()
+    {
+        this.title = null;
+        isAccessError = false;
+        isVersionError = false;
+        isMissingError = false;
+        isDerivationError = false;
+        isMergeError = false;
+        isOtherError = false;
+
+        if (this.HasErrors)
+        {
+            if (this.Response.AccessErrors?.Count() > 0)
+            {
+                this.isAccessError = true;
+                this.title = "Access Error";
+            }
+            else if (this.Response.VersionErrors?.Count() > 0)
+            {
+                this.isVersionError = true;
+                this.title = "Concurrency Error";
+            }
+            else if (this.Response.MissingErrors?.Count() > 0)
+            {
+                this.isMissingError = true;
+                this.title = "Missing Error";
+            }
+            else if (this.Response.DerivationErrors?.Count() > 0)
+            {
+                this.isDerivationError = true;
+                this.title = "Derivation Errors";
+            }
+            else if (this.Response.MergeErrors?.Count() > 0)
+            {
+                this.isMergeError = true;
+                this.title = "Merge Errors";
+            }
+            else
+            {
+                this.isOtherError = true;
+                this.title = "Error";
+            }
+        }
+    }
+}

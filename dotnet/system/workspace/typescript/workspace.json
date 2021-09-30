@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "projects": {
+    "protocol-json-system": {
+      "root": "libs/protocol/json/system",
+      "sourceRoot": "libs/protocol/json/system/src",
+      "projectType": "library",
+      "targets": {
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["libs/protocol/json/system/**/*.ts"] } },
+        "test": { "executor": "@nrwl/jest:jest", "outputs": ["coverage/libs/protocol/json/system"], "options": { "jestConfig": "libs/protocol/json/system/jest.config.js", "passWithNoTests": true } }
+      }
+    },
+    "workspace-meta-lazy-system": {
+      "root": "libs/workspace/meta/lazy/system",
+      "sourceRoot": "libs/workspace/meta/lazy/system/src",
+      "projectType": "library",
+      "targets": {
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["libs/workspace/meta/lazy/system/**/*.ts"] } },
+        "test": { "executor": "@nrwl/jest:jest", "outputs": ["coverage/libs/workspace/meta/lazy/system"], "options": { "jestConfig": "libs/workspace/meta/lazy/system/jest.config.js", "passWithNoTests": true } }
+      }
+    },
+    "workspace-meta-lazy-tests": {
+      "root": "libs/workspace/meta/lazy/tests",
+      "sourceRoot": "libs/workspace/meta/lazy/tests/src",
+      "projectType": "library",
+      "targets": {
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["libs/workspace/meta/lazy/tests/**/*.ts"] } },
+        "test": { "executor": "@nrwl/jest:jest", "outputs": ["coverage/libs/workspace/meta/lazy/tests"], "options": { "jestConfig": "libs/workspace/meta/lazy/tests/jest.config.js", "passWithNoTests": true } }
+      }
+    },
+    "workspace-meta-system": {
+      "root": "libs/workspace/meta/system",
+      "sourceRoot": "libs/workspace/meta/system/src",
+      "projectType": "library",
+      "targets": {
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["libs/workspace/meta/system/**/*.ts"] } },
+        "test": { "executor": "@nrwl/jest:jest", "outputs": ["coverage/libs/workspace/meta/system"], "options": { "jestConfig": "libs/workspace/meta/system/jest.config.js", "passWithNoTests": true } }
+      }
+    },
+    "workspace-domain-system": {
+      "root": "libs/workspace/domain/system",
+      "sourceRoot": "libs/workspace/domain/system/src",
+      "projectType": "library",
+      "targets": {
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["libs/workspace/domain/system/**/*.ts"] } },
+        "test": { "executor": "@nrwl/jest:jest", "outputs": ["coverage/libs/workspace/domain/system"], "options": { "jestConfig": "libs/workspace/domain/system/jest.config.js", "passWithNoTests": true } }
+      }
+    },
+    "workspace-domain-json-system": {
+      "root": "libs/workspace/domain/json/system",
+      "sourceRoot": "libs/workspace/domain/json/system/src",
+      "projectType": "library",
+      "targets": {
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["libs/workspace/domain/json/system/**/*.ts"] } },
+        "test": { "executor": "@nrwl/jest:jest", "outputs": ["coverage/libs/workspace/domain/json/system"], "options": { "jestConfig": "libs/workspace/domain/json/system/jest.config.js", "passWithNoTests": true } }
+      }
+    },
+    "workspace-domain-json-tests": {
+      "root": "libs/workspace/domain/json/tests",
+      "sourceRoot": "libs/workspace/domain/json/tests/src",
+      "projectType": "library",
+      "targets": {
+        "lint": { "executor": "@nrwl/linter:eslint", "options": { "lintFilePatterns": ["libs/workspace/domain/json/tests/**/*.ts"] } },
+        "test": { "executor": "@nrwl/jest:jest", "outputs": ["coverage/libs/workspace/domain/json/tests"], "options": { "jestConfig": "libs/workspace/domain/json/tests/jest.config.js", "passWithNoTests": true } }
+      }
+    }
+  },
+  "cli": { "defaultCollection": "@nrwl/workspace" }
+}

@@ -1,0 +1,32 @@
+@if (Items != null && Items.Count > 0)
+{
+    if(Items.Count == 1)
+    {
+        var item = Items[0];
+        <img src="@item.Source" class="img-fluid" />
+    }
+    else
+    {
+        <BSCarousel NumberOfItems="@(Items.Count)" @attributes="Attributes">
+            <BSCarouselIndicators NumberOfItems="@(Items.Count)" />
+            <div class="carousel-inner">
+                @foreach (var item in Items)
+                {
+                <BSCarouselItem src="@item.Source" alt="@item.Alt" loading="lazy" ActionLink="@item.ActionLink" ActionLinkTarget="@item.ActionLinkTarget">
+                    <BSCarouselCaption CaptionText="@item.Caption" HeaderText="@item.Header"/>
+                </BSCarouselItem>
+                }
+            </div>
+            <BSCarouselControl CarouselDirection="CarouselDirection.Previous" NumberOfItems="@Items.Count" />
+            <BSCarouselControl CarouselDirection="CarouselDirection.Next" NumberOfItems="@Items.Count" />
+        </BSCarousel>
+    }
+}
+
+@code {
+    [Parameter]
+    public IList<CarouselItem> Items { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object> Attributes { get; set; }
+}

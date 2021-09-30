@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Database.Meta.IMetaPopulationBase">
+    <Position X="1" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAgAQAAAEAACAAAABEQgAAiAAAA=</HashCode>
+      <FileName>Meta\Base\IMetaPopulationBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IMetaPopulation">
+    <Position X="1" Y="1" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IObjectTypeBase">
+    <Position X="7" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAQAAAACAAAIAAAAQAAAAAAAAAAhAAAA=</HashCode>
+      <FileName>Meta\Base\IObjectTypeBase.cs</FileName>
+      <NewMemberFileName>Meta\Base\IMetaObjectBase.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Database.Meta.IMetaObject">
+    <Position X="7" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="MetaPopulation" />
+    </ShowAsAssociation>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

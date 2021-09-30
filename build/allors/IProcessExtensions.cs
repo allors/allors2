@@ -1,7 +1,7 @@
 using System;
 using Nuke.Common.Tooling;
 
-public static partial class IProcessExtensions
+public static class IProcessExtensions
 {
     private const int SUCCESS = 0;
 

@@ -1,0 +1,25 @@
+@using Allors.Workspace.Blazor.Validation
+<BSForm OnSubmit="@OnSubmit" OnValidSubmit="@OnValidSubmit" OnInvalidSubmit="@OnInvalidSubmit" @attributes="Attributes">
+    <CascadingValue Value="@Fields">
+        @ChildContent
+    </CascadingValue>
+</BSForm>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object> Attributes { get; set; }
+
+    [Parameter]
+    public EventCallback<EditContext> OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback<EditContext> OnValidSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback<EditContext> OnInvalidSubmit { get; set; }
+
+    public Fields Fields { get; } = new Fields();
+}

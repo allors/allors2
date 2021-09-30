@@ -1,0 +1,13 @@
+@inherits ARadioGroupBase
+
+<FormItem @attributes="Attributes">
+
+    <RadioGroup @bind-Value="@Model">
+
+        @foreach (var option in Options)
+        {
+            <Radio Id="@OptionName(option)" Value="@option">@(DisplayOption(option))</Radio>
+        }
+
+    </RadioGroup>
+</FormItem>

@@ -1,0 +1,10 @@
+@inherits ACheckboxGroupBase
+
+<FormItem @attributes="Attributes">
+    @foreach (var option in Options)
+    {
+        <Checkbox Id="@OptionName(option)" Value="(bool)IsSelected(option)" @onchange=@(v => OnChanged(v.Value, option))>
+            <label for="@OptionName(option)">@(DisplayOption(option))</label>
+        </Checkbox>
+    }
+</FormItem>
