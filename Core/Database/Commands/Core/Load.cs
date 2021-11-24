@@ -1,4 +1,4 @@
-﻿// <copyright file="Load.cs" company="Allors bvba">
+// <copyright file="Load.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -38,7 +38,7 @@ namespace Commands
         {
             this.logger.LogInformation("Begin");
 
-            var fileName = this.FileName ?? this.configuration["populationFile"];
+            var fileName = this.configuration["populationFile"] ?? this.FileName;
             var fileInfo = new FileInfo(fileName);
 
             using (var reader = XmlReader.Create(fileInfo.FullName))

@@ -2,8 +2,8 @@
   "profiles": {
     "Merge": {
       "commandName": "Project",
-      "commandLineArgs": "allors\\core\\database\\Resources\\Core allors\\base\\database\\Resources\\Base custom\\database\\resources\\custom custom\\database\\resources",
-      "workingDirectory": "C:\\Users\\MartienvKnippenberg\\source\\Repos\\Aviaco"
+      "commandLineArgs": "allors\\dotnet\\core\\database\\Resources\\Core allors\\dotnet\\base\\database\\Resources\\Base allors\\dotnet\\apps\\database\\Resources\\Apps custom\\database\\resources\\custom custom\\database\\resources",
+      "workingDirectory": "C:\\Users\\MartienvKnippenberg\\source\\Repos\\Aviaco3"
     }
   }
 }
