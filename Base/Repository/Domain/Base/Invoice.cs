@@ -59,6 +59,7 @@ namespace Allors.Repository
         [RoleId("5bab4dea-3566-4421-96c5-27b774b6542a")]
         #endregion
         [Workspace]
+        [Size(-1)]
         string CustomerReference { get; set; }
 
         #region Allors
