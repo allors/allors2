@@ -73,6 +73,7 @@ namespace Allors.Repository
         [AssociationId("38AC3BD7-FF30-4693-8561-E150E8CDA4DC")]
         [RoleId("F3EEE845-7AB3-4F12-BDBD-33A4AF486DA1")]
         #endregion
+        [Size(-1)]
         [Workspace]
         string CustomerReference { get; set; }
 
