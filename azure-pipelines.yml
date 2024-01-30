@@ -27,29 +27,6 @@ stages:
           target: 'CoreDatabaseTest'
         core_workspace:
           target: 'CoreWorkspaceTest'
-        base_database:
-          target: 'BaseDatabaseTest'
-        base_database_debug:
-          allors.derivation: 'persistent'
-          target: 'BaseDatabaseTest'
-        base_workspace_typescript:
-          target: 'BaseWorkspaceTypescriptTest'
-        base_workspace_intranet_generic:
-          target: 'BaseWorkspaceIntranetGenericTests'
-        base_workspace_intranet_other:
-          target: 'BaseWorkspaceIntranetOtherTests'
-        base_workspace_intranet_relation_specific:
-          target: 'BaseWorkspaceIntranetRelationTests'
-        base_workspace_intranet_invoice_specific:
-          target: 'BaseWorkspaceIntranetInvoiceTests'
-        base_workspace_intranet_order_specific:
-          target: 'BaseWorkspaceIntranetOrderTests'
-        base_workspace_intranet_product_specific:
-          target: 'BaseWorkspaceIntranetProductTests'
-        base_workspace_intranet_shipment_specific:
-          target: 'BaseWorkspaceIntranetShipmentTests'
-        base_workspace_intranet_workeffort_specific:
-          target: 'BaseWorkspaceIntranetWorkEffortTests'
 
     steps:
     - powershell: Set-Culture -CultureInfo nl-BE

@@ -15,13 +15,11 @@ partial class Build : NukeBuild
     private readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     Target Install => _ => _
-        .DependsOn(CoreInstall)
-        .DependsOn(BaseInstall);
+        .DependsOn(CoreInstall);
 
     Target ResetDatabase => _ => _
         .DependsOn(AdaptersResetDatabase)
-        .DependsOn(CoreResetDatabase)
-        .DependsOn(BaseResetDatabase);
+        .DependsOn(CoreResetDatabase);
 
     Target Clean => _ => _
         .Executes(() =>
@@ -47,7 +45,7 @@ partial class Build : NukeBuild
                 }
             }
 
-            foreach (var path in new AbsolutePath[] { Paths.Platform, Paths.Core, Paths.Base })
+            foreach (var path in new AbsolutePath[] { Paths.Platform, Paths.Core })
             {
                 foreach (var child in new DirectoryInfo(path).GetDirectories().Where(v => !v.Name.Equals("build")))
                 {
@@ -60,19 +58,12 @@ partial class Build : NukeBuild
 
     Target Generate => _ => _
         .DependsOn(this.AdaptersGenerate)
-        .DependsOn(this.CoreGenerate)
-        .DependsOn(this.BaseGenerate);
-
-    Target Scaffold => _ => _
-        .DependsOn(this.CoreScaffold)
-        .DependsOn(this.BaseScaffold);
-
+        .DependsOn(this.CoreGenerate);
+    
     Target Default => _ => _
-        .DependsOn(this.Generate)
-        .DependsOn(this.Scaffold);
+        .DependsOn(this.Generate);
 
     Target All => _ => _
         .DependsOn(this.Install)
-        .DependsOn(this.Generate)
-        .DependsOn(this.Scaffold);
+        .DependsOn(this.Generate);
 }

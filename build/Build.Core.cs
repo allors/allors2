@@ -102,29 +102,6 @@ partial class Build
                 .SetProcessWorkingDirectory(Paths.CoreWorkspaceTypescript));
         });
 
-    Target CoreScaffold => _ => _
-        .DependsOn(CoreGenerate)
-        .ProceedAfterFailure()
-        .Executes(() =>
-        {
-            try
-            {
-                NpmRun(s => s
-                    .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
-                    .SetProcessWorkingDirectory(Paths.CoreWorkspaceTypescript)
-                    .SetCommand("scaffold"));
-            }
-            catch
-            {
-                // TODO:
-            }
-
-
-            DotNetRun(s => s
-                .SetProcessWorkingDirectory(Paths.Core)
-                .SetProjectFile(Paths.CoreWorkspaceScaffoldGenerate));
-        });
-
     Target CoreWorkspaceTypescriptDomain => _ => _
         .DependsOn(CoreGenerate)
         .DependsOn(EnsureDirectories)
@@ -182,32 +159,6 @@ partial class Build
             }
         });
 
-    Target CoreWorkspaceTypescriptMaterialTests => _ => _
-        .DependsOn(CoreScaffold)
-        .DependsOn(CorePublishServer)
-        .DependsOn(CorePublishCommands)
-        .DependsOn(CoreResetDatabase)
-        .Executes(async () =>
-        {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
-                {
-                    using (var angular = new Angular(Paths.CoreWorkspaceTypescript, "angular-material:serve"))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(s => s
-                            .SetProjectFile(Paths.CoreWorkspaceScaffoldAngularMaterialTests)
-                            .AddLoggers("trx;LogFileName=CoreWorkspaceTypescriptMaterialTests.trx")
-                            .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
-        });
-
     Target CoreWorkspaceCSharpDomainTests => _ => _
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
@@ -235,10 +186,7 @@ partial class Build
 
     Target CoreWorkspaceTypescriptTest => _ => _
         .DependsOn(CoreWorkspaceTypescriptDomain)
-        .DependsOn(CoreWorkspaceTypescriptPromise)
-        // TODO: Koen
-        //.DependsOn(CoreWorkspaceTypescriptAngular)
-        .DependsOn(CoreWorkspaceTypescriptMaterialTests);
+        .DependsOn(CoreWorkspaceTypescriptPromise);
 
     Target CoreWorkspaceCSharpTest => _ => _
         .DependsOn(CoreWorkspaceCSharpDomainTests);
