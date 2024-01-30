@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="2.14.0" />
+    <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.17" />
-    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.13" />
   </ItemGroup>
 
   <ItemGroup>

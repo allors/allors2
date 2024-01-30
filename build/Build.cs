@@ -4,10 +4,10 @@ using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tools.DotNet;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tooling.ProcessTasks;
 
-[CheckBuildProjectConfigurations(TimeoutInMilliseconds = 5000)]
 [UnsetVisualStudioEnvironmentVariables]
 partial class Build : NukeBuild
 {

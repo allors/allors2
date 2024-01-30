@@ -41,7 +41,7 @@ partial class Build
          {
              DotNetTest(s => s
                  .SetProjectFile(Paths.BaseDatabaseDomainTests)
-                 .SetLogger("trx;LogFileName=BaseDatabaseDomain.trx")
+                 .AddLoggers("trx;LogFileName=BaseDatabaseDomain.trx")
                  .SetResultsDirectory(Paths.ArtifactsTests));
          });
 
@@ -54,7 +54,7 @@ partial class Build
                  .SetProjectFile(Paths.PlatformRepositoryGenerate)
                  .SetApplicationArguments($"{Paths.BaseRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.BaseDatabaseMetaGenerated}"));
              DotNetRun(s => s
-                 .SetWorkingDirectory(Paths.Base)
+                 .SetProcessWorkingDirectory(Paths.Base)
                  .SetProjectFile(Paths.BaseDatabaseGenerate));
          });
 
@@ -63,7 +63,7 @@ partial class Build
          .Executes(() =>
          {
              var dotNetPublishSettings = new DotNetPublishSettings()
-                 .SetWorkingDirectory(Paths.BaseDatabaseCommands)
+                 .SetProcessWorkingDirectory(Paths.BaseDatabaseCommands)
                  .SetOutput(Paths.ArtifactsBaseCommands);
              DotNetPublish(dotNetPublishSettings);
          });
@@ -73,7 +73,7 @@ partial class Build
          .Executes(() =>
          {
              var dotNetPublishSettings = new DotNetPublishSettings()
-                 .SetWorkingDirectory(Paths.BaseDatabaseServer)
+                 .SetProcessWorkingDirectory(Paths.BaseDatabaseServer)
                  .SetOutput(Paths.ArtifactsBaseServer);
              DotNetPublish(dotNetPublishSettings);
          });
@@ -82,8 +82,8 @@ partial class Build
         .Executes(() =>
         {
             NpmInstall(s => s
-                .SetEnvironmentVariable("npm_config_loglevel", "error")
-                .SetWorkingDirectory(Paths.BaseWorkspaceTypescript));
+                .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                .SetProcessWorkingDirectory(Paths.BaseWorkspaceTypescript));
         });
 
     private Target BaseScaffold => _ => _
@@ -94,8 +94,8 @@ partial class Build
              try
              {
                  NpmRun(s => s
-                     .SetEnvironmentVariable("npm_config_loglevel", "error")
-                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
+                     .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                     .SetProcessWorkingDirectory(Paths.BaseWorkspaceTypescript)
                      .SetCommand("scaffold"));
              }
              catch
@@ -104,7 +104,7 @@ partial class Build
              }
 
              DotNetRun(s => s
-                 .SetWorkingDirectory(Paths.Base)
+                 .SetProcessWorkingDirectory(Paths.Base)
                  .SetProjectFile(Paths.BaseWorkspaceScaffoldGenerate));
          });
 
@@ -114,8 +114,8 @@ partial class Build
          .Executes(() =>
          {
              NpmRun(s => s
-                 .SetEnvironmentVariable("npm_config_loglevel", "error")
-                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
+                 .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                 .SetProcessWorkingDirectory(Paths.BaseWorkspaceTypescript)
                  .SetCommand("domain:test"));
          });
 
@@ -134,7 +134,7 @@ partial class Build
                     DotNetTest(
                         s => s
                             .SetProjectFile(Paths.BaseWorkspaceIntranetTests)
-                            .SetLogger($"trx;LogFileName=BaseIntranet{category}Tests.trx")
+                            .AddLoggers($"trx;LogFileName=BaseIntranet{category}Tests.trx")
                             .SetFilter($"Category={category}")
                             .SetResultsDirectory(Paths.ArtifactsTests));
                 }

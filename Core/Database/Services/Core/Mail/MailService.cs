@@ -32,12 +32,14 @@ namespace Allors.Services
 
             if (emailMesssage.ExistRecipientEmailAddress)
             {
-                message.To.Add(new MimeKit.MailboxAddress(emailMesssage.RecipientEmailAddress));
+                var address = new MimeKit.MailboxAddress(emailMesssage.RecipientEmailAddress, emailMesssage.RecipientEmailAddress);
+                message.To.Add(address);
             }
 
             foreach (User recipient in emailMesssage.Recipients)
             {
-                message.To.Add(new MimeKit.MailboxAddress(recipient.UserEmail));
+                var address = new MimeKit.MailboxAddress(recipient.UserName, recipient.UserEmail);
+                message.To.Add(address);
             }
 
             using (var client = new SmtpClient())

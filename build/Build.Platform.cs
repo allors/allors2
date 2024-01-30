@@ -25,7 +25,7 @@ partial class Build
                 .SetProjectFile(Paths.PlatformRepositoryGenerate)
                 .SetApplicationArguments($"{Paths.PlatformAdaptersRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.PlatformAdaptersMetaGenerated}"));
             DotNetRun(s => s
-                .SetWorkingDirectory(Paths.PlatformAdapters)
+                .SetProcessWorkingDirectory(Paths.PlatformAdapters)
                 .SetProjectFile(Paths.PlatformAdaptersGenerate));
         });
 
@@ -36,7 +36,7 @@ partial class Build
             DotNetTest(s => s
                 .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                 .SetFilter("FullyQualifiedName~Allors.Database.Adapters.Memory")
-                .SetLogger("trx;LogFileName=AdaptersMemory.trx")
+                .AddLoggers("trx;LogFileName=AdaptersMemory.trx")
                 .SetResultsDirectory(Paths.ArtifactsTests));
         });
 
@@ -51,7 +51,7 @@ partial class Build
                 DotNetTest(s => s
                     .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                     .SetFilter("FullyQualifiedName~Allors.Database.Adapters.SqlClient")
-                    .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
+                    .AddLoggers("trx;LogFileName=AdaptersSqlClient.trx")
                     .SetResultsDirectory(Paths.ArtifactsTests));
             }
         });
@@ -63,7 +63,7 @@ partial class Build
             DotNetTest(s => s
                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                .SetFilter("FullyQualifiedName~Allors.Database.Adapters.Npgsql")
-               .SetLogger("trx;LogFileName=AdaptersNpgsql.trx")
+               .AddLoggers("trx;LogFileName=AdaptersNpgsql.trx")
                .SetResultsDirectory(Paths.ArtifactsTests));
         });
 

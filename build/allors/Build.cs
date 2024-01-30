@@ -9,11 +9,7 @@ using static Nuke.Common.IO.FileSystemTasks;
 public partial class Build
 {
     [Parameter("DotNet Verbosity")]
-    private readonly DotNetVerbosity DotNetVerbosity = DotNetVerbosity.Quiet;
-
-    //[Solution] private readonly Solution Solution;
-    //[GitRepository] private readonly GitRepository GitRepository;
-    //[GitVersion] private readonly GitVersion GitVersion;
+    private readonly DotNetVerbosity DotNetVerbosity = DotNetVerbosity.quiet;
 
     private readonly Paths Paths = new Paths(RootDirectory);
 

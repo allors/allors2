@@ -38,7 +38,7 @@ partial class Build
                 .SetProjectFile(Paths.PlatformRepositoryGenerate)
                 .SetApplicationArguments($"{Paths.CoreRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.CoreDatabaseMetaGenerated}"));
             DotNetRun(s => s
-                .SetWorkingDirectory(Paths.Core)
+                .SetProcessWorkingDirectory(Paths.Core)
                 .SetProjectFile(Paths.CoreDatabaseGenerate));
         });
 
@@ -48,7 +48,7 @@ partial class Build
         {
             DotNetTest(s => s
                 .SetProjectFile(Paths.CoreDatabaseDomainTests)
-                .SetLogger("trx;LogFileName=CoreDatabaseDomain.trx")
+                .AddLoggers("trx;LogFileName=CoreDatabaseDomain.trx")
                 .SetResultsDirectory(Paths.ArtifactsTests));
         });
 
@@ -57,7 +57,7 @@ partial class Build
         .Executes(() =>
         {
             var dotNetPublishSettings = new DotNetPublishSettings()
-                .SetWorkingDirectory(Paths.CoreDatabaseCommands)
+                .SetProcessWorkingDirectory(Paths.CoreDatabaseCommands)
                 .SetOutput(Paths.ArtifactsCoreCommands);
             DotNetPublish(dotNetPublishSettings);
         });
@@ -67,7 +67,7 @@ partial class Build
         .Executes(() =>
         {
             var dotNetPublishSettings = new DotNetPublishSettings()
-                .SetWorkingDirectory(Paths.CoreDatabaseServer)
+                .SetProcessWorkingDirectory(Paths.CoreDatabaseServer)
                 .SetOutput(Paths.ArtifactsCoreServer);
             DotNetPublish(dotNetPublishSettings);
         });
@@ -88,7 +88,7 @@ partial class Build
                     await server.Ready();
                     DotNetTest(s => s
                         .SetProjectFile(Paths.CoreDatabaseServerTests)
-                        .SetLogger("trx;LogFileName=CoreDatabaseServer.trx")
+                        .AddLoggers("trx;LogFileName=CoreDatabaseServer.trx")
                         .SetResultsDirectory(Paths.ArtifactsTests));
                 }
             }
@@ -98,8 +98,8 @@ partial class Build
         .Executes(() =>
         {
             NpmInstall(s => s
-                .SetEnvironmentVariable("npm_config_loglevel", "error")
-                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript));
+                .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                .SetProcessWorkingDirectory(Paths.CoreWorkspaceTypescript));
         });
 
     Target CoreScaffold => _ => _
@@ -110,8 +110,8 @@ partial class Build
             try
             {
                 NpmRun(s => s
-                    .SetEnvironmentVariable("npm_config_loglevel", "error")
-                    .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                    .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                    .SetProcessWorkingDirectory(Paths.CoreWorkspaceTypescript)
                     .SetCommand("scaffold"));
             }
             catch
@@ -121,7 +121,7 @@ partial class Build
 
 
             DotNetRun(s => s
-                .SetWorkingDirectory(Paths.Core)
+                .SetProcessWorkingDirectory(Paths.Core)
                 .SetProjectFile(Paths.CoreWorkspaceScaffoldGenerate));
         });
 
@@ -131,8 +131,8 @@ partial class Build
         .Executes(() =>
         {
             NpmRun(s => s
-                .SetEnvironmentVariable("npm_config_loglevel", "error")
-                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                .SetProcessWorkingDirectory(Paths.CoreWorkspaceTypescript)
                 .SetCommand("domain:test"));
         });
 
@@ -152,8 +152,8 @@ partial class Build
                 {
                     await server.Ready();
                     NpmRun(s => s
-                        .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                        .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                        .SetProcessWorkingDirectory(Paths.CoreWorkspaceTypescript)
                         .SetCommand("promise:test"));
                 }
             }
@@ -175,8 +175,8 @@ partial class Build
                 {
                     await server.Ready();
                     NpmRun(s => s
-                        .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                        .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
+                        .SetProcessWorkingDirectory(Paths.CoreWorkspaceTypescript)
                         .SetCommand("angular:test"));
                 }
             }
@@ -201,7 +201,7 @@ partial class Build
                         await angular.Init();
                         DotNetTest(s => s
                             .SetProjectFile(Paths.CoreWorkspaceScaffoldAngularMaterialTests)
-                            .SetLogger("trx;LogFileName=CoreWorkspaceTypescriptMaterialTests.trx")
+                            .AddLoggers("trx;LogFileName=CoreWorkspaceTypescriptMaterialTests.trx")
                             .SetResultsDirectory(Paths.ArtifactsTests));
                     }
                 }
@@ -223,7 +223,7 @@ partial class Build
                     await server.Ready();
                     DotNetTest(s => s
                         .SetProjectFile(Paths.CoreWorkspaceCSharpDomainTests)
-                        .SetLogger("trx;LogFileName=CoreWorkspaceCSharpDomainTests.trx")
+                        .AddLoggers("trx;LogFileName=CoreWorkspaceCSharpDomainTests.trx")
                         .SetResultsDirectory(Paths.ArtifactsTests));
                 }
             }

@@ -13,7 +13,7 @@ partial class Build
                 .SetProjectFile(Paths.PlatformRepositoryGenerate)
                 .SetApplicationArguments($"{Paths.DerivationRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.DerivationDatabaseMetaGenerated}"));
             DotNetRun(s => s
-                .SetWorkingDirectory(Paths.Derivation)
+                .SetProcessWorkingDirectory(Paths.Derivation)
                 .SetProjectFile(Paths.DerivationDatabaseGenerate));
         });
 
@@ -23,7 +23,7 @@ partial class Build
         {
             DotNetTest(s => s
                 .SetProjectFile(Paths.DerivationDatabaseDomainTests)
-                .SetLogger("trx;LogFileName=next.trx")
+                .AddLoggers("trx;LogFileName=next.trx")
                 .SetResultsDirectory(Paths.ArtifactsTests));
         });
 
