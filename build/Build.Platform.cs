@@ -55,21 +55,9 @@ partial class Build
                     .SetResultsDirectory(Paths.ArtifactsTests));
             }
         });
-
-    Target AdaptersTestNpgsql => _ => _
-        .DependsOn(AdaptersGenerate)
-        .Executes(() =>
-        {
-            DotNetTest(s => s
-               .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-               .SetFilter("FullyQualifiedName~Allors.Database.Adapters.Npgsql")
-               .AddLoggers("trx;LogFileName=AdaptersNpgsql.trx")
-               .SetResultsDirectory(Paths.ArtifactsTests));
-        });
-
+    
     Target Adapters => _ => _
         .DependsOn(Clean)
         .DependsOn(AdaptersTestMemory)
-        .DependsOn(AdaptersTestSqlClient)
-        .DependsOn(AdaptersTestNpgsql);
+        .DependsOn(AdaptersTestSqlClient);
 }

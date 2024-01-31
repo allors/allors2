@@ -39,16 +39,6 @@ namespace Allors.Database.Adapters
                 case "MEMORY":
                     throw new NotImplementedException();
 
-                case "NPGSQL":
-
-                    return new Npgsql.Database(this.serviceProvider, new Npgsql.Configuration
-                    {
-                        ConnectionString = connectionString,
-                        ObjectFactory = this.objectFactory,
-                        IsolationLevel = this.isolationLevel,
-                        CommandTimeout = this.commandTimeout,
-                    });
-
                 case "SQLCLIENT":
                 default:
 
