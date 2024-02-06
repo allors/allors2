@@ -51,8 +51,22 @@ namespace Allors.Database.Adapters.SqlClient
             MaskExistsKnown = 4,
         }
 
-        internal virtual Strategy Strategy => this.strategy ??= this.CreateStrategy();
+        internal virtual Strategy Strategy
+        {
+            get
+            {
+                // Always use the active Reference
+                if (!this.Session.State.ReferenceByObjectId.TryGetValue(this.ObjectId, out var activeReference))
+                {
+                    // If there is no active Reference, then become the active reference
+                    activeReference = this;
+                    this.Session.State.ReferenceByObjectId[this.ObjectId] = activeReference;
+                }
 
+                return activeReference.strategy ??= new Strategy(this);
+            }
+        }
+        
         internal Session Session { get; }
 
         internal IClass Class { get; }
