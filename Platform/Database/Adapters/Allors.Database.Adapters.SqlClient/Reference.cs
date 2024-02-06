@@ -19,7 +19,7 @@ namespace Allors.Database.Adapters.SqlClient
 
         private Flags flags;
 
-        private WeakReference<Strategy> weakReference;
+        private Strategy strategy;
 
         internal Reference(Session session, IClass @class, long objectId, bool isNew)
         {
@@ -51,21 +51,7 @@ namespace Allors.Database.Adapters.SqlClient
             MaskExistsKnown = 4,
         }
 
-        internal virtual Strategy Strategy
-        {
-            get
-            {
-                var strategy = this.Target;
-
-                if (strategy == null)
-                {
-                    strategy = this.CreateStrategy();
-                    this.weakReference = new WeakReference<Strategy>(strategy);
-                }
-
-                return strategy;
-            }
-        }
+        internal virtual Strategy Strategy => this.strategy ??= this.CreateStrategy();
 
         internal Session Session { get; }
 
@@ -154,16 +140,6 @@ namespace Allors.Database.Adapters.SqlClient
             set { this.flags = value ? this.flags | Flags.MaskExistsKnown : this.flags & ~Flags.MaskExistsKnown; }
         }
 
-        private Strategy Target
-        {
-            get
-            {
-                Strategy strategy = null;
-                this.weakReference?.TryGetTarget(out strategy);
-                return strategy;
-            }
-        }
-
         public override int GetHashCode() => this.ObjectId.GetHashCode();
 
         public override bool Equals(object obj)
@@ -182,11 +158,10 @@ namespace Allors.Database.Adapters.SqlClient
             this.FlagIsNew = false;
             this.version = UnknownVersion;
 
-            var strategy = this.Target;
-            if (strategy != null)
+            if (this.strategy != null)
             {
                 referencesWithStrategy.Add(this);
-                strategy.Release();
+                this.strategy.Release();
             }
         }
 
@@ -204,11 +179,10 @@ namespace Allors.Database.Adapters.SqlClient
 
             this.version = UnknownVersion;
 
-            var strategy = this.Target;
-            if (strategy != null)
+            if (this.strategy != null)
             {
                 referencesWithStrategy.Add(this);
-                strategy.Release();
+                this.strategy.Release();
             }
         }
     }
