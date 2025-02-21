@@ -1,10 +1,10 @@
 using Nuke.Common;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.GitVersion;
 using static Nuke.Common.Tooling.ProcessTasks;
-using static Nuke.Common.IO.FileSystemTasks;
 
 public partial class Build
 {
@@ -26,7 +26,7 @@ public partial class Build
         base.OnBuildFinished();
         this.TaskKill();
     }
-       
+
     public void TaskKill()
     {
         static void TaskKill(string imageName)
@@ -46,5 +46,5 @@ public partial class Build
     }
 
     public Target EnsureDirectories => _ => _
-       .Executes(() => EnsureExistingDirectory(this.Paths.ArtifactsTests));
+       .Executes(() => this.Paths.ArtifactsTests.CreateDirectory());
 }

@@ -1,7 +1,8 @@
 # Allors
 # ------
-generated/
-artifacts/
+[Gg]enerated/
+[Aa]rtifacts/
+.nuke/build.schema.json
 build/Properties/launchSettings.json
 **/package-lock.json
 **/.DS_Store
@@ -135,7 +136,7 @@ artifacts/
 *_p.c
 *_i.h
 *.ilk
-*.meta
+#*.meta
 *.obj
 *.pch
 *.pdb
@@ -342,3 +343,4 @@ paket-files/
 Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js
 Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js.map
 Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.tsbuildinfo
+/.nuke/temp

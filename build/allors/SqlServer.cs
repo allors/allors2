@@ -2,7 +2,7 @@ using System;
 using MartinCostello.SqlLocalDb;
 using Microsoft.Data.SqlClient;
 using Nuke.Common.IO;
-using static Nuke.Common.Logger;
+using static Serilog.Log;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 partial class SqlServer : IDisposable
@@ -19,7 +19,7 @@ partial class SqlServer : IDisposable
 
         if (!this.dbInstance.IsRunning)
         {
-            Normal("SqlServer: Start");
+            Information("SqlServer: Start");
             this.manager.Start();
         }
     }
@@ -28,7 +28,7 @@ partial class SqlServer : IDisposable
     {
         if (this.dbInstance.IsRunning)
         {
-            Normal("SqlServer: Stop");
+            Information("SqlServer: Stop");
             try
             {
                 this.manager.Stop();
@@ -38,7 +38,7 @@ partial class SqlServer : IDisposable
 
         if (!this.dbInstance.IsRunning)
         {
-            Normal("SqlServer: Start");
+            Information("SqlServer: Start");
             this.manager.Start();
         }
     }

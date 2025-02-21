@@ -5,7 +5,6 @@ using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tooling.ProcessTasks;
 
 [UnsetVisualStudioEnvironmentVariables]
@@ -31,7 +30,7 @@ partial class Build : NukeBuild
                 {
                     if (new[] { "node_modules", "packages", "out-tsc", "bin", "obj", "generated" }.Contains(directoryInfo.Name.ToLowerInvariant()))
                     {
-                        DeleteDirectory(directoryInfo.FullName);
+                        ((AbsolutePath)directoryInfo.FullName).DeleteDirectory();
                         return;
                     }
 
@@ -53,13 +52,13 @@ partial class Build : NukeBuild
                 }
             }
 
-            DeleteDirectory(Paths.Artifacts);
+            Paths.Artifacts.DeleteDirectory();
         });
 
     Target Generate => _ => _
         .DependsOn(this.AdaptersGenerate)
         .DependsOn(this.CoreGenerate);
-    
+
     Target Default => _ => _
         .DependsOn(this.Generate);
 

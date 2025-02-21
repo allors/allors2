@@ -23,7 +23,7 @@ partial class Build
         {
             DotNetRun(s => s
                 .SetProjectFile(Paths.PlatformRepositoryGenerate)
-                .SetApplicationArguments($"{Paths.PlatformAdaptersRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.PlatformAdaptersMetaGenerated}"));
+                .SetApplicationArguments(Paths.PlatformAdaptersRepositoryDomainRepository, Paths.PlatformRepositoryTemplatesMetaCs, Paths.PlatformAdaptersMetaGenerated));
             DotNetRun(s => s
                 .SetProcessWorkingDirectory(Paths.PlatformAdapters)
                 .SetProjectFile(Paths.PlatformAdaptersGenerate));
@@ -55,7 +55,7 @@ partial class Build
                     .SetResultsDirectory(Paths.ArtifactsTests));
             }
         });
-    
+
     Target Adapters => _ => _
         .DependsOn(Clean)
         .DependsOn(AdaptersTestMemory)

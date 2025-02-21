@@ -2,7 +2,7 @@ using Nuke.Common.IO;
 
 public partial class Paths
 {
-    public AbsolutePath Platform => Root / "platform";
+    public AbsolutePath Platform => Root / "Platform";
     public AbsolutePath PlatformRepositoryTemplates => Platform / "Repository/Templates";
     public AbsolutePath PlatformRepositoryTemplatesMetaCs => PlatformRepositoryTemplates / "meta.cs.stg";
     public AbsolutePath PlatformRepositoryGenerate => Platform / "Repository/Generate/Generate.csproj";

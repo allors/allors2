@@ -1,31 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Allors.Domain</RootNamespace>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Resources\about.md" />
-    <None Remove="Resources\avatar.png" />
-    <None Remove="Resources\madeliefje.jpg" />
+    <None Remove="Resources\about.md"/>
+    <None Remove="Resources\avatar.png"/>
+    <None Remove="Resources\madeliefje.jpg"/>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\about.md" />
-    <EmbeddedResource Include="Resources\avatar.png" />
+    <EmbeddedResource Include="Resources\about.md"/>
+    <EmbeddedResource Include="Resources\avatar.png"/>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\madeliefje.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Allors.Documents" Version="1.0.4" />
-    <PackageReference Include="DataUtils.DataUrl" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="MimeTypesMap" Version="1.0.8" />
+    <EmbeddedResource Include="Resources\madeliefje.jpg"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Meta\Meta.csproj" />
-    <ProjectReference Include="..\Resources\Resources.csproj" />
+    <PackageReference Include="Allors.Documents" Version="1.0.10" />
+    <PackageReference Include="DataUtils.DataUrl" Version="1.0.2"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
+    <PackageReference Include="MimeTypesMap" Version="1.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Meta\Meta.csproj"/>
+    <ProjectReference Include="..\Resources\Resources.csproj"/>
   </ItemGroup>
 
   <ItemGroup>

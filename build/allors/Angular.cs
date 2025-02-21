@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.Npm;
-using static Nuke.Common.Logger;
+using static Serilog.Log;
+using static Nuke.Common.Tools.Npm.NpmTasks;
 
 partial class Angular : IDisposable
 {
@@ -12,12 +13,10 @@ partial class Angular : IDisposable
 
     public Angular(AbsolutePath path, string command)
     {
-        var npmRunSetting = new NpmRunSettings()
+        NpmRun(s => s
             .AddProcessEnvironmentVariable("npm_config_loglevel", "error")
             .SetProcessWorkingDirectory(path)
-            .SetCommand(command);
-
-        Process = ProcessTasks.StartProcess((ToolSettings)npmRunSetting);
+            .SetCommand(command));
     }
 
     public void Dispose()
@@ -49,25 +48,25 @@ partial class Angular : IDisposable
             {
                 using (var client = new HttpClient())
                 {
-                    Normal($"Angular request: ${url}");
+                    Information($"Angular request: ${url}");
                     var response = await client.GetAsync($"http://localhost:4200{url}");
                     success = response.IsSuccessStatusCode;
                     var result = response.Content.ReadAsStringAsync().Result;
                     if (!success)
                     {
-                        Warn("Angular response: Unsuccessful");
-                        Warn(result);
+                        Error("Angular response: Unsuccessful");
+                        Error(result);
                     }
                     else
                     {
-                        Normal("Angular response: Successful");
-                        Normal(result);
+                        Information("Angular response: Successful");
+                        Information(result);
                     }
                 }
             }
             catch
             {
-                Warn($"Angular: Exception (run {++run})");
+                Error($"Angular: Exception (run {++run})");
             }
         }
 

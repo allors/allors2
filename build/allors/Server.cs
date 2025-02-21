@@ -1,12 +1,10 @@
 using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using static Nuke.Common.Logger;
-using static Nuke.Common.IO.PathConstruction;
+using static Serilog.Log;
 using static Nuke.Common.Tooling.ProcessTasks;
 
 partial class Server : IDisposable
@@ -50,25 +48,25 @@ partial class Server : IDisposable
             {
                 using (var client = new HttpClient())
                 {
-                    Normal($"Server request: ${url}");
+                    Information($"Server request: ${url}");
                     var response = await client.GetAsync($"http://localhost:5000{url}");
                     success = response.IsSuccessStatusCode;
                     var result = response.Content.ReadAsStringAsync().Result;
                     if (!success)
                     {
-                        Warn("Server response: Unsuccessful");
-                        Warn(result);
+                        Error("Server response: Unsuccessful");
+                        Error(result);
                     }
                     else
                     {
-                        Normal("Server response: Successful");
-                        Normal(result);
+                        Information("Server response: Successful");
+                        Information(result);
                     }
                 }
             }
             catch
             {
-                Warn($"Server: Exception (run {++run})");
+                Error($"Server: Exception (run {++run})");
             }
         }
 

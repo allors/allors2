@@ -1,58 +1,84 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/build",
-  "title": "Build Schema",
   "definitions": {
-    "build": {
-      "type": "object",
+    "Host": {
+      "type": "string",
+      "enum": [
+        "AppVeyor",
+        "AzurePipelines",
+        "Bamboo",
+        "Bitbucket",
+        "Bitrise",
+        "GitHubActions",
+        "GitLab",
+        "Jenkins",
+        "Rider",
+        "SpaceAutomation",
+        "TeamCity",
+        "Terminal",
+        "TravisCI",
+        "VisualStudio",
+        "VSCode"
+      ]
+    },
+    "ExecutableTarget": {
+      "type": "string",
+      "enum": [
+        "Adapters",
+        "AdaptersGenerate",
+        "AdaptersResetDatabase",
+        "AdaptersTestMemory",
+        "AdaptersTestSqlClient",
+        "All",
+        "Clean",
+        "Core",
+        "CoreDatabaseTest",
+        "CoreDatabaseTestDomain",
+        "CoreDatabaseTestServer",
+        "CoreGenerate",
+        "CoreInstall",
+        "CoreMerge",
+        "CorePublishCommands",
+        "CorePublishServer",
+        "CoreResetDatabase",
+        "CoreTest",
+        "CoreWorkspaceCSharpDomainTests",
+        "CoreWorkspaceCSharpTest",
+        "CoreWorkspaceTest",
+        "CoreWorkspaceTypescriptAngular",
+        "CoreWorkspaceTypescriptDomain",
+        "CoreWorkspaceTypescriptPromise",
+        "CoreWorkspaceTypescriptTest",
+        "Default",
+        "EnsureDirectories",
+        "Generate",
+        "Install",
+        "ResetDatabase"
+      ]
+    },
+    "Verbosity": {
+      "type": "string",
+      "description": "",
+      "enum": [
+        "Verbose",
+        "Normal",
+        "Minimal",
+        "Quiet"
+      ]
+    },
+    "NukeBuild": {
       "properties": {
-        "Configuration": {
-          "type": "string",
-          "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
-          "enum": [
-            "Debug",
-            "Release"
-          ]
-        },
         "Continue": {
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
-        },
-        "DotNetVerbosity": {
-          "type": "string",
-          "description": "DotNet Verbosity",
-          "enum": [
-            "detailed",
-            "diagnostic",
-            "minimal",
-            "normal",
-            "quiet"
-          ]
         },
         "Help": {
           "type": "boolean",
           "description": "Shows the help text for this build assembly"
         },
         "Host": {
-          "type": "string",
           "description": "Host for execution. Default is 'automatic'",
-          "enum": [
-            "AppVeyor",
-            "AzurePipelines",
-            "Bamboo",
-            "Bitbucket",
-            "Bitrise",
-            "GitHubActions",
-            "GitLab",
-            "Jenkins",
-            "Rider",
-            "SpaceAutomation",
-            "TeamCity",
-            "Terminal",
-            "TravisCI",
-            "VisualStudio",
-            "VSCode"
-          ]
+          "$ref": "#/definitions/Host"
         },
         "NoLogo": {
           "type": "boolean",
@@ -81,91 +107,49 @@
           "type": "array",
           "description": "List of targets to be skipped. Empty list skips all dependencies",
           "items": {
-            "type": "string",
-            "enum": [
-              "Adapters",
-              "AdaptersGenerate",
-              "AdaptersResetDatabase",
-              "AdaptersTestMemory",
-              "AdaptersTestSqlClient",
-              "All",
-              "Clean",
-              "Core",
-              "CoreDatabaseTest",
-              "CoreDatabaseTestDomain",
-              "CoreDatabaseTestServer",
-              "CoreGenerate",
-              "CoreInstall",
-              "CoreMerge",
-              "CorePublishCommands",
-              "CorePublishServer",
-              "CoreResetDatabase",
-              "CoreTest",
-              "CoreWorkspaceCSharpDomainTests",
-              "CoreWorkspaceCSharpTest",
-              "CoreWorkspaceTest",
-              "CoreWorkspaceTypescriptAngular",
-              "CoreWorkspaceTypescriptDomain",
-              "CoreWorkspaceTypescriptPromise",
-              "CoreWorkspaceTypescriptTest",
-              "Default",
-              "EnsureDirectories",
-              "Generate",
-              "Install",
-              "ResetDatabase"
-            ]
+            "$ref": "#/definitions/ExecutableTarget"
           }
         },
         "Target": {
           "type": "array",
           "description": "List of targets to be invoked. Default is '{default_target}'",
           "items": {
-            "type": "string",
-            "enum": [
-              "Adapters",
-              "AdaptersGenerate",
-              "AdaptersResetDatabase",
-              "AdaptersTestMemory",
-              "AdaptersTestSqlClient",
-              "All",
-              "Clean",
-              "Core",
-              "CoreDatabaseTest",
-              "CoreDatabaseTestDomain",
-              "CoreDatabaseTestServer",
-              "CoreGenerate",
-              "CoreInstall",
-              "CoreMerge",
-              "CorePublishCommands",
-              "CorePublishServer",
-              "CoreResetDatabase",
-              "CoreTest",
-              "CoreWorkspaceCSharpDomainTests",
-              "CoreWorkspaceCSharpTest",
-              "CoreWorkspaceTest",
-              "CoreWorkspaceTypescriptAngular",
-              "CoreWorkspaceTypescriptDomain",
-              "CoreWorkspaceTypescriptPromise",
-              "CoreWorkspaceTypescriptTest",
-              "Default",
-              "EnsureDirectories",
-              "Generate",
-              "Install",
-              "ResetDatabase"
-            ]
+            "$ref": "#/definitions/ExecutableTarget"
           }
         },
         "Verbosity": {
-          "type": "string",
           "description": "Logging verbosity during build execution. Default is 'Normal'",
-          "enum": [
-            "Minimal",
-            "Normal",
-            "Quiet",
-            "Verbose"
-          ]
+          "$ref": "#/definitions/Verbosity"
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "properties": {
+        "Configuration": {
+          "type": "string",
+          "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
+          "enum": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "DotNetVerbosity": {
+          "type": "string",
+          "description": "DotNet Verbosity",
+          "enum": [
+            "detailed",
+            "diagnostic",
+            "minimal",
+            "normal",
+            "quiet"
+          ]
+        }
+      }
+    },
+    {
+      "$ref": "#/definitions/NukeBuild"
+    }
+  ]
 }

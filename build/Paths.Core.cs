@@ -2,7 +2,7 @@ using Nuke.Common.IO;
 
 public partial class Paths
 {
-    public AbsolutePath Core => Root / "core";
+    public AbsolutePath Core => Root / "Core";
     public AbsolutePath CoreRepositoryDomainRepository => Core / "Repository/Domain/Repository.csproj";
 
     public AbsolutePath CoreDatabase => Core / "Database";
