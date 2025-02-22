@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
     <PackageReference Include="Polly" Version="8.5.2" />
     <PackageReference Include="SkiaSharp" Version="3.116.1" />
