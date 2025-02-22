@@ -316,7 +316,7 @@ namespace Application.Excel
                 // a single message to the user should be done here:
             }
 
-            await this.Worksheet.Flush();
+            this.Worksheet.Flush();
         }
 
         private bool IsGenericStaticContent(IControl icontrol)

@@ -1,0 +1,36 @@
+@page "/mediatyped/list"
+@attribute [Authorize]
+@inject IDatabase Database
+@inject Workspace Workspace
+
+@if (mediaTypeds != null)
+{
+    @foreach (var mediaTyped in mediaTypeds)
+    {
+        <ABSForm Model="@mediaTyped">
+            <AMarkdownHtml RoleType="@M.MediaTyped.Markdown"></AMarkdownHtml>
+            <a href="/mediatyped/edit/@mediaTyped.Id">Edit</a>
+        </ABSForm>
+        <hr/>
+    }
+}
+
+@code {
+    Context Context;
+
+    MediaTyped[] mediaTypeds;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        var context = new Context(this.Database, this.Workspace);
+
+        var pull = new Pull
+        {
+            Extent = new Extent(M.MediaTyped.ObjectType),
+        };
+
+        var result = await context.Load(pull);
+
+        this.mediaTypeds = result.GetCollection<MediaTyped>();
+    }
+}

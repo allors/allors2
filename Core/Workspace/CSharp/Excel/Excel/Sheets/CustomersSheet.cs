@@ -116,7 +116,7 @@ namespace Application.Sheets
             }
 
             this.Controls.Bind();
-            await this.Sheet.Flush().ConfigureAwait(false);
+            this.Sheet.Flush();
 
             this.Sheet.AutoFit();
         }
@@ -133,7 +133,7 @@ namespace Application.Sheets
 
             this.Controls.Bind();
 
-            await this.Sheet.Flush().ConfigureAwait(false);
+            this.Sheet.Flush();
         }
 
         public async Task Save()
@@ -180,6 +180,6 @@ namespace Application.Sheets
             }
         }
 
-        private async void BinderOnToDomained(object sender, EventArgs e) => await this.Sheet.Flush().ConfigureAwait(false);
+        private void BinderOnToDomained(object sender, EventArgs e) => this.Sheet.Flush();
     }
 }

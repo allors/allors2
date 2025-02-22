@@ -1,0 +1,66 @@
+@page "/person/edit/{id}"
+@attribute [Authorize]
+@inject IDatabase Database
+@inject Workspace Workspace
+@inject NavigationManager NavigationManager
+
+@if (person != null)
+{
+    <ABSForm Model="@person" OnValidSubmit="@HandleValidSubmit">
+        <ValidationSummary />
+
+        <BSRow>
+            <BSCol>
+                <ABSInput RoleType="@M.Person.FirstName" />
+            </BSCol>
+            <BSCol>
+                <ABSInput RoleType="@M.Person.LastName" />
+            </BSCol>
+        </BSRow>
+
+        <BSRow>
+            <BSCol>
+                <ABSDateInput RoleType="@M.Person.BirthDate" />
+            </BSCol>
+        </BSRow>
+
+        <BSRow>
+            <BSCol>
+                <button @onclick="HandleValidSubmit">Submit</button>
+            </BSCol>
+        </BSRow>
+
+    </ABSForm>
+}
+
+@code {
+    Context Context;
+
+    [Parameter]
+    public string id { get; set; }
+
+    Person person;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        this.Context = new Context(this.Database, this.Workspace);
+
+        var pull = new Pull
+        {
+            ObjectId = id
+        };
+
+        var result = await this.Context.Load(pull);
+
+        this.person = result.GetObject<Person>("Person");
+    }
+
+    public async System.Threading.Tasks.Task HandleValidSubmit()
+    {
+        var response = await this.Context.Save();
+        if (!response.HasErrors)
+        {
+            this.NavigationManager.NavigateTo("/person/list");
+        }
+    }
+}

@@ -1,0 +1,29 @@
+@page "/image"
+@attribute [Authorize]
+@inject IDatabase Database
+@inject Workspace Workspace
+
+@if (image != null)
+{
+    <Image Object="image" Widths="new[]{ 400, 640, 800 }" Columns="3" Lazy="true"></Image>
+}
+
+@code {
+    Context Context;
+
+    Media image;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        var context = new Context(this.Database, this.Workspace);
+
+        var pull = new Pull
+        {
+            Extent = new Extent(M.Media.ObjectType),
+        };
+
+        var result = await context.Load(pull);
+
+        this.image = result.GetCollection<Media>().First(v => v.FileName.Equals("madeliefje.jpg"));
+    }
+}

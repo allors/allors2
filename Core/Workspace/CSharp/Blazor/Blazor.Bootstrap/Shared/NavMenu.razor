@@ -1,0 +1,98 @@
+@inject NavigationManager NavigationManager
+
+<BSNavbar IsExpand="true">
+    <div class="container">
+        <BSNavbarBrand Href="/">Allors</BSNavbarBrand>
+        <BSNavbarToggler @onclick="onclick" />
+        <BSCollapse isOpen="@IsOpen" IsNavbar="true" IsOpenChanged="OpenChanged">
+            <BSNav IsList="true" Class="mr-auto" IsNavbar="true">
+
+                <BSNavItem>
+                    <BSNavLink Href="/counter">Counter</BSNavLink>
+                </BSNavItem>
+
+                @foreach (string group in groups)
+                {
+                    <BSNavItem IsDropdown="true">
+                        <BSDropdownToggle Color="Color.Light">@group</BSDropdownToggle>
+
+                        <BSDropdownMenu>
+                            @foreach (var navItem in navItems.Where(n => n.Group == group))
+                            {
+                                <BSDropdownItem Href="@NavigationManager.ToAbsoluteUri(navItem.Url).AbsoluteUri">@navItem.Name</BSDropdownItem>
+                            }
+                        </BSDropdownMenu>
+                    </BSNavItem>
+                }
+
+            </BSNav>
+                   
+            <LoginDisplay />
+        </BSCollapse>
+    </div>
+</BSNavbar>
+
+@code
+{
+    class NavItem
+    {
+        public string Group;
+        public string Name;
+        public string Icon;
+        public string Url;
+    }
+
+    NavItem[] navItems;
+    string[] groups;
+
+    bool IsOpen { get; set; } = true;
+
+    void onclick(MouseEventArgs e)
+    {
+        IsOpen = !IsOpen;
+        StateHasChanged();
+    }
+
+    void OpenChanged(bool e)
+    {
+        IsOpen = e;
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        const string relations = "Relations";
+        const string misc = "Misc";
+
+        groups = new string[] { relations, misc };
+        navItems = new[]
+        {
+            new NavItem()
+            {
+                Group = relations,
+                Name = "Organisations",
+                Url = "organisation/list",
+            },
+            new NavItem()
+            {
+                Group = relations,
+                Name = "People",
+                Url = "person/list",
+            },
+            new NavItem()
+            {
+                Group = misc,
+                Name = "MediaTyped",
+                Url = "mediatyped/list",
+            },
+            new NavItem()
+            {
+                Group = misc,
+                Name = "Image",
+                Url = "image",
+            },
+        }.OrderBy(i => i.Name).ToArray();
+    }
+}

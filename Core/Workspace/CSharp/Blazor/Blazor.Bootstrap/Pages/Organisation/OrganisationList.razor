@@ -1,0 +1,45 @@
+@page "/organisation/list"
+@attribute [Authorize]
+@inject IDatabase Database
+@inject Workspace Workspace
+
+@if (organisations != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="90%">Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var organisation in organisations)
+            {
+                <tr>
+                    <td>@organisation.Name</td>
+                    <td><a href="/organisation/edit/@organisation.Id">Edit</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    Context Context;
+
+    Organisation[] organisations;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        var context = new Context(this.Database, this.Workspace);
+
+        var pull = new Pull
+        {
+            Extent = new Extent(M.Organisation.ObjectType),
+        };
+
+        var result = await context.Load(pull);
+
+        this.organisations = result.GetCollection<Organisation>();
+    }
+}

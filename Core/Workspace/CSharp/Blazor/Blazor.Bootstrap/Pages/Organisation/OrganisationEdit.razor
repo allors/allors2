@@ -1,0 +1,83 @@
+@page "/organisation/edit/{id}"
+@using Context = Allors.Workspace.Context
+@using Result = Allors.Workspace.Data.Result
+@using Task = System.Threading.Tasks.Task
+@attribute [Authorize]
+@inject IDatabase Database
+@inject Workspace Workspace
+@inject NavigationManager NavigationManager
+
+@if (organisation != null)
+{
+    <ABSForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
+        <ValidationSummary/>
+
+        <BSRow>
+            <ABSStringInput RoleType="@M.Organisation.Name"/>
+        </BSRow>
+
+        <BSRow>
+            <ABSSelect RoleType="@M.Organisation.Owner" Options="@people" Required="true" DisplayOption="@(v => ((Person) v).FullName)"/>
+        </BSRow>
+
+        <BSRow>
+            <BSFormGroup>
+                <BSButton type="submit">Submit</BSButton>
+            </BSFormGroup>
+        </BSRow>
+    </ABSForm>
+}
+
+@code {
+    Context Context;
+
+    [Parameter]
+    public string id { get; set; }
+
+    Organisation organisation;
+
+    Person[] people;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Context = new Context(Database, Workspace);
+
+        var pull = new[]
+        {
+            new Pull
+            {
+                ObjectId = id,
+                Results = new[]
+                {
+                    new Result
+                    {
+                        Fetch = new Fetch
+                        {
+                            Include = new OrganisationNodeBuilder(
+                                v => { v.Owner(); })
+                        }
+                    }
+                }
+            },
+            new Pull
+            {
+                Extent = new Extent(M.Person.ObjectType),
+            }
+        };
+
+        var result = await Context.Load(pull);
+
+        organisation = result.GetObject<Organisation>();
+        people = result.GetCollection<Person>();
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        var response = await Context.Save();
+        if (!response.HasErrors)
+        {
+            NavigationManager.NavigateTo("/organisation/list");
+        }
+    }
+
+}

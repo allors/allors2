@@ -1,0 +1,7 @@
+@inherits ABSCheckboxBase
+<BSFormGroup @attributes="Attributes">
+    <BSFormGroup IsCheck="true">
+        <BSBasicInput InputType="InputType.Checkbox" Id="@Name" @bind-Value="BoolModel" />
+        <BSLabel For="@Name">@Label</BSLabel>
+    </BSFormGroup>
+</BSFormGroup>

@@ -1,0 +1,57 @@
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView>
+    <Authorized>
+        <BSNav IsNavbar="true">
+            @if (IsClientSide)
+            {
+                <BSNavItem>
+                    Logged in
+                </BSNavItem>
+            }
+            else
+            {
+                <BSNavItem>
+                    <BSNavLink Href="Identity/Account/Manage">@context.User.Identity.Name</BSNavLink>
+                </BSNavItem>
+
+                <form method="post" action="Identity/Account/LogOut">
+                    <button type="submit" class="nav-link btn btn-link">Log out</button>
+                </form>
+            }
+        </BSNav>
+    </Authorized>
+    <NotAuthorized>
+        <BSNav IsNavbar="true">
+            @if (IsClientSide)
+            {
+                <BSNavItem>
+                    <BSNavLink Href="Login">Login</BSNavLink>
+                </BSNavItem>
+            }
+            else
+            {
+                <BSNavItem>
+                    <BSNavLink Href="Identity/Account/Register">Register</BSNavLink>
+                </BSNavItem>
+                <BSNavItem>
+                    <BSNavLink Href="Identity/Account/Login">Login</BSNavLink>
+                </BSNavItem>
+            }
+        </BSNav>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+    AllorsAuthenticationStateProvider allorsAuthenticationStateProvider;
+
+    bool IsClientSide => this.allorsAuthenticationStateProvider != null;
+
+    override protected void OnInitialized()
+    {
+        this.allorsAuthenticationStateProvider = this.AuthenticationStateProvider as AllorsAuthenticationStateProvider;
+    }
+}
+

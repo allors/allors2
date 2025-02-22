@@ -1,0 +1,60 @@
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (IsClientSide)
+{
+    <BSBasicForm>
+        <BSRow>
+            <BSFormGroup>
+                <BSLabel For="userName">Email address</BSLabel>
+                <BSBasicInput Id="userName" InputType="InputType.Email" PlaceHolder="Email" @bind-Value="@UserName" />
+            </BSFormGroup>
+        </BSRow>
+        <BSRow>
+            <BSFormGroup>
+                <BSLabel For="password">Password</BSLabel>
+                <BSBasicInput Id="password" InputType="InputType.Password" PlaceHolder="Password" @bind-Value="@Password" />
+            </BSFormGroup>
+        </BSRow>
+        <BSRow>
+            <BSButton Color="Color.Primary" ButtonType="ButtonType.Button" @onclick="LogIn">Login</BSButton>
+        </BSRow>
+    </BSBasicForm>
+}
+
+@code {
+
+    AllorsAuthenticationStateProvider allorsAuthenticationStateProvider;
+
+    string UserName { get; set; }
+
+    string Password { get; set; }
+
+    bool IsClientSide => this.allorsAuthenticationStateProvider != null;
+
+    bool IsServerSide => !this.IsClientSide;
+
+    override protected void OnInitialized()
+    {
+        this.allorsAuthenticationStateProvider = this.AuthenticationStateProvider as AllorsAuthenticationStateProvider;
+    }
+
+    override protected void OnAfterRender(bool firstRender)
+    {
+        if (this.IsServerSide)
+        {
+            var returnUrl = this.Navigation.ToBaseRelativePath(this.Navigation.Uri);
+
+            var builder = new UriBuilder(Navigation.ToAbsoluteUri("/Identity/Account/Login"));
+            builder.Query = $"ReturnUrl=/{returnUrl}";
+            var url = this.Navigation.ToBaseRelativePath(builder.ToString());
+
+            this.Navigation.NavigateTo(url, true);
+        }
+    }
+
+    async System.Threading.Tasks.Task LogIn()
+    {
+        await this.allorsAuthenticationStateProvider.LogIn(this.UserName, this.Password);
+    }
+}
