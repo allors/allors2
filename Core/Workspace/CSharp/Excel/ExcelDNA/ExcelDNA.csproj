@@ -10,14 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExcelDna.AddIn" Version="1.8.0" PrivateAssets="All" />
-    <PackageReference Include="NLog" Version="5.4.0" PrivateAssets="All" />
+    <PackageReference Include="Allors.Excel" Version="1.0.73" />
+    <PackageReference Include="Allors.Excel.Interop" Version="1.0.73" />
+    <PackageReference Include="ExcelDna.AddIn" Version="1.9.0" PrivateAssets="All" />
+    <PackageReference Include="NLog" Version="6.0.6" PrivateAssets="All" />
     <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="106.15.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\excel\src\Allors.Excel.Interop\Allors.Excel.Interop.csproj" />
-    <ProjectReference Include="..\..\..\..\..\excel\src\Allors.Excel\Allors.Excel.csproj" />
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote.RestSharp\Allors.Workspace.Adapters.Remote.RestSharp.csproj" />
     <ProjectReference Include="..\Excel\Excel.csproj" />
   </ItemGroup>
