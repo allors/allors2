@@ -34,7 +34,6 @@ namespace Commands
         {
             var databaseBuilder = new DatabaseBuilder(serviceProvider, configuration, new ObjectFactory(MetaPopulation.Instance, typeof(User)), this.IsolationLevel, this.CommandTimeout);
             databaseService.Database = databaseBuilder.Build();
-            loggerFactory.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
             NLog.LogManager.LoadConfiguration("nlog.config");
         }
 
