@@ -10,6 +10,64 @@ build/Properties/launchSettings.json
 **/tsc.js
 **/tsc.js.map
 **/tsc.tsbuildinfo
+Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js
+Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js.map
+Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.tsbuildinfo
+/.nuke/temp
+
+##################
+# AI Coding Agents
+##################
+
+# General agent workspaces
+.agent/
+.agents/
+.ai/
+.ai_cache/
+.ai_tmp/
+.agent_storage/
+.scratch/
+workspace/
+workspaces/
+
+# Codex / OpenAI DevTools
+.codex/
+.codex_workspace/
+*.codex.log
+*.codex.json
+.codex_debug/
+.openai/
+.openai_tools/
+*.analysis.json
+*.trace.json
+*.plan.json
+*.scratchpad*
+
+# Claude Code (Anthropic)
+.claude/
+.claude_code/
+.claude-workspace/
+claude-workspace/
+anthropic/
+*.claude.log
+*.claude.json
+claude_history/
+
+# Generic logs, traces, drafts
+*.log
+*.trace
+*.debug
+*.history
+*.draft
+*.draft.*
+
+# Temp directories used by agent toolchains
+tmp/
+temp/
+cache/
+.cache/
+__temp__/
+
 
 # https://github.com/JetBrains/resharper-rider-samples/blob/master/.gitignore
 # ---------------------------------------------------------------------------
@@ -340,7 +398,3 @@ paket-files/
 *.sln.iml
 
 
-Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js
-Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js.map
-Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.tsbuildinfo
-/.nuke/temp

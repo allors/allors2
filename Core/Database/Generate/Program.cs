@@ -33,7 +33,9 @@ namespace Allors
                 {
                     { "Database/Templates/domain.cs.stg", "Database/Domain/generated" },
                     { "Database/Templates/uml.cs.stg", "Database/Domain.Diagrams/generated" },
-                    { "Database/Templates/mermaid.stg", "Database/Mermaid" },
+                    
+                    { "Database/Templates/mermaid.stg", "Database/Docs" },
+                    { "Database/Templates/relations.xml.stg", "Database/Docs" },
 
                     { "Workspace/CSharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams/generated" },
                     { "Workspace/CSharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
@@ -53,7 +55,10 @@ namespace Allors
 
                 Console.WriteLine("-> " + output);
 
-                RemoveDirectory(output);
+                if (output.ToLowerInvariant().EndsWith("generated"))
+                {
+                    RemoveDirectory(output);
+                }
 
                 var log = Generate.Execute(template, output);
                 if (log.ErrorOccured)
