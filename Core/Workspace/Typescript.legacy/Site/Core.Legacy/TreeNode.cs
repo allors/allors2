@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TreeNode.cs" company="Allors bvba">
-//   Copyright 2002-2017 Allors bvba.
+// <copyright file="TreeNode.cs" company="Allors bv">
+//   Copyright Allors bv.
 //
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)

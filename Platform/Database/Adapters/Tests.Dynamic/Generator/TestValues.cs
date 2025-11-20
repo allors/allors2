@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestValues.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
+// <copyright file="TestValues.cs" company="Allors bv">
+//   Copyright Allors bv.
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License

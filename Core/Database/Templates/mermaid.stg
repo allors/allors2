@@ -1,0 +1,62 @@
+delimiters "$", "$"
+
+TemplateId() ::= <<A7F3C9D2-8E1A-4B5C-9F2E-3D4A5B6C7D8E>>
+TemplateName() ::= <<Allors Mermaid Class Diagram>>
+TemplateVersion() ::= <<1.0.0>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(meta) ::= <<
+$!
+Copyright Allors bv.
+
+Dual Licensed under
+  a) the Lesser General Public Licence v3 (LGPL)
+  b) the Allors License
+
+The LGPL License is included in the file lgpl.txt.
+The Allors License is an addendum to your contract.
+
+Allors Platform is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+For more information visit http://www.allors.com/legal
+!$
+<generations>
+	<generation template="diagram" output="domain.mmd"/>
+</generations>
+>>
+
+diagram(meta) ::= <<
+classDiagram
+$meta.composites:{composite|$composite(meta=meta,composite=composite)$}$
+$meta.composites:{composite|$inheritance(composite=composite)$}$
+>>
+
+composite(meta,composite) ::= <<
+	class $composite.Name$ {
+$if(composite.IsInterface)$		$interfaceMarker()$
+$endif$$composite.ExclusiveRoleTypes:{roleType|$property(roleType=roleType)$}$	}
+
+>>
+
+property(roleType) ::= <<
+$if(roleType.IsOne)$		$propertyType(roleType)$ $prefix(roleType)$$roleType.SingularPropertyName$
+$else$		$propertyType(roleType)$[] $prefix(roleType)$$roleType.PluralPropertyName$
+$endif$
+>>
+
+propertyType(roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$$if(roleType.ObjectType.IsBinary)$byte[]$elseif(roleType.ObjectType.IsBoolean)$bool$elseif(roleType.ObjectType.IsDateTime)$DateTime$elseif(roleType.ObjectType.IsDecimal)$decimal$elseif(roleType.ObjectType.IsFloat)$double$elseif(roleType.ObjectType.IsInteger)$int$elseif(roleType.ObjectType.IsString)$string$elseif(roleType.ObjectType.IsUnique)$Guid$endif$$else$$roleType.ObjectType.SingularName$$endif$
+%>
+
+prefix(roleType) ::= <%
+$if(roleType.RelationType.IsDerived)$_$endif$$if(roleType.RelationType.IsSynced)$__$endif$
+%>
+
+interfaceMarker() ::= <%<<interface>>%>
+
+inheritance(composite) ::= <<
+$if(composite.ExistDirectSupertypes)$$composite.DirectSupertypes:{supertype|	$supertype.Name$ <|-- $composite.Name$
+}$$endif$
+>>
