@@ -3,7 +3,7 @@
     "Allors.Generate.Cmd": {
       "commandName": "Project",
       "commandLineArgs": "repository.csproj ../../../platform/repository/templates/meta.cs.stg ../../database/meta/generated",
-      "workingDirectory": "C:\\Users\\KoenVanExem\\Documents\\GitHub\\allors2\\Core\\Repository\\Domain"
+      "workingDirectory": "C:\\repos\\allors2\\Core\\Repository\\Domain"
     }
   }
 }

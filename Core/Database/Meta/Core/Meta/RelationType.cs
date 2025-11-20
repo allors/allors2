@@ -126,6 +126,8 @@ namespace Allors.Meta
             }
         }
 
+        public string[] Tags { get; set; } = [];
+        
         IAssociationType IRelationType.AssociationType => this.AssociationType;
 
         public AssociationType AssociationType { get; }

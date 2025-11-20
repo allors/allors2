@@ -193,6 +193,7 @@ relation(property) ::= <<
 	{
 		var relationType = new RelationType(this.metaPopulation, new System.Guid("$property.AttributeByName.Id.Value$"), new System.Guid("$property.AttributeByName.AssociationId.Value$"), new System.Guid("$property.AttributeByName.RoleId.Value$"));
 		relationType.AssociationType.ObjectType = Meta$property.DefiningType.SingularName$.Instance;
+$if(property.AttributeByName.Tags)$		relationType.Tags = [$property.AttributeByName.Tags.Values:{value|"$value$"}; separator=", "$];$endif$
 $if(property.XmlDoc)$		relationType.XmlDoc = @"$property.XmlDoc.VerbatimValue$";$endif$
 $if(property.AttributeByName.Workspace)$		relationType.Workspace = true;$endif$
 $if(property.AttributeByName.Multiplicity)$		relationType.AssignedMultiplicity = Allors.Multiplicity.$property.AttributeByName.Multiplicity.Value$;$endif$
@@ -218,6 +219,7 @@ definedMethod(method) ::= <<
 				var method = new MethodType(this.metaPopulation, new System.Guid("$method.AttributeByName.Id.Value$"));
 				method.ObjectType = Meta$method.DefiningType.SingularName$.Instance;
 				method.Name = "$method.Name$";
+$if(method.AttributeByName.Tags)$				method.Tags = [$method.AttributeByName.Tags.Values:{value|"$value$"}; separator=", "$];$endif$
 $if(method.AttributeByName.Workspace)$				method.Workspace = true;$endif$
 $if(method.XmlDoc)$		method.XmlDoc = @"$method.XmlDoc.VerbatimValue$";$endif$
 				Meta$composite.SingularName$.Instance.$method.Name$ = method;

@@ -87,6 +87,8 @@ namespace Allors.Meta
             }
         }
 
+        public string[] Tags { get; set; } = [];
+
         /// <summary>
         /// Gets the validation name.
         /// </summary>
