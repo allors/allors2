@@ -1,8 +1,8 @@
 delimiters "$", "$"
 
 TemplateId() ::= <<D1A6F8C4-2B5E-4F7A-9C3D-3E4F5A6B7C8E>>
-TemplateName() ::= <<Allors Relations Excel XML>>
-TemplateVersion() ::= <<1.0.0>>
+TemplateName() ::= <<Allors Mapping Excel XML>>
+TemplateVersion() ::= <<1.0.1>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta) ::= <<
 $!
@@ -23,7 +23,7 @@ GNU General Public License for more details.
 For more information visit http://www.allors.com/legal
 !$
 <generations>
-	<generation template="xml" output="relations.xml"/>
+	<generation template="xml" output="mapping.xml"/>
 </generations>
 >>
 
@@ -42,16 +42,31 @@ xml(meta) ::= <<
    <Font ss:Bold="1"/>
    <Interior ss:Color="#F0F0F0" ss:Pattern="Solid"/>
   </Style>
+  <Style ss:ID="Unit">
+   <Interior ss:Color="#E8F4F8" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CompositeInline">
+   <Interior ss:Color="#FFF4E6" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CompositeTable">
+   <Interior ss:Color="#F0E6FF" ss:Pattern="Solid"/>
+  </Style>
  </Styles>
  <Worksheet ss:Name="Relations">
   <Table>
    <Column ss:Width="250"/>
    <Column ss:Width="150"/>
    <Column ss:Width="100"/>
+   <Column ss:Width="150"/>
+   <Column ss:Width="200"/>
+   <Column ss:Width="200"/>
    <Row ss:StyleID="Header" ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">Relation</Data></Cell>
     <Cell><Data ss:Type="String">Type</Data></Cell>
     <Cell><Data ss:Type="String">Multiplicity</Data></Cell>
+    <Cell><Data ss:Type="String">Storage Strategy</Data></Cell>
+    <Cell><Data ss:Type="String">Table</Data></Cell>
+    <Cell><Data ss:Type="String">Column/Relation</Data></Cell>
    </Row>
 $meta.composites:{composite|$composite(composite=composite)$}$
   </Table>
@@ -72,7 +87,7 @@ $meta.composites:{composite|$composite(composite=composite)$}$
     </Pane>
    </Panes>
   </WorksheetOptions>
-  <AutoFilter x:Range="R1C1:R1C3" xmlns="urn:schemas-microsoft-com:office:excel"/>
+  <AutoFilter x:Range="R1C1:R1C6" xmlns="urn:schemas-microsoft-com:office:excel"/>
  </Worksheet>
 </Workbook>
 >>
@@ -82,11 +97,46 @@ $composite.ExclusiveRoleTypes:{roleType|$relationTypeRow(composite=composite,rol
 
 relationTypeRow(composite,roleType) ::= <<
    <Row>
-    <Cell ss:StyleID="Default"><Data ss:Type="String">$composite.Name$.$propertyName(roleType)$</Data></Cell>
-    <Cell ss:StyleID="Default"><Data ss:Type="String">$objectTypeName(roleType)$</Data></Cell>
-    <Cell ss:StyleID="Default"><Data ss:Type="String">$multiplicity(roleType)$</Data></Cell>
+    <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$composite.Name$.$propertyName(roleType)$</Data></Cell>
+    <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$objectTypeName(roleType)$</Data></Cell>
+    <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$multiplicity(roleType)$</Data></Cell>
+    <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$storageStrategy(roleType)$</Data></Cell>
+    <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$tableName(composite, roleType)$</Data></Cell>
+    <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$columnOrRelation(composite, roleType)$</Data></Cell>
    </Row>
 >>
+
+rowStyle(roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$Unit$elseif(usesRelationTable(roleType))$CompositeTable$else$CompositeInline$endif$
+%>
+
+storageStrategy(roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$Inline (Unit)$elseif(usesRelationTable(roleType))$Relation Table$else$Inline (Column)$endif$
+%>
+
+tableName(composite, roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$allors.$tolower(composite.SingularName)$$elseif(usesRelationTable(roleType))$allors.$relationTableName(composite, roleType)$$else$allors.$targetTableName(composite, roleType)$$endif$
+%>
+
+columnOrRelation(composite, roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$$tolower(roleType.SingularPropertyName)$$elseif(usesRelationTable(roleType))$(a: $composite.SingularName$ ID, r: $roleType.ObjectType.SingularName$ ID)$else$$columnName(composite, roleType)$$endif$
+%>
+
+relationTableName(composite, roleType) ::= <%
+$tolower(composite.SingularName)$_$tolower(roleType.ObjectType.SingularName)$
+%>
+
+targetTableName(composite, roleType) ::= <%
+$if(roleType.RelationType.IsOneToMany)$$tolower(roleType.ObjectType.SingularName)$$else$$tolower(composite.ExclusiveClass.SingularName)$$endif$
+%>
+
+columnName(composite, roleType) ::= <%
+$if(roleType.RelationType.IsOneToMany)$$tolower(composite.SingularName)$ (association back-ref)$else$$tolower(roleType.SingularPropertyName)$$endif$
+%>
+
+usesRelationTable(roleType) ::= <%
+$if(!roleType.ObjectType.IsUnit)$$if(roleType.RelationType.IsManyToMany)$true$elseif(!roleType.ObjectType.ExistExclusiveClass)$true$elseif(!roleType.AssociationType.ObjectType.ExistExclusiveClass)$true$endif$$endif$
+%>
 
 multiplicity(roleType) ::= <%
 $if(!roleType.ObjectType.IsUnit)$$relationMultiplicity(roleType.RelationType)$$endif$
@@ -106,3 +156,5 @@ $if(roleType.IsOne)$$roleType.SingularPropertyName$$else$$roleType.PluralPropert
 objectTypeName(roleType) ::= <%
 $if(roleType.ObjectType.IsUnit)$$if(roleType.ObjectType.IsBinary)$Binary$elseif(roleType.ObjectType.IsBoolean)$Boolean$elseif(roleType.ObjectType.IsDateTime)$DateTime$elseif(roleType.ObjectType.IsDecimal)$Decimal$elseif(roleType.ObjectType.IsFloat)$Float$elseif(roleType.ObjectType.IsInteger)$Integer$elseif(roleType.ObjectType.IsString)$String$elseif(roleType.ObjectType.IsUnique)$Unique$endif$$else$$roleType.ObjectType.SingularName$$endif$
 %>
+
+tolower(text) ::= <%$text; format="lower"$%>
