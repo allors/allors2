@@ -35,7 +35,7 @@ namespace Allors
                     { "Database/Templates/uml.cs.stg", "Database/Domain.Diagrams/generated" },
                     
                     { "Database/Templates/mermaid.stg", "Database/Docs" },
-                    { "Database/Templates/relations.xml.stg", "Database/Docs" },
+                    { "Database/Templates/mapping.xml.stg", "Database/Docs" },
 
                     { "Workspace/CSharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams/generated" },
                     { "Workspace/CSharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
