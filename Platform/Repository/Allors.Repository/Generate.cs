@@ -8,30 +8,25 @@
 namespace Allors.Repository.Roslyn
 {
     using System.IO;
-    using System.Linq;
 
     using Allors.Repository;
     using Allors.Repository.Domain;
     using Allors.Repository.Generation;
 
-    using Buildalyzer;
-    using Buildalyzer.Workspaces;
+    using Microsoft.Build.Locator;
+    using Microsoft.CodeAnalysis.MSBuild;
 
     public class Generate
     {
         public static void Execute(string projectPath, string template, string output)
         {
-            var log = new StringWriter();
-            var analyzerManager = new AnalyzerManager(
-                new AnalyzerManagerOptions
-                {
-                    LogWriter = log,
-                });
+            if (!MSBuildLocator.IsRegistered)
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
 
-            var projectAnalyzer = analyzerManager.GetProject(projectPath);
-            var workspace = projectAnalyzer.GetWorkspace();
-            var solution = workspace.CurrentSolution;
-            var project = solution.Projects.First();
+            using var workspace = MSBuildWorkspace.Create();
+            var project = workspace.OpenProjectAsync(projectPath).GetAwaiter().GetResult();
             var repository = new Repository(project);
 
             if (repository.HasErrors)
