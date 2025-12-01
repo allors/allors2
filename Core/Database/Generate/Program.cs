@@ -6,9 +6,14 @@
 namespace Allors
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
-
+    using System.Linq;
     using Allors.Development.Repository.Tasks;
+    using Allors.Meta;
+    using Development.Repository;
+    using Development.Repository.Generation;
+    using Development.Repository.Tagged;
 
     internal class Program
     {
@@ -17,10 +22,10 @@ namespace Allors
             switch (args.Length)
             {
                 case 0:
-                    return Default();
+                    return Default() | Diagrams() | Mapping();
 
                 case 2:
-                    return Generate.Execute(args[0], args[1]).ErrorOccured ? 1 : 0;
+                    return Generate(args[0], args[1]).ErrorOccured ? 1 : 0;
 
                 default:
                     return 1;
@@ -33,9 +38,6 @@ namespace Allors
                 {
                     { "Database/Templates/domain.cs.stg", "Database/Domain/generated" },
                     { "Database/Templates/uml.cs.stg", "Database/Domain.Diagrams/generated" },
-                    
-                    { "Database/Templates/mermaid.stg", "Database/Docs" },
-                    { "Database/Templates/mapping.xml.stg", "Database/Docs" },
 
                     { "Workspace/CSharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams/generated" },
                     { "Workspace/CSharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
@@ -60,7 +62,8 @@ namespace Allors
                     RemoveDirectory(output);
                 }
 
-                var log = Generate.Execute(template, output);
+                var log = Generate(template, output);
+
                 if (log.ErrorOccured)
                 {
                     return 1;
@@ -68,6 +71,76 @@ namespace Allors
             }
 
             return 0;
+        }
+
+        private static int Diagrams()
+        {
+            var metaPopulation = MetaPopulation.Instance;
+            var tags = new HashSet<string>(
+                metaPopulation.Classes.SelectMany(v => v.Tags)
+                    .Union(metaPopulation.RelationTypes.SelectMany(v => v.Tags)
+                        .Union(metaPopulation.MethodTypes.SelectMany(v => v.Tags))));
+
+            foreach (var tag in tags)
+            {
+                var log = new GenerateLog();
+
+                var taggedMetaPopulation = new TaggedMetaPopulation(metaPopulation, new HashSet<string>([tag]));
+                var stringTemplate = new TaggedStringTemplate(new FileInfo("Database/Templates/mermaid.stg"));
+                var outputDirectoryInfo = new DirectoryInfo("Database/Docs");
+
+                var output = tag + ".mmd";
+                Console.WriteLine("-> " + Path.Combine(outputDirectoryInfo.Name, output));
+
+                stringTemplate.Generate(taggedMetaPopulation, outputDirectoryInfo, output, log);
+
+                if (log.ErrorOccured)
+                {
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
+
+        private static int Mapping()
+        {
+            var metaPopulation = MetaPopulation.Instance;
+            var tags = new HashSet<string>(
+                metaPopulation.Classes.SelectMany(v => v.Tags)
+                    .Union(metaPopulation.RelationTypes.SelectMany(v => v.Tags)
+                        .Union(metaPopulation.MethodTypes.SelectMany(v => v.Tags))));
+
+            var log = new GenerateLog();
+
+            var taggedMetaPopulation = new TaggedMetaPopulation(metaPopulation, tags);
+            var stringTemplate = new TaggedStringTemplate(new FileInfo("Database/Templates/mapping.xml.stg"));
+            var outputDirectoryInfo = new DirectoryInfo("Database/Docs");
+
+            var output = "mapping.xml";
+            Console.WriteLine("-> " + Path.Combine(outputDirectoryInfo.Name, output));
+
+            stringTemplate.Generate(taggedMetaPopulation, outputDirectoryInfo, output, log);
+
+            if (log.ErrorOccured)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        public static Log Generate(string template, string output)
+        {
+            var log = new GenerateLog();
+
+            var templateFileInfo = new FileInfo(template);
+            var stringTemplate = new StringTemplate(templateFileInfo);
+            var outputDirectoryInfo = new DirectoryInfo(output);
+
+            stringTemplate.Generate(MetaPopulation.Instance, outputDirectoryInfo, log);
+
+            return log;
         }
 
         private static void RemoveDirectory(string output)

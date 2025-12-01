@@ -380,7 +380,8 @@ $class.InheritedReverseProperties:{property|         public AssociationType $pro
 			{
 				SingularName = "$class.SingularName$",
 				PluralName = "$class.PluralName$",
-$if(class.XmlDoc)$			XmlDoc = @"$class.XmlDoc.VerbatimValue$",$endif$
+$if(class.AttributeByName.Tags)$				Tags = [$class.AttributeByName.Tags.Values:{value|"$value$"}; separator=", "$]$endif$
+$if(class.XmlDoc)$				XmlDoc = @"$class.XmlDoc.VerbatimValue$",$endif$
 $if(class.AttributeByName.Synced)$				AssignedIsSynced = $class.AttributeByName.Synced.Value$$endif$
 			};
         }

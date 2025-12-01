@@ -12,6 +12,8 @@ namespace Allors.Meta
 
         bool IsBoolean { get; }
 
+        bool IsDateTime { get; }
+
         bool IsDecimal { get; }
 
         bool IsFloat { get; }

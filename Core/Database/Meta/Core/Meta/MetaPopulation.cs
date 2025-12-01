@@ -507,6 +507,12 @@ namespace Allors.Meta
                         composite.DeriveWorkspace();
                     }
 
+                    // interface tags
+                    foreach (var @interface in this.Interfaces)
+                    {
+                        @interface.DeriveTags();
+                    }
+
                     // MetaPopulation
                     this.derivedClassByLowercaseName = new Dictionary<string, Class>();
                     foreach (var cls in this.classes)

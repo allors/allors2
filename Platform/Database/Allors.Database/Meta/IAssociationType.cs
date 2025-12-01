@@ -23,8 +23,8 @@ namespace Allors.Meta
 
         IRelationType RelationType { get; }
 
-        new IComposite ObjectType { get; }
-
         IRoleType RoleType { get; }
+
+        new IComposite ObjectType { get; }
     }
 }

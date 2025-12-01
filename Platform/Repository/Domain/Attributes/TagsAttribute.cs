@@ -7,7 +7,7 @@ namespace Allors.Repository.Attributes
 {
     using System;
 
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
+    [AttributeUsage( AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
     public class TagsAttribute : RepositoryAttribute
     {
         public TagsAttribute(params string[] values) => this.Values = values;

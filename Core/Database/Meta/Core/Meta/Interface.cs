@@ -22,6 +22,8 @@ namespace Allors.Meta
 
         private Type clrType;
 
+        private string[] derivedTags;
+
         internal Interface(MetaPopulation metaPopulation, Guid id)
             : base(metaPopulation)
         {
@@ -99,6 +101,18 @@ namespace Allors.Meta
             {
                 this.MetaPopulation.Derive();
                 return this.derivedExclusiveSubclass;
+            }
+        }
+
+        protected override string[] GetTags() => this.Tags;
+
+        public string[] Tags
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.derivedTags;
+
             }
         }
 
@@ -191,6 +205,20 @@ namespace Allors.Meta
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Derive tags.
+        /// </summary>
+        public void DeriveTags()
+        {
+            var tags = new HashSet<string>();
+
+            tags.UnionWith(this.AssociationTypes.SelectMany(v => v.RelationType.Tags));
+            tags.UnionWith(this.RoleTypes.SelectMany(v => v.RelationType.Tags));
+            tags.UnionWith(this.MethodTypes.SelectMany(v => v.Tags));
+
+            this.derivedTags = tags.ToArray();
         }
     }
 }

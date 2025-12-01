@@ -23,7 +23,7 @@ GNU General Public License for more details.
 For more information visit http://www.allors.com/legal
 !$
 <generations>
-	<generation template="diagram" output="domain.mmd"/>
+	<generation template="diagram"/>
 </generations>
 >>
 

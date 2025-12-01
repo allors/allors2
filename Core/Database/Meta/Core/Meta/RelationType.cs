@@ -25,6 +25,7 @@ namespace Allors.Meta
         private string xmlDoc;
 
         private bool workspace;
+        private string[] tags = [];
 
         public RelationType(MetaPopulation metaPopulation, Guid id, Guid associationTypeId, Guid roleTypdId)
             : base(metaPopulation)
@@ -126,8 +127,18 @@ namespace Allors.Meta
             }
         }
 
-        public string[] Tags { get; set; } = [];
-        
+        public string[] Tags
+        {
+            get => this.tags;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.tags = value;
+                this.MetaPopulation.Stale();
+            }
+        }
+
         IAssociationType IRelationType.AssociationType => this.AssociationType;
 
         public AssociationType AssociationType { get; }

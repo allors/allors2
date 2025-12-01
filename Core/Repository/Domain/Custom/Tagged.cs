@@ -10,13 +10,15 @@ namespace Allors.Repository
     #region Allors
     [Id("47C94C46-6F4E-4715-9E4F-28D7EBA88D9B")]
     #endregion
-    public partial class Tagged : Object
+    [Tags("TagA", "TagB", "TagI", "TagX")]
+    public partial class Tagged : TaggedInterface
     {
         #region inherited properties
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+        public bool TagInterface { get; set; }
 
         #endregion
 
@@ -35,8 +37,7 @@ namespace Allors.Repository
         #endregion
         [Tags("TagA", "TagB")]
         public bool MultipleTags{ get; set; }
-
-
+        
         #region Allors
 
         [Id("B42A9BBF-EEA0-4352-A71D-C70ADA0735A6")]

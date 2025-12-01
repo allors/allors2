@@ -7,12 +7,13 @@
 namespace Allors.Meta
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// A relation type defines the state and behavior for
     /// a set of association types and role types.
     /// </summary>
-    public interface IRelationType : IMetaObject, IComparable
+    public interface IRelationType : IMetaObject, ITagged, IComparable
     {
         IAssociationType AssociationType { get; }
 
@@ -27,5 +28,7 @@ namespace Allors.Meta
         bool IsSynced { get; }
 
         bool IsIndexed { get; }
+
+        string[] Tags { get; }
     }
 }

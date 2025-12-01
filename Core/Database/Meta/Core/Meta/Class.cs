@@ -24,6 +24,8 @@ namespace Allors.Meta
 
         private Type clrType;
 
+        private string[] tags = [];
+
         internal Class(MetaPopulation metaPopulation, Guid id)
                     : base(metaPopulation)
         {
@@ -34,6 +36,20 @@ namespace Allors.Meta
 
             this.classes = new[] { this };
             metaPopulation.OnClassCreated(this);
+        }
+
+        protected override string[] GetTags() => this.Tags;
+
+        public string[] Tags
+        {
+            get => this.tags;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.tags = value;
+                this.MetaPopulation.Stale();
+            }
         }
 
         // TODO: Review

@@ -15,6 +15,7 @@ namespace Allors.Meta
 
         private bool workspace;
         private string xmlDoc;
+        private string[] tags = [];
 
         public MethodType(MetaPopulation metaPopulation, Guid id)
             : base(metaPopulation)
@@ -87,7 +88,17 @@ namespace Allors.Meta
             }
         }
 
-        public string[] Tags { get; set; } = [];
+        public string[] Tags
+        {
+            get => this.tags;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.tags = value;
+                this.MetaPopulation.Stale();
+            }
+        }
 
         /// <summary>
         /// Gets the validation name.

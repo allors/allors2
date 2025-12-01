@@ -9,6 +9,9 @@ namespace Allors
     using System.IO;
 
     using Allors.Development.Repository.Tasks;
+    using Allors.Meta;
+    using Development.Repository;
+    using Development.Repository.Generation;
 
     class Program
     {
@@ -19,7 +22,7 @@ namespace Allors
                 case 0:
                     return Default();
                 case 2:
-                    return Generate.Execute(args[0], args[1]).ErrorOccured ? 1 : 0;
+                    return Generate(args[0], args[1]).ErrorOccured ? 1 : 0;
                 default:
                     return 1;
             }
@@ -41,7 +44,7 @@ namespace Allors
 
                 RemoveDirectory(output);
 
-                var log = Generate.Execute(template, output);
+                var log = Generate(template, output);
                 if (log.ErrorOccured)
                 {
                     return 1;
@@ -49,6 +52,19 @@ namespace Allors
             }
 
             return 0;
+        }
+
+        public static Log Generate(string template, string output)
+        {
+            var log = new GenerateLog();
+
+            var templateFileInfo = new FileInfo(template);
+            var stringTemplate = new StringTemplate(templateFileInfo);
+            var outputDirectoryInfo = new DirectoryInfo(output);
+
+            stringTemplate.Generate(MetaPopulation.Instance, outputDirectoryInfo, log);
+
+            return log;
         }
 
         private static void RemoveDirectory(string output)

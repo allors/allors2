@@ -8,7 +8,7 @@ namespace Allors.Meta
 {
     using System.Collections.Generic;
 
-    public interface IComposite : IObjectType
+    public interface IComposite : IObjectType, ITagged
     {
         IEnumerable<IAssociationType> AssociationTypes { get; }
 
@@ -17,6 +17,10 @@ namespace Allors.Meta
         IEnumerable<IInterface> DirectSupertypes { get; }
 
         IEnumerable<IInterface> Supertypes { get; }
+
+        IEnumerable<IClass> Classes { get; }
+
+        IClass ExclusiveClass { get; }
 
         bool ExistSupertype(IInterface @interface);
 
@@ -28,11 +32,7 @@ namespace Allors.Meta
 
         bool ExistClass { get; }
 
-        IEnumerable<IClass> Classes { get; }
-
         bool ExistExclusiveClass { get; }
-
-        IClass ExclusiveClass { get; }
 
         bool IsSynced { get; }
 
