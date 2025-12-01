@@ -8,6 +8,9 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
+    /// <summary>
+    /// I have some tags.
+    /// </summary>
     [Id("47C94C46-6F4E-4715-9E4F-28D7EBA88D9B")]
     #endregion
     [Tags("TagA", "TagB", "TagI", "TagX")]

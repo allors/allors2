@@ -28,7 +28,5 @@ namespace Allors.Meta
         bool IsSynced { get; }
 
         bool IsIndexed { get; }
-
-        string[] Tags { get; }
     }
 }
