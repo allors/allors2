@@ -52,6 +52,13 @@ namespace Allors.Meta
             }
         }
 
+        public void AddTags(params string[] tags)
+        {
+            var newTags = new HashSet<string>(this.Tags);
+            newTags.UnionWith(tags);
+            this.Tags = newTags.ToArray();
+        }
+
         // TODO: Review
         public RoleType[] DelegatedAccessRoleTypes { get; set; }
 

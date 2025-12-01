@@ -18,26 +18,34 @@ namespace Allors.Development.Repository.Tagged
 
             this.mapping = new Dictionary<IMetaObject, TaggedMetaObject>();
 
-            foreach (var unit in this.MetaPopulation.Units)
-            {
-                this.mapping.Add(unit, new TaggedUnit(this, unit));
-            }
-
-            foreach (var @interface in this.MetaPopulation.Interfaces.Where(v => tags.Overlaps(v.Tags)))
-            {
-                this.mapping.Add(@interface, new TaggedInterface(this, @interface));
-            }
-
-            foreach (var @class in this.MetaPopulation.Classes.Where(v => tags.Overlaps(v.Tags)))
-            {
-                this.mapping.Add(@class, new TaggedClass(this, @class));
-            }
+            var objectTypes = new HashSet<IObjectType>();
+            objectTypes.UnionWith(this.MetaPopulation.Interfaces.Where(v => tags.Overlaps(v.Tags)));
+            objectTypes.UnionWith(this.MetaPopulation.Classes.Where(v => tags.Overlaps(v.Tags)));
 
             foreach (var relationType in this.MetaPopulation.RelationTypes.Where(v => tags.Overlaps(v.Tags)))
             {
                 this.mapping.Add(relationType, new TaggedRelationType(this, relationType));
                 this.mapping.Add(relationType.AssociationType, new TaggedAssociationType(this, relationType.AssociationType));
                 this.mapping.Add(relationType.RoleType, new TaggedRoleType(this, relationType.RoleType));
+
+                objectTypes.Add(relationType.AssociationType.ObjectType);
+                objectTypes.Add(relationType.RoleType.ObjectType);
+            }
+
+            foreach (var objectType in objectTypes)
+            {
+                if(objectType is IUnit unit)
+                {
+                    this.mapping.Add(unit, new TaggedUnit(this, unit));
+                }
+                else if (objectType is IInterface @interface)
+                {
+                    this.mapping.Add(@interface, new TaggedInterface(this, @interface));
+                }
+                else if (objectType is IClass @class)
+                {
+                    this.mapping.Add(@class, new TaggedClass(this, @class));
+                }
             }
 
             this.byId = this.mapping.Values.ToDictionary(v => v.Id, v => v);
@@ -47,7 +55,7 @@ namespace Allors.Development.Repository.Tagged
         public ISet<string> Tags { get; set; }
 
         public IMetaPopulation MetaPopulation { get; }
-        
+
         public IEnumerable<TaggedUnit> Units => this.mapping.Values.OfType<TaggedUnit>();
 
         public IEnumerable<TaggedComposite> Composites => this.mapping.Values.OfType<TaggedComposite>();
@@ -61,25 +69,25 @@ namespace Allors.Development.Repository.Tagged
         #region Mappers
         public TaggedMetaObject Map(IMetaObject v) => this.mapping.GetValueOrDefault(v);
 
-        public TaggedObjectType Map(IObjectType v) => (TaggedObjectType) this.mapping.GetValueOrDefault(v);
+        public TaggedObjectType Map(IObjectType v) => (TaggedObjectType)this.mapping.GetValueOrDefault(v);
 
-        public TaggedUnit Map(IUnit v) => (TaggedUnit) this.mapping.GetValueOrDefault(v);
+        public TaggedUnit Map(IUnit v) => (TaggedUnit)this.mapping.GetValueOrDefault(v);
 
-        public TaggedComposite Map(IComposite v) => (TaggedComposite) this.mapping.GetValueOrDefault(v);
+        public TaggedComposite Map(IComposite v) => (TaggedComposite)this.mapping.GetValueOrDefault(v);
 
-        public TaggedInterface Map(IInterface v) => (TaggedInterface) this.mapping.GetValueOrDefault(v);
+        public TaggedInterface Map(IInterface v) => (TaggedInterface)this.mapping.GetValueOrDefault(v);
 
-        public TaggedClass Map(IClass v) => (TaggedClass) this.mapping.GetValueOrDefault(v);
+        public TaggedClass Map(IClass v) => (TaggedClass)this.mapping.GetValueOrDefault(v);
 
-        public TaggedOperandType Map(IOperandType v) => (TaggedOperandType) this.mapping.GetValueOrDefault(v);
+        public TaggedOperandType Map(IOperandType v) => (TaggedOperandType)this.mapping.GetValueOrDefault(v);
 
-        public TaggedRelationType Map(IRelationType v) => (TaggedRelationType) this.mapping.GetValueOrDefault(v);
+        public TaggedRelationType Map(IRelationType v) => (TaggedRelationType)this.mapping.GetValueOrDefault(v);
 
-        public TaggedPropertyType Map(IPropertyType v) => (TaggedPropertyType) this.mapping.GetValueOrDefault(v);
+        public TaggedPropertyType Map(IPropertyType v) => (TaggedPropertyType)this.mapping.GetValueOrDefault(v);
 
-        public TaggedAssociationType Map(IAssociationType v) => (TaggedAssociationType) this.mapping.GetValueOrDefault(v);
+        public TaggedAssociationType Map(IAssociationType v) => (TaggedAssociationType)this.mapping.GetValueOrDefault(v);
 
-        public TaggedRoleType Map(IRoleType v) => (TaggedRoleType) this.mapping.GetValueOrDefault(v);
+        public TaggedRoleType Map(IRoleType v) => (TaggedRoleType)this.mapping.GetValueOrDefault(v);
         #endregion
 
         public ValidationLog Validate() => (ValidationLog)this.MetaPopulation.Validate();

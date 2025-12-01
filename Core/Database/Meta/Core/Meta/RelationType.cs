@@ -7,6 +7,7 @@
 namespace Allors.Meta
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -137,6 +138,13 @@ namespace Allors.Meta
                 this.tags = value;
                 this.MetaPopulation.Stale();
             }
+        }
+
+        public void AddTags(params string[] tags)
+        {
+            var newTags = new HashSet<string>(this.Tags);
+            newTags.UnionWith(tags);
+            this.Tags = newTags.ToArray();
         }
 
         IAssociationType IRelationType.AssociationType => this.AssociationType;
