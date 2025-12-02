@@ -330,5 +330,22 @@ namespace Allors.Meta
 
             this.RoleType?.Validate(validationLog);
         }
+
+        public void TagsForObjectTypes(Dictionary<IObjectType, ISet<string>> tagsByObjectType)
+        {
+            this.TagsForObjectTypes(tagsByObjectType, this.AssociationType.ObjectType);
+            this.TagsForObjectTypes(tagsByObjectType, this.RoleType.ObjectType);
+        }
+
+        private void TagsForObjectTypes(Dictionary<IObjectType, ISet<string>> tagsByObjectType, ObjectType objectType)
+        {
+            if(!tagsByObjectType.TryGetValue(objectType, out var tags))
+            {
+                tags = new HashSet<string>();
+                tagsByObjectType[objectType] = tags;
+            }
+
+            tags.UnionWith(this.Tags);
+        }
     }
 }

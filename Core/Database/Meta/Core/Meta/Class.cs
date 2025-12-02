@@ -24,7 +24,7 @@ namespace Allors.Meta
 
         private Type clrType;
 
-        private string[] tags = [];
+
 
         internal Class(MetaPopulation metaPopulation, Guid id)
                     : base(metaPopulation)
@@ -37,28 +37,7 @@ namespace Allors.Meta
             this.classes = new[] { this };
             metaPopulation.OnClassCreated(this);
         }
-
-        protected override string[] GetTags() => this.Tags;
-
-        public string[] Tags
-        {
-            get => this.tags;
-
-            set
-            {
-                this.MetaPopulation.AssertUnlocked();
-                this.tags = value;
-                this.MetaPopulation.Stale();
-            }
-        }
-
-        public void AddTags(params string[] tags)
-        {
-            var newTags = new HashSet<string>(this.Tags);
-            newTags.UnionWith(tags);
-            this.Tags = newTags.ToArray();
-        }
-
+      
         // TODO: Review
         public RoleType[] DelegatedAccessRoleTypes { get; set; }
 
@@ -99,6 +78,7 @@ namespace Allors.Meta
         }
 
         public override IEnumerable<Class> Classes => this.classes;
+
 
         public override bool ExistClass => true;
 

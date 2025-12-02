@@ -63,10 +63,6 @@ namespace Allors.Meta
             }
         }
 
-        string[] ITagged.Tags => this.GetTags();
-
-        protected abstract string[] GetTags(); 
-
         public bool IsSynced
         {
             get

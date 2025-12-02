@@ -8,7 +8,7 @@ namespace Allors.Meta
 {
     using System.Collections.Generic;
 
-    public interface IComposite : IObjectType, ITagged
+    public interface IComposite : IObjectType
     {
         IEnumerable<IAssociationType> AssociationTypes { get; }
 

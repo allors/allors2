@@ -30,20 +30,22 @@ For more information visit http://www.allors.com/legal
 diagram(meta) ::= <<
 classDiagram
 $meta.composites:{composite|$composite(meta=meta,composite=composite)$}$
+
+$meta.composites:{composite|$relations(composite=composite)$}$
+
 $meta.composites:{composite|$inheritance(composite=composite)$}$
 >>
 
 composite(meta,composite) ::= <<
 	class $composite.Name$ {
 $if(composite.IsInterface)$		$interfaceMarker()$
-$endif$$composite.ExclusiveRoleTypes:{roleType|$property(roleType=roleType)$}$	}
+$endif$$composite.ExclusiveUnitRoleTypes:{roleType|$property(roleType=roleType)$}; separator="\n"$
+    }
 
 >>
 
 property(roleType) ::= <<
-$if(roleType.IsOne)$		$propertyType(roleType)$ $prefix(roleType)$$roleType.SingularPropertyName$
-$else$		$propertyType(roleType)$[] $prefix(roleType)$$roleType.PluralPropertyName$
-$endif$
+		$propertyType(roleType)$ $prefix(roleType)$$roleType.SingularPropertyName$
 >>
 
 propertyType(roleType) ::= <%
@@ -55,6 +57,15 @@ $if(roleType.RelationType.IsDerived)$_$endif$$if(roleType.RelationType.IsSynced)
 %>
 
 interfaceMarker() ::= <%<<interface>>%>
+
+relations(composite) ::= <<
+$composite.ExclusiveCompositeRoleTypes:{roleType|$relation(composite=composite,roleType=roleType)$}; separator="\n"$
+
+>>
+
+relation(composite, roleType) ::= <<
+$composite.Name$ --> $roleType.ObjectType.Name$ : $if(roleType.IsOne)$$prefix(roleType)$$roleType.SingularPropertyName$$else$$prefix(roleType)$$roleType.PluralPropertyName$$endif$
+>>
 
 inheritance(composite) ::= <<
 $if(composite.ExistDirectSupertypes)$$composite.DirectSupertypes:{supertype|	$supertype.Name$ <|-- $composite.Name$

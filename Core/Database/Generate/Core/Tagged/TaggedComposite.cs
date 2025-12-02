@@ -46,6 +46,8 @@ namespace Allors.Development.Repository.Tagged
         public IEnumerable<TaggedRoleType> SortedExclusiveRoleTypes => this.ExclusiveRoleTypes.OrderBy(v => v.Name);
 
 
+        public IEnumerable<TaggedRoleType> ExclusiveUnitRoleTypes => this.ExclusiveRoleTypes.Where(roleType => roleType.ObjectType.IsUnit);
+
         public IEnumerable<TaggedRoleType> ExclusiveCompositeRoleTypes => this.ExclusiveRoleTypes.Where(roleType => roleType.ObjectType.IsComposite);
 
 

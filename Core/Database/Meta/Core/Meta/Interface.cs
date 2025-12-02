@@ -104,18 +104,6 @@ namespace Allors.Meta
             }
         }
 
-        protected override string[] GetTags() => this.Tags;
-
-        public string[] Tags
-        {
-            get
-            {
-                this.MetaPopulation.Derive();
-                return this.derivedTags;
-
-            }
-        }
-
         public override IEnumerable<Composite> WorkspaceSubtypes => this.Subtypes.Where(v => v.Workspace).ToArray();
 
         public override Type ClrType => this.clrType;
@@ -205,20 +193,6 @@ namespace Allors.Meta
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Derive tags.
-        /// </summary>
-        public void DeriveTags()
-        {
-            var tags = new HashSet<string>();
-
-            tags.UnionWith(this.AssociationTypes.SelectMany(v => v.RelationType.Tags));
-            tags.UnionWith(this.RoleTypes.SelectMany(v => v.RelationType.Tags));
-            tags.UnionWith(this.MethodTypes.SelectMany(v => v.Tags));
-
-            this.derivedTags = tags.ToArray();
         }
     }
 }

@@ -7,12 +7,17 @@
 namespace Allors.Meta
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public abstract partial class ObjectType : DomainObject, IObjectType, IComparable
     {
         private string singularName;
 
         private string pluralName;
+
+        private string[] assignedTags = [];
+        private string[] derivedTags = [];
 
         protected ObjectType(MetaPopulation metaPopulation)
             : base(metaPopulation)
@@ -68,6 +73,50 @@ namespace Allors.Meta
         public bool IsClass => this is IClass;
 
         public abstract Type ClrType { get; }
+
+        public string[] AssignedTags
+        {
+            get => this.assignedTags;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.assignedTags = value;
+                this.MetaPopulation.Stale();
+            }
+        }
+
+        public void AddTags(params string[] tags)
+        {
+            var newTags = new HashSet<string>(this.AssignedTags);
+            newTags.UnionWith(tags);
+            this.AssignedTags = newTags.ToArray();
+        }
+
+        public string[] Tags
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.derivedTags;
+            }
+        }
+
+        /// <summary>
+        /// Derive tags.
+        /// </summary>
+        public void DeriveTags(IDictionary<IObjectType, ISet<string>> tagsByObjectType)
+        {
+            if (tagsByObjectType.TryGetValue(this, out var tags))
+            {
+                this.derivedTags = tags.ToArray();
+            }
+            else
+            {
+                this.derivedTags = [];
+            }
+        }
+
 
         /// <summary>
         /// Gets the validation name.

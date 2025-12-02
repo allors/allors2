@@ -507,10 +507,20 @@ namespace Allors.Meta
                         composite.DeriveWorkspace();
                     }
 
-                    // interface tags
-                    foreach (var @interface in this.Interfaces)
+                    // Tags
+
+                    var tagsByObjectType = new Dictionary<IObjectType, ISet<string>>();
+
+                    foreach (var relationType in this.RelationTypes)
                     {
-                        @interface.DeriveTags();
+                        relationType.TagsForObjectTypes(tagsByObjectType);
+                    }
+
+                    var objectTypes = units.Union<ObjectType>(compositeTypes);
+
+                    foreach (var objectType in objectTypes)
+                    {
+                        objectType.DeriveTags(tagsByObjectType);
                     }
 
                     // MetaPopulation

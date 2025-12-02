@@ -8,7 +8,7 @@ namespace Allors.Meta
 {
     using System;
 
-    public interface IObjectType : IMetaObject, IComparable
+    public interface IObjectType : IMetaObject, ITagged, IComparable
     {
         string SingularName { get; }
 
