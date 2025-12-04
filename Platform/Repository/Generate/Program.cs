@@ -52,7 +52,7 @@ namespace Allors.Tools.Cmd
 
             var fileInfo = new FileInfo(projectPath);
 
-            Logger.Info("Generate " + fileInfo.FullName);
+            Logger.Info("Generate " + fileInfo.FullName + " in " + new DirectoryInfo(output).FullName);
             Generate.Execute(fileInfo.FullName, template, output);
         }
     }

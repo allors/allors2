@@ -333,7 +333,7 @@ $interface.InheritedReverseProperties:{property|         public AssociationType 
 			{
 				SingularName = "$interface.SingularName$",
 				$if(interface.AttributeByName.Plural)$PluralName = "$interface.AttributeByName.Plural.Value$",$endif$
-$if(class.AttributeByName.Tags)$				AssignedTags = [$class.AttributeByName.Tags.Values:{value|"$value$"}; separator=", "$],$endif$
+$if(interface.AttributeByName.Tags)$				AssignedTags = [$interface.AttributeByName.Tags.Values:{value|"$value$"}; separator=", "$],$endif$
 $if(interface.XmlDoc)$			XmlDoc = @"$interface.XmlDoc.VerbatimValue$",$endif$
 $if(interface.AttributeByName.Synced)$				AssignedIsSynced = $interface.AttributeByName.Synced.Value$$endif$
 			};
