@@ -2,6 +2,7 @@ namespace Allors.Development.Repository.Tagged
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Meta;
 
 
@@ -38,5 +39,7 @@ namespace Allors.Development.Repository.Tagged
         public string Name => ((RelationType)this.RelationType).Name;
 
         public bool IsSynced => this.RelationType.IsSynced;
+
+        public string[] SortedTags => this.RelationType.Tags?.OrderBy(v => v).ToArray() ?? Array.Empty<string>();
     }
 }

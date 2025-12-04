@@ -60,6 +60,7 @@ xml(meta) ::= <<
    <Column ss:Width="150"/>
    <Column ss:Width="200"/>
    <Column ss:Width="200"/>
+   <Column ss:Width="200"/>
    <Row ss:StyleID="Header" ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">Relation</Data></Cell>
     <Cell><Data ss:Type="String">Type</Data></Cell>
@@ -67,6 +68,7 @@ xml(meta) ::= <<
     <Cell><Data ss:Type="String">Storage Strategy</Data></Cell>
     <Cell><Data ss:Type="String">Table</Data></Cell>
     <Cell><Data ss:Type="String">Column/Relation</Data></Cell>
+    <Cell><Data ss:Type="String">Tags</Data></Cell>
    </Row>
 $meta.composites:{composite|$composite(composite=composite)$}$
   </Table>
@@ -87,7 +89,7 @@ $meta.composites:{composite|$composite(composite=composite)$}$
     </Pane>
    </Panes>
   </WorksheetOptions>
-  <AutoFilter x:Range="R1C1:R1C6" xmlns="urn:schemas-microsoft-com:office:excel"/>
+  <AutoFilter x:Range="R1C1:R1C7" xmlns="urn:schemas-microsoft-com:office:excel"/>
  </Worksheet>
 </Workbook>
 >>
@@ -103,6 +105,7 @@ relationTypeRow(composite,roleType) ::= <<
     <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$storageStrategy(roleType)$</Data></Cell>
     <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$tableName(composite, roleType)$</Data></Cell>
     <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$columnOrRelation(composite, roleType)$</Data></Cell>
+    <Cell ss:StyleID="$rowStyle(roleType)$"><Data ss:Type="String">$tags(roleType)$</Data></Cell>
    </Row>
 >>
 
@@ -158,3 +161,5 @@ $if(roleType.ObjectType.IsUnit)$$if(roleType.ObjectType.IsBinary)$Binary$elseif(
 %>
 
 tolower(text) ::= <%$text; format="lower"$%>
+
+tags(roleType) ::= <%$roleType.RelationType.SortedTags; separator=", "$%>
