@@ -1,0 +1,83 @@
+delimiters "$", "$"
+
+TemplateId() ::= <<FA2E53B4-915D-4227-8571-456FC8E04DB0>>
+TemplateName() ::= <<Allors XMI Xml>>
+TemplateVersion() ::= <<1.0.3>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(meta) ::= <<
+<generations>
+	<generation template="domain" output="xmi.xml"/>
+</generations>
+>>
+
+domain(meta) ::= <<
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_model" name="Allors">
+    <packagedElement xmi:type="uml:Package" xmi:id="_pkg_types" name="PrimitiveTypes">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_string" name="String"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_integer" name="Integer"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_boolean" name="Boolean"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_double" name="Double"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_decimal" name="Decimal"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_datetime" name="DateTime"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_uuid" name="UUID"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_type_binary" name="Binary"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_pkg_domain" name="Domain">
+$meta.Interfaces:{interface|$interfaceElement(interface=interface)$}$
+$meta.Classes:{class|$classElement(class=class)$}$
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>
+>>
+
+interfaceElement(interface) ::= <<
+      <packagedElement xmi:type="uml:Interface" xmi:id="_i_$interface.Id$" name="$interface.Name$">
+$interface.DirectSupertypes:{supertype|        <generalization xmi:type="uml:Generalization" xmi:id="_g_$interface.Id$_$supertype.Id$" general="_i_$supertype.Id$"/>
+}$$interface.ExclusiveRoleTypes:{roleType|$attribute(roleType=roleType)$}$      </packagedElement>
+>>
+
+classElement(class) ::= <<
+      <packagedElement xmi:type="uml:Class" xmi:id="_c_$class.Id$" name="$class.Name$" isAbstract="true">
+$class.DirectSupertypes:{supertype|        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_r_$class.Id$_$supertype.Id$" supplier="_i_$supertype.Id$" client="_c_$class.Id$" contract="_i_$supertype.Id$"/>
+}$$class.ExclusiveRoleTypes:{roleType|$attribute(roleType=roleType)$}$      </packagedElement>
+>>
+
+attribute(roleType) ::= <<
+$if(roleType.IsOne)$
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_a_$roleType.Id$" name="$roleType.SingularPropertyName$" visibility="public" type="$typeRef(roleType=roleType)$"/>
+$else$
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_a_$roleType.Id$" name="$roleType.PluralPropertyName$" visibility="public" type="$typeRef(roleType=roleType)$">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_u_$roleType.Id$" value="*"/>
+        </ownedAttribute>
+$endif$
+>>
+
+typeRef(roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$
+$if(roleType.ObjectType.IsBinary)$
+_type_binary
+$elseif(roleType.ObjectType.IsBoolean)$
+_type_boolean
+$elseif(roleType.ObjectType.IsDateTime)$
+_type_datetime
+$elseif(roleType.ObjectType.IsDecimal)$
+_type_decimal
+$elseif(roleType.ObjectType.IsFloat)$
+_type_double
+$elseif(roleType.ObjectType.IsInteger)$
+_type_integer
+$elseif(roleType.ObjectType.IsString)$
+_type_string
+$elseif(roleType.ObjectType.IsUnique)$
+_type_uuid
+$endif$
+$else$
+$if(roleType.ObjectType.IsInterface)$
+_i_$roleType.ObjectType.Id$
+$else$
+_c_$roleType.ObjectType.Id$
+$endif$
+$endif$
+%>

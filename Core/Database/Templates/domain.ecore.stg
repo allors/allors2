@@ -1,0 +1,79 @@
+delimiters "$", "$"
+
+TemplateId() ::= <<FA2E53B4-915D-4227-8571-456FC8E04DB0>>
+TemplateName() ::= <<Allors Ecore>>
+TemplateVersion() ::= <<1.0.4>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(meta) ::= <<
+<generations>
+	<generation template="domain" output="domain.ecore"/>
+</generations>
+>>
+
+domain(meta) ::= <<
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="domain"
+    nsURI="http://allors.com/domain"
+    nsPrefix="domain">
+$meta.Interfaces:{interface|$interfaceElement(interface=interface)$}$
+$meta.Classes:{class|$classElement(class=class)$}$
+</ecore:EPackage>
+>>
+
+interfaceElement(interface) ::= <<
+  <eClassifiers xsi:type="ecore:EClass" name="$interface.Name$" abstract="true" interface="true"$if(interface.DirectSupertypes)$ eSuperTypes="$interface.DirectSupertypes:{supertype|#//$supertype.Name$}; separator=" "$"$endif$>
+$interface.ExclusiveRoleTypes:{roleType|$structuralFeature(roleType=roleType)$}$  </eClassifiers>
+>>
+
+classElement(class) ::= <<
+  <eClassifiers xsi:type="ecore:EClass" name="$class.Name$" abstract="true"$if(class.DirectSupertypes)$ eSuperTypes="$class.DirectSupertypes:{supertype|#//$supertype.Name$}; separator=" "$"$endif$>
+$class.ExclusiveRoleTypes:{roleType|$structuralFeature(roleType=roleType)$}$  </eClassifiers>
+>>
+
+structuralFeature(roleType) ::= <<
+$if(roleType.ObjectType.IsUnit)$
+$eAttribute(roleType=roleType)$
+$else$
+$eReference(roleType=roleType)$
+$endif$
+>>
+
+eAttribute(roleType) ::= <<
+$if(roleType.IsOne)$
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="$roleType.SingularPropertyName$" eType="$ecoreDataType(roleType=roleType)$"/>
+$else$
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="$roleType.PluralPropertyName$" upperBound="-1" eType="$ecoreDataType(roleType=roleType)$"/>
+$endif$
+>>
+
+eReference(roleType) ::= <<
+$if(roleType.IsOne)$
+    <eStructuralFeatures xsi:type="ecore:EReference" name="$roleType.SingularPropertyName$" eType="#//$roleType.ObjectType.Name$"/>
+$else$
+    <eStructuralFeatures xsi:type="ecore:EReference" name="$roleType.PluralPropertyName$" upperBound="-1" eType="#//$roleType.ObjectType.Name$"/>
+$endif$
+>>
+
+ecoreDataType(roleType) ::= <%
+$if(roleType.ObjectType.IsBinary)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EByteArray
+$elseif(roleType.ObjectType.IsBoolean)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean
+$elseif(roleType.ObjectType.IsDateTime)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate
+$elseif(roleType.ObjectType.IsDecimal)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal
+$elseif(roleType.ObjectType.IsFloat)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble
+$elseif(roleType.ObjectType.IsInteger)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt
+$elseif(roleType.ObjectType.IsString)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString
+$elseif(roleType.ObjectType.IsUnique)$
+ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString
+$endif$
+%>

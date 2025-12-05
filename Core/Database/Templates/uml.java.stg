@@ -1,45 +1,66 @@
-group JavaUml;
+delimiters "$", "$"
 
 TemplateId() ::= <<2BD69D34-4989-4DE2-93D6-0AF734BAEA06>>
 TemplateName() ::= <<Allors Java Uml>>
-TemplateVersion() ::= <<1.0.5>>
+TemplateVersion() ::= <<1.0.9>>
 TemplateAllors() ::= <<1.0>>
-TemplateConfiguration(domain) ::= <<
+TemplateConfiguration(meta) ::= <<
 <generations>
-$meta.compositeObjectTypes:{type|<generation template="compositeObjectType" input="$type.Id $" output="src/$type.SingularName$.java"/>}$
+	$meta.Interfaces:{interface|<generation template="generateInterface" input="$interface.Id $" output="$interface.SingularName$.java"/>}$
+	$meta.Classes:{class|<generation template="generateClass" input="$class.Id $" output="$class.SingularName$.java"/>}$
 </generations>
 >>
 
-compositeObjectType(meta, objectType) ::= <<
-package allors;
-
-$if(objectType.IsInterface)$
-public interface $objectType.SingularName$ $if(objectType.ExistDirectSuperInterfaces)$ $first(objectType.DirectSuperInterfaces):{extends $it.FullNameForJava$}$$rest(objectType.DirectSuperInterfaces):{, $it.FullNameForJava$}$ $endif$
+generateInterface(meta,objectType) ::= <<
+public interface $objectType.Name$ $if(objectType.ExistDirectSupertypes)$ extends $first([objectType.DirectSupertypes]):{it | $it.Name$}$$rest([objectType.DirectSupertypes]):{it | , $it.Name$}$ $endif$
 {
-$objectType.ExclusiveAssociationTypes:{associationType|$interfaceRoleType(relationType=associationType.RelationType,associationType=associationType,roleType=associationType.RoleType)$}$
+$objectType.ExclusiveRoleTypes:{roleType|$roleType(roleType=roleType)$}$
 }
-$else$
-public $if(objectType.IsAbstract)$abstract$endif$ class $objectType.Name$ $if(objectType.ExistDirectSuperClass)$extends $objectType.DirectSuperClass.FullNameForJava$ $endif$ $if(objectType.ExistDirectSuperInterfaces)$implements $first([objectType.DirectSuperInterfaces]):{ $it.FullNameForJava$}$$rest([objectType.DirectSuperInterfaces]):{, $it.FullNameForJava$}$ $endif$
+>>
+
+generateClass(meta,objectType) ::= <<
+public abstract class $objectType.Name$ $if(objectType.ExistDirectSupertypes)$implements $first([objectType.DirectSupertypes]):{it | $it.Name$}$$rest([objectType.DirectSupertypes]):{it | , $it.Name$}$ $endif$
 {
-$objectType.ExclusiveRoleTypes:{roleType|$classRoleType(relationType=roleType.RelationType,associationType=roleType.AssociationType,roleType=roleType)$}$
+$objectType.ExclusiveRoleTypes:{roleType|$classRoleType(roleType=roleType)$}$
 }
+>>
+
+roleType(roleType) ::= <<
+$if(roleType.IsOne)$
+	$typeName(roleType)$ get$roleType.SingularPropertyName$();
+$else$
+	$typeName(roleType)$[] get$roleType.PluralPropertyName$();
 $endif$
 >>
 
-interfaceRoleType(relationType,associationType,roleType) ::= <<
-$if(roleType.IsOne)$ 
-	private $roleType.ObjectType.FullNameForJava$ $roleType.HierarchySingularName$ = null;
+classRoleType(roleType) ::= <<
+$if(roleType.IsOne)$
+	public abstract $typeName(roleType)$ get$roleType.SingularPropertyName$();
 $else$
-	private $roleType.ObjectType.FullNameForJava$[] $roleType.HierarchyPluralName$ = null;
+	public abstract $typeName(roleType)$[] get$roleType.PluralPropertyName$();
 $endif$
-$\n$
 >>
 
-classRoleType(relationType,associationType,roleType) ::= <<
-$if(roleType.IsOne)$ 
-	public $roleType.ObjectType.FullNameForJava$ $roleType.HierarchySingularName$;
+typeName(roleType) ::= <%
+$if(roleType.ObjectType.IsUnit)$
+	$if(roleType.ObjectType.IsBinary)$
+		byte[]
+	$elseif(roleType.ObjectType.IsBoolean)$
+		Boolean
+	$elseif(roleType.ObjectType.IsDateTime)$
+		java.time.LocalDateTime
+	$elseif(roleType.ObjectType.IsDecimal)$
+		java.math.BigDecimal
+	$elseif(roleType.ObjectType.IsFloat)$
+		Double
+	$elseif(roleType.ObjectType.IsInteger)$
+		Integer
+	$elseif(roleType.ObjectType.IsString)$
+		String
+	$elseif(roleType.ObjectType.IsUnique)$
+		java.util.UUID
+	$endif$
 $else$
-	public $roleType.ObjectType.FullNameForJava$[] $roleType.HierarchyPluralName$;
+	$roleType.ObjectType.SingularName$
 $endif$
-$\n$
->>
+%>
