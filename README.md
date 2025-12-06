@@ -1,6 +1,6 @@
 # Allors2
 
-[![Build Status](https://dev.azure.com/allors/Allors2/_apis/build/status/Allors.allors2?branchName=master)](https://dev.azure.com/allors/Allors2/_build/latest?definitionId=4&branchName=master)
+[![Build Status](https://dev.azure.com/allors/Allors2/_apis/build/status%2Fallors.allors2?branchName=main)](https://dev.azure.com/allors/Allors2/_build/latest?definitionId=23&branchName=main)
 
 Allors is a comprehensive .NET-based application development platform that provides a meta-model driven architecture for building enterprise applications. It features an object-relational mapping system, code generation, multi-tier architecture, and client-side workspace synchronization.
 
