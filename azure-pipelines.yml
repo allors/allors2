@@ -2,6 +2,7 @@ trigger:
 - main
 - feature/*
 - issue/*
+- v2.0
 
 stages:
 - stage: Platform
