@@ -21,13 +21,11 @@ namespace Allors
         /// <summary>
         /// Occurs when an object could not be loaded.
         /// </summary>
-        [Obsolete]
         event ObjectNotLoadedEventHandler ObjectNotLoaded;
 
         /// <summary>
         /// Occurs when a relation could not be loaded.
         /// </summary>
-        [Obsolete]
         event RelationNotLoadedEventHandler RelationNotLoaded;
 
         /// <summary>
@@ -79,14 +77,12 @@ namespace Allors
         /// Loads the population from the <see cref="XmlReader"/>.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        [Obsolete]
         void Load(XmlReader reader);
 
         /// <summary>
         /// Saves the population to the <see cref="XmlWriter"/>.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        [Obsolete]
         void Save(XmlWriter writer);
 
         void Load(IPopulationData data);
