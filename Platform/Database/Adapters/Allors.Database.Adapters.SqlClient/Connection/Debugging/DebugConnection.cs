@@ -6,7 +6,7 @@
 namespace Allors.Database.Adapters.SqlClient.Debug
 {
     using System.Collections.Generic;
-    using System.Data.SqlClient;
+    using Microsoft.Data.SqlClient;
     using System.Linq;
 
     public class DebugConnection : Connection

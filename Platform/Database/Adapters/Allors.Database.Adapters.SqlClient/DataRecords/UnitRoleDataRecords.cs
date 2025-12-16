@@ -12,7 +12,7 @@ namespace Allors.Database.Adapters.SqlClient
 
     using Allors.Meta;
 
-    using Microsoft.SqlServer.Server;
+    using Microsoft.Data.SqlClient.Server;
 
     internal class UnitRoleDataRecords : IEnumerable<SqlDataRecord>
     {

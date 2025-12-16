@@ -9,7 +9,7 @@ namespace Allors.Database.Adapters.SqlClient
     using System.Collections.Generic;
     using System.Data;
 
-    using Microsoft.SqlServer.Server;
+    using Microsoft.Data.SqlClient.Server;
 
     internal class CompositesRoleDataRecords : IEnumerable<SqlDataRecord>
     {

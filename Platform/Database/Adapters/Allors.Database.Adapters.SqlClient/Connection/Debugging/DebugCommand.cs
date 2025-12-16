@@ -7,7 +7,7 @@ namespace Allors.Database.Adapters.SqlClient.Debug
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.SqlClient;
+    using Microsoft.Data.SqlClient;
 
     public class DebugCommand : Command
     {

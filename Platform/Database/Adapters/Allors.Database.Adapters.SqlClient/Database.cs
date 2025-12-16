@@ -8,7 +8,7 @@ namespace Allors.Database.Adapters.SqlClient
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Data.SqlClient;
+    using Microsoft.Data.SqlClient;
     using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
@@ -17,7 +17,7 @@ namespace Allors.Database.Adapters.SqlClient
     using Allors.Database.Adapters.SqlClient.Caching;
     using Allors.Meta;
     using Allors.Serialization;
-    using Microsoft.SqlServer.Server;
+    using Microsoft.Data.SqlClient.Server;
 
     public class Database : IDatabase
     {

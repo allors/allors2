@@ -5,7 +5,7 @@
 
 namespace Allors.Database.Adapters.SqlClient
 {
-    using System.Data.SqlClient;
+    using Microsoft.Data.SqlClient;
 
     public sealed class DefaultConnection : Connection
     {

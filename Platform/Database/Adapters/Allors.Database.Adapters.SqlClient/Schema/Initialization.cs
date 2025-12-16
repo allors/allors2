@@ -6,7 +6,7 @@
 namespace Allors.Database.Adapters.SqlClient
 {
     using System;
-    using System.Data.SqlClient;
+    using Microsoft.Data.SqlClient;
     using System.Text;
 
     using Allors.Meta;
