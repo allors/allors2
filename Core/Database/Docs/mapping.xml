@@ -30,6 +30,7 @@
    <Column ss:Width="150"/>
    <Column ss:Width="200"/>
    <Column ss:Width="200"/>
+   <Column ss:Width="200"/>
    <Row ss:StyleID="Header" ss:AutoFitHeight="0">
     <Cell><Data ss:Type="String">Relation</Data></Cell>
     <Cell><Data ss:Type="String">Type</Data></Cell>
@@ -37,6 +38,7 @@
     <Cell><Data ss:Type="String">Storage Strategy</Data></Cell>
     <Cell><Data ss:Type="String">Table</Data></Cell>
     <Cell><Data ss:Type="String">Column/Relation</Data></Cell>
+    <Cell><Data ss:Type="String">Tags</Data></Cell>
    </Row>
    <Row>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">TaggedInterface.TagInterface</Data></Cell>
@@ -45,6 +47,7 @@
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Inline (Unit)</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">allors.TaggedInterface</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">TagInterface</Data></Cell>
+    <Cell ss:StyleID="Unit"><Data ss:Type="String">TagI</Data></Cell>
    </Row><Row>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">TaggedInterface2.TagInterface2</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Boolean</Data></Cell>
@@ -52,6 +55,7 @@
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Inline (Unit)</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">allors.TaggedInterface2</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">TagInterface2</Data></Cell>
+    <Cell ss:StyleID="Unit"><Data ss:Type="String">TagI2</Data></Cell>
    </Row><Row>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Tagged.SingleTag</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Boolean</Data></Cell>
@@ -59,6 +63,7 @@
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Inline (Unit)</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">allors.Tagged</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">SingleTag</Data></Cell>
+    <Cell ss:StyleID="Unit"><Data ss:Type="String">TagA</Data></Cell>
    </Row><Row>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Tagged.MultipleTags</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Boolean</Data></Cell>
@@ -66,6 +71,7 @@
     <Cell ss:StyleID="Unit"><Data ss:Type="String">Inline (Unit)</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">allors.Tagged</Data></Cell>
     <Cell ss:StyleID="Unit"><Data ss:Type="String">MultipleTags</Data></Cell>
+    <Cell ss:StyleID="Unit"><Data ss:Type="String">TagA, TagB</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -85,6 +91,6 @@
     </Pane>
    </Panes>
   </WorksheetOptions>
-  <AutoFilter x:Range="R1C1:R1C6" xmlns="urn:schemas-microsoft-com:office:excel"/>
+  <AutoFilter x:Range="R1C1:R1C7" xmlns="urn:schemas-microsoft-com:office:excel"/>
  </Worksheet>
 </Workbook>
