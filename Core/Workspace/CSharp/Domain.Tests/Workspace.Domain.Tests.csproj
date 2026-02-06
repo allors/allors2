@@ -18,4 +18,5 @@
     <ProjectReference Include="..\Domain\Workspace.Domain.csproj" />
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj" />
   </ItemGroup>
+
 </Project>
