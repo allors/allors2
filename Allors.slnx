@@ -54,6 +54,10 @@
   <Folder Name="/Platform/Workspace/">
     <Project Path="Platform/Workspace/CSharp/Allors.Workspace/Allors.Workspace.csproj" />
   </Folder>
+  <Folder Name="/Platform/Workspace/Blazor/">
+    <Project Path="Platform/Workspace/CSharp/Allors.Workspace.Blazor/Allors.Workspace.Blazor.csproj" />
+    <Project Path="Platform/Workspace/CSharp/Allors.Workspace.Blazor.Bootstrap/Allors.Workspace.Blazor.Bootstrap.csproj" />
+  </Folder>
   <Folder Name="/Platform/Workspace/Adapters/">
     <Project Path="Platform/Workspace/CSharp/Adapters/Allors.Workspace.Adapters.Remote.RestSharp/Allors.Workspace.Adapters.Remote.RestSharp.csproj" />
     <Project Path="Platform/Workspace/CSharp/Adapters/Allors.Workspace.Adapters.Remote/Allors.Workspace.Adapters.Remote.csproj" />
