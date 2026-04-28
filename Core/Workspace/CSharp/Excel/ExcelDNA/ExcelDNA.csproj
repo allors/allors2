@@ -14,8 +14,8 @@
     <PackageReference Include="Allors.Excel" Version="1.0.73" />
     <PackageReference Include="Allors.Excel.Interop" Version="1.0.73" />
     <PackageReference Include="ExcelDna.AddIn" Version="1.9.0" PrivateAssets="All" />
-    <PackageReference Include="NLog" Version="6.1.0" PrivateAssets="All" />
-    <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="113.1.0" />
+    <PackageReference Include="NLog" Version="6.1.2" PrivateAssets="All" />
+    <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="114.0.0" />
   </ItemGroup>
 
   <ItemGroup>

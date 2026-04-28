@@ -7,11 +7,11 @@
 
   <ItemGroup>
     <PackageReference Include="JSNLog" Version="3.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.2" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="6.1.1" />
-    <PackageReference Include="Polly" Version="8.6.5" />
-    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.7" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="6.1.2" />
+    <PackageReference Include="Polly" Version="8.6.6" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
   </ItemGroup>
 
   <ItemGroup>

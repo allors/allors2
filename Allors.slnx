@@ -1,0 +1,63 @@
+<Solution>
+  <Folder Name="/Core/" />
+  <Folder Name="/Core/Database/">
+    <Project Path="Core/Database/Commands/Commands.csproj" />
+    <Project Path="Core/Database/Domain.Tests/Domain.Tests.csproj" />
+    <Project Path="Core/Database/Domain/Domain.csproj" />
+    <Project Path="Core/Database/Generate/Generate.csproj" />
+    <Project Path="Core/Database/Merge/Merge.csproj" />
+    <Project Path="Core/Database/Meta/Meta.csproj" />
+    <Project Path="Core/Database/Resources/Resources.csproj" />
+    <Project Path="Core/Database/Server.Tests/Server.Tests.csproj" />
+    <Project Path="Core/Database/Server/Server.csproj" />
+    <Project Path="Core/Database/Services/Services.csproj" />
+  </Folder>
+  <Folder Name="/Core/Repository/">
+    <Project Path="Core/Repository/Domain/Repository.csproj" />
+  </Folder>
+  <Folder Name="/Core/Workspace/" />
+  <Folder Name="/Core/Workspace/CSharp/">
+    <Project Path="Core/Workspace/CSharp/Domain.Tests/Workspace.Domain.Tests.csproj" />
+    <Project Path="Core/Workspace/CSharp/Domain/Workspace.Domain.csproj" />
+    <Project Path="Core/Workspace/CSharp/Meta/Workspace.Meta.csproj" />
+  </Folder>
+  <Folder Name="/Core/Workspace/CSharp/Excel/">
+    <Project Path="Core/Workspace/CSharp/Excel/Excel/Excel.csproj" />
+    <Project Path="Core/Workspace/CSharp/Excel/ExcelDNA/ExcelDNA.csproj" />
+  </Folder>
+  <Folder Name="/Core/Workspace/Typescript.legacy/">
+    <Project Path="Core/Workspace/Typescript.legacy/Site/Site.csproj" />
+  </Folder>
+  <Folder Name="/Platform/" />
+  <Folder Name="/Platform/Database/">
+    <Project Path="Platform/Database/Allors.Database/Allors.Database.csproj" />
+  </Folder>
+  <Folder Name="/Platform/Database/Adapters/">
+    <Project Path="Platform/Database/Adapters/Allors.Database.Adapters.Memory/Allors.Database.Adapters.Memory.csproj" />
+    <Project Path="Platform/Database/Adapters/Allors.Database.Adapters.SqlClient/Allors.Database.Adapters.SqlClient.csproj" />
+    <Project Path="Platform/Database/Adapters/Allors.Database.Adapters/Allors.Database.Adapters.csproj" />
+    <Project Path="Platform/Database/Adapters/Domain/Domain.csproj" />
+    <Project Path="Platform/Database/Adapters/Generate/Generate.csproj" />
+    <Project Path="Platform/Database/Adapters/Meta/Meta.csproj" />
+    <Project Path="Platform/Database/Adapters/Repository/Domain/Repository.csproj" />
+    <Project Path="Platform/Database/Adapters/Tests.Dynamic/Tests.Dynamic.csproj" />
+    <Project Path="Platform/Database/Adapters/Tests.Static/Tests.Static.csproj" />
+  </Folder>
+  <Folder Name="/Platform/Protocol/">
+    <Project Path="Platform/Protocol/Allors.Protocol/Allors.Protocol.csproj" />
+  </Folder>
+  <Folder Name="/Platform/Repository/">
+    <Project Path="Platform/Repository/Allors.Repository/Allors.Repository.csproj" />
+    <Project Path="Platform/Repository/Domain/Attributes.csproj" />
+    <Project Path="Platform/Repository/Generate/Generate.csproj" />
+  </Folder>
+  <Folder Name="/Platform/Workspace/">
+    <Project Path="Platform/Workspace/CSharp/Allors.Workspace/Allors.Workspace.csproj" />
+  </Folder>
+  <Folder Name="/Platform/Workspace/Adapters/">
+    <Project Path="Platform/Workspace/CSharp/Adapters/Allors.Workspace.Adapters.Remote.RestSharp/Allors.Workspace.Adapters.Remote.RestSharp.csproj" />
+    <Project Path="Platform/Workspace/CSharp/Adapters/Allors.Workspace.Adapters.Remote/Allors.Workspace.Adapters.Remote.csproj" />
+    <Project Path="Platform/Workspace/CSharp/Adapters/Allors.Workspace.Adapters/Allors.Workspace.Adapters.csproj" />
+  </Folder>
+  <Project Path="build/_build.csproj" />
+</Solution>
