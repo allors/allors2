@@ -44,7 +44,7 @@ namespace ExcelDNA
 
                 this.AppConfig = new AppConfig();
 
-                var restClient = new RestClient(this.AppConfig.AllorsDatabaseAddress).UseNewtonsoftJson();
+                var restClient = new RestClient(this.AppConfig.AllorsDatabaseAddress, configureSerialization: s => s.UseNewtonsoftJson());
                 this.database = new RemoteDatabase(() => restClient);
 
                 var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
