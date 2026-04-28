@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feature/*", "issue/*", v2.0]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: ${{ matrix.name }}
+    runs-on: windows-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: adapters_memory
+            target: AdaptersTestMemory
+          - name: adapters_sqlclient
+            target: AdaptersTestSqlClient
+          - name: core_database
+            target: CoreDatabaseTest
+          - name: core_database_debug
+            target: CoreDatabaseTest
+            allors_derivation: persistent
+          - name: core_workspace
+            target: CoreWorkspaceTest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set culture to nl-BE
+        shell: pwsh
+        run: Set-Culture -CultureInfo nl-BE
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install
+        shell: pwsh
+        run: ./build.ps1 -target install
+
+      - name: Run ${{ matrix.target }}
+        shell: pwsh
+        env:
+          ALLORS_DERIVATION: ${{ matrix.allors_derivation }}
+        run: ./build.ps1 -target ${{ matrix.target }}
+
+      - name: Upload TRX results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trx-${{ matrix.name }}
+          path: artifacts/tests/*.trx
+          if-no-files-found: warn
