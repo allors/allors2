@@ -46,6 +46,13 @@ jobs:
         shell: pwsh
         run: ./build.ps1 -target install
 
+      - name: Stage runtime config
+        shell: pwsh
+        run: |
+          $dest = "${env:SystemDrive}\config"
+          if (Test-Path $dest) { Remove-Item $dest -Recurse -Force }
+          Copy-Item -Path "$PWD\config" -Destination $dest -Recurse
+
       - name: Run ${{ matrix.target }}
         shell: pwsh
         env:
