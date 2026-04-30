@@ -49,9 +49,10 @@ jobs:
       - name: Stage runtime config
         shell: pwsh
         run: |
-          $dest = "${env:SystemDrive}\config"
+          $dest = Join-Path $PWD.Drive.Root 'config'
           if (Test-Path $dest) { Remove-Item $dest -Recurse -Force }
           Copy-Item -Path "$PWD\config" -Destination $dest -Recurse
+          Get-ChildItem -Recurse $dest | ForEach-Object { $_.FullName }
 
       - name: Run ${{ matrix.target }}
         shell: pwsh
