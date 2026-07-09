@@ -16,7 +16,7 @@ namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
 
         public string OptionName(ISessionObject option) => this.Name + "_" + option.Id.ToString().Replace("-", "_");
 
-        public object IsSelected(ISessionObject option)
+        public bool IsSelected(ISessionObject option)
         {
             var model = (IEnumerable<ISessionObject>)this.Model;
             return model.Contains(option);
